@@ -1,5 +1,5 @@
 import { PrimaryGeneratedColumn, Column, Entity } from "typeorm";
-import { Article } from "src/article/entities/article.entity";
+import { Article } from "../../article/entities/article.entity";
 import { User } from '../../user/entities/user.entity'
 
 @Entity()

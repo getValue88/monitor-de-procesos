@@ -1,8 +1,8 @@
 import { Entity } from "typeorm";
-import { Article } from "src/article/entities/article.entity";
-import { Oc } from "src/order/entities/oc.entity";
-import { Of } from "src/order/entities/of.entity";
-import { Record } from "src/process/entities/record.entity";
+import { Article } from "../../article/entities/article.entity";
+import { Oc } from "../../order/entities/oc.entity";
+import { Of } from "../../order/entities/of.entity";
+import { Record } from "../../process/entities/record.entity";
 
 @Entity()
 export class CompanyDTO {

@@ -1,5 +1,5 @@
-import { Process } from './process/process.entity';
-import { NivelCambio } from './article/nivelCambio.entity';
+import { Process } from '../../process/entities/process.entity';
+import { NivelCambio } from '../entities/nivelCambio.entity';
 
 export class ArticleDTO {
     readonly id: number;

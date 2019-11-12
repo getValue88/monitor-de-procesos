@@ -1,5 +1,5 @@
 import { Task } from "../entities/task.entity";
-import { User } from "src/user/entities/user.entity";
+import { User } from "../../user/entities/user.entity";
 import { Alarm } from "../entities/alarm.entity";
 
 export class ProcessDTO{

@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 import { Task } from "./task.entity";
-import { User } from "src/user/entities/user.entity";
+import { User } from "../../user/entities/user.entity";
 import { Alarm } from "./alarm.entity";
 
 @Entity()

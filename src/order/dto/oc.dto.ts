@@ -1,4 +1,4 @@
-import { Article } from "src/article/entities/article.entity";
+import { Article } from "../../article/entities/article.entity";
 import { User } from '../../user/entities/user.entity';
 
 export class OcDTO{
