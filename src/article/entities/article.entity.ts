@@ -1,4 +1,5 @@
-import { Process } from './process/process.entity';
+
+import { NivelCambio } from './nivelCambio.entity';
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
@@ -14,12 +15,36 @@ export class Article {
     private description: string;
 
     @Column()
-    private process: Process;
-    public constructor(name: string, description: string, process: Process) {
+    private nivelCambio: NivelCambio;
+
+    public constructor(name: string, description: string, nivelCambio: NivelCambio) {
         this.name = name;
         this.description = description;
-        this.process = process;
+        this.nivelCambio = nivelCambio;
     }
 
+    public getID(): number {
+        return this.id;
+    }
+
+    public setName(value: string): void {
+        this.name = value;
+    }
+
+    public getName(): string {
+        return this.name;
+    }
+
+    public setDescription(value: string): void {
+        this.description = value;
+    }
+
+    public getDescription(): string {
+        return this.description;
+    }
+
+    public getNivelCambio(): NivelCambio {
+        return this.nivelCambio;
+    }
 }
 
