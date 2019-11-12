@@ -8,6 +8,7 @@ import { UserModule } from './user/user.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CompanyModule } from './company/company.module';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       rootPath: join(__dirname, '..', 'client'),
     }),
     TypeOrmModule.forRoot(),
-    ArticleModule, ProcessModule, OrderModule, UserModule],
+    ArticleModule, ProcessModule, OrderModule, UserModule, CompanyModule],
   controllers: [AppController],
   providers: [AppService],
 })
