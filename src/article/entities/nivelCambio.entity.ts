@@ -1,5 +1,5 @@
 import { Process } from '../../process/entities/process.entity';
-import { PrimaryGeneratedColumn, Column, Entity } from "typeorm";
+import { PrimaryGeneratedColumn, Column, Entity, OneToOne, JoinColumn } from "typeorm";
 
 @Entity()
 export class NivelCambio {
@@ -18,8 +18,11 @@ export class NivelCambio {
     @Column()
     private image?: string;
 
-    public constructor(id: number, date: Date, process: Process, plano: string, image?: string) {
-        this.id = id;
+    @OneToOne(type => Process)
+    @JoinColumn()
+    process_id: Process;
+
+    public constructor(date: Date, process: Process, plano: string, image?: string) {
         this.date = date;
         this.process = process;
         this.plano = plano;

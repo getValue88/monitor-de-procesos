@@ -4,7 +4,7 @@ import { Alarm } from "./alarm.entity";
 @Entity()
 export class Task {
     @PrimaryGeneratedColumn()
-    private id: number;
+    id: number;
 
     @Column()
     private description: string;

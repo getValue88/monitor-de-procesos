@@ -1,6 +1,6 @@
 
 import { NivelCambio } from './nivelCambio.entity';
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
 
 @Entity()
 export class Article {
@@ -16,6 +16,10 @@ export class Article {
 
     @Column()
     private nivelCambio: NivelCambio;
+
+    @OneToOne(type => NivelCambio)
+    @JoinColumn()
+    nvCambio_id: NivelCambio;
 
     public constructor(name: string, description: string, nivelCambio: NivelCambio) {
         this.name = name;

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { Task } from "./task.entity";
 import { User } from "../../user/entities/user.entity";
 import { Alarm } from "./alarm.entity";
@@ -32,8 +32,10 @@ export class Process {
     @Column()
     private alarm?: Alarm;
 
-    public constructor(id: number, name: string, description: string, tasks: Task[], state: number, startDate: Date, deliveryDate: Date, responsible: User, alarm?: Alarm) {
-        this.id = id;
+    @OneToMany(type => Task, task => task.id)
+    task_id: Task[];
+
+    public constructor(name: string, description: string, tasks: Task[], state: number, startDate: Date, deliveryDate: Date, responsible: User, alarm?: Alarm) {
         this.name = name;
         this.description = description;
         this.tasks = tasks;

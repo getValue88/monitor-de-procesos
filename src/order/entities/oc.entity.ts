@@ -1,16 +1,16 @@
-import { PrimaryGeneratedColumn, Column, Entity } from "typeorm";
+import { PrimaryGeneratedColumn, Column, Entity, UpdateDateColumn, JoinColumn, OneToOne } from "typeorm";
 import { Article } from "../../article/entities/article.entity";
 import { User } from '../../user/entities/user.entity'
 
 @Entity()
 export class Oc {
     @PrimaryGeneratedColumn()
-    private id: number;
+    id: number;
 
     @Column()
     private article: Article;
 
-    @Column()
+    @UpdateDateColumn()
     private initialDate: Date;
 
     @Column()
@@ -25,10 +25,16 @@ export class Oc {
     @Column()
     private client: User;
 
-    public constructor(id: number, article: Article, initialDate: Date, deliveryDate: Date, quantity: number, state: number, client: User) {
-        this.id = id;
+    @OneToOne(type => Article)
+    @JoinColumn()
+    article_id: Article;
+
+    @OneToOne(type => User)
+    @JoinColumn()
+    user_id: User;
+
+    public constructor(article: Article, deliveryDate: Date, quantity: number, state: number, client: User) {
         this.article = article;
-        this.initialDate = initialDate;
         this.deliveryDate = deliveryDate;
         this.quantity = quantity;
         this.state = state;

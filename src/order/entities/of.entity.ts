@@ -1,4 +1,4 @@
-import { PrimaryGeneratedColumn, Column, Entity } from "typeorm";
+import { PrimaryGeneratedColumn, Column, Entity, OneToOne, JoinColumn, OneToMany} from "typeorm";
 import { User } from '../../user/entities/user.entity';
 import { Oc } from "./oc.entity";
 
@@ -19,7 +19,14 @@ export class Of {
     @Column()
     private items: Oc[] = [];
 
-    public constructor(id: number, admin: User, initialDate: Date, endDate: Date, items: Oc[]) {
+    @OneToOne(type => User)
+    @JoinColumn()
+    user_id: User;
+
+    @OneToMany(type => Oc, oc => oc.id)
+    ocs: Oc[];
+
+    public constructor(admin: User, initialDate: Date, endDate: Date, items: Oc[]) {
         this.admin = admin;
         this.initialDate = initialDate;
         this.endDate = endDate;
