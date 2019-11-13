@@ -1,7 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, JoinColumn } from "typeorm";
-import { Task } from "./task.entity";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne } from "typeorm";
 import { User } from "../../user/entities/user.entity";
 import { Alarm } from "./alarm.entity";
+import { Record } from "./record.entity";
 
 @Entity()
 export class Process {
@@ -14,8 +14,7 @@ export class Process {
     @Column()
     private description: string;
 
-    // @Column()
-    private tasks: Task[] = [];
+    // private tasks: Task[] = [];
 
     @Column()
     private state: number;
@@ -26,32 +25,33 @@ export class Process {
     @Column()
     private deliveryDate: Date;
 
-    // @Column()
-    private responsible: User;
+    // private responsible: User;
 
-    // @Column()
-    private alarm?: Alarm;
+    // private alarm?: Alarm;
 
-    @OneToMany(type => Task, task => task.id)
-    task_id: Task[];
 
     @OneToOne(type => User, user => user.id)
     @JoinColumn()
-    user_id: User;
+    responsible: User;
 
     @OneToOne(type => Alarm, alarm => alarm.id)
     @JoinColumn()
-    alarm_id: Alarm;
+    alarm: Alarm;
 
-    public constructor(name: string, description: string, tasks: Task[], state: number, startDate: Date, deliveryDate: Date, responsible: User, alarm?: Alarm) {
+
+    // public constructor(name: string, description: string, tasks: Task[], state: number, startDate: Date, deliveryDate: Date, responsible: User, alarm?: Alarm) {
+    @ManyToOne(type => Record, record => record.id)
+    record: Record;
+
+    public constructor(name: string, description: string, state: number, startDate: Date, deliveryDate: Date) {
         this.name = name;
         this.description = description;
-        this.tasks = tasks;
+        // this.tasks = tasks;
         this.state = state;
         this.startDate = startDate;
         this.deliveryDate = deliveryDate;
-        this.responsible = responsible;
-        this.alarm = alarm;
+        // this.responsible = responsible;
+        // this.alarm = alarm;
     }
 
     public getID(): number {
@@ -73,7 +73,7 @@ export class Process {
     public setDescription(value: string): void {
         this.description = value;
     }
-
+/* 
     public getTasks(): Task[] {
         return this.tasks;
     }
@@ -81,7 +81,7 @@ export class Process {
     public setTasks(tasks: Task[]): void {
         this.tasks = tasks;
     }
-
+ */
     public getState(): number {
         return this.state;
     }

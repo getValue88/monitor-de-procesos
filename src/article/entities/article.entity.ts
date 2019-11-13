@@ -15,20 +15,22 @@ export class Article {
     @Column()
     private description: string;
 
-    // @Column()
+/* 
     private nivelCambio: NivelCambio;
-
+ */
     @OneToOne(type => NivelCambio, nivelCambio => nivelCambio.id)
     @JoinColumn()
     nvCambioFK: NivelCambio;
 
-    @ManyToOne(type => Company, company => company.articlesFK)
-    companyFK: Company;
+ 
+    @ManyToOne(type => Company, company => company.id)
+    company: Company;
 
-    public constructor(name: string, description: string, nivelCambio: NivelCambio) {
+
+    public constructor(name: string, description: string/* , nivelCambio: NivelCambio */) {
         this.name = name;
         this.description = description;
-        this.nivelCambio = nivelCambio;
+        // this.nivelCambio = nivelCambio;
     }
 
     public getID(): number {
@@ -50,9 +52,9 @@ export class Article {
     public getDescription(): string {
         return this.description;
     }
-
+/* 
     public getNivelCambio(): NivelCambio {
         return this.nivelCambio;
-    }
+    } */
 }
 

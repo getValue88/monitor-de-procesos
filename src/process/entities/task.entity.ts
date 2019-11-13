@@ -1,5 +1,6 @@
-import { PrimaryGeneratedColumn, Column, Entity, OneToMany, OneToOne, JoinColumn } from "typeorm";
+import { PrimaryGeneratedColumn, Column, Entity, OneToOne, JoinColumn, ManyToOne } from "typeorm";
 import { Alarm } from "./alarm.entity";
+import { Process } from "./process.entity";
 
 @Entity()
 export class Task {
@@ -21,21 +22,19 @@ export class Task {
     @Column()
     private state: number;
 
-    // @Column()
     private previousTask: Task[]= [];
 
-    // @Column()
-    private alarm: Alarm;
-
-    @OneToMany(type => Task, tasks => tasks.id, {
+    @ManyToOne(type => Task, tasks => tasks.previousTask, {
         cascade: true
     })
-    @JoinColumn()
-    prevTask_id: Task[];
+    prevTask: Task[];
+
+    @ManyToOne(type => Process, process => process.id)
+    process: Process;
 
     @OneToOne(type => Alarm, alarm => alarm.id)
     @JoinColumn()
-    alarm_id: Alarm;
+    alarm: Alarm;
 
     public constructor(id: number, description: string, estimatedTime: number, startTime: Date, endTime: Date, previousTask: Task[], alarm: Alarm) {
         this.id = id;
@@ -92,7 +91,7 @@ export class Task {
         if (percentage >= 0 && percentage <= 100)
             this.state = percentage;
     }
-/* 
+
     public getPreviousTask(): Task[] {
         return this.previousTask;
     }
@@ -100,7 +99,7 @@ export class Task {
     public setPreviousTask(tasks: Task[]): void {
         this.previousTask = tasks;
     }
- */
+
     public getAlarm(): Alarm {
         return this.alarm;
     }

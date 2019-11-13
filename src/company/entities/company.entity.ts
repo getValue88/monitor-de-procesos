@@ -1,8 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn, JoinTable } from "typeorm";
-import { Article } from "../../article/entities/article.entity";
+// import { Article } from "../../article/entities/article.entity";
 import { Oc } from "../../order/entities/oc.entity";
 import { Of } from "../../order/entities/of.entity";
-import { Record } from "../../process/entities/record.entity";
+// import { Record } from "../../process/entities/record.entity";
 
 @Entity()
 export class Company {
@@ -20,43 +20,34 @@ export class Company {
     @Column()
     private logo?: string;
 
-    // @Column()
-    articles: Article[];
 
-    // @Column()
-    private oc: Oc[];
+    // articles: Article[];
 
-    // @Column()
-    private of: Of[];
 
-    // @Column()
-    private record: Record;
+    // private of: Of[];
+
+ 
+    // private record: Record;
     
-    
-    @OneToMany(type => Article, articles => articles.companyFK)
-    articleFK: Article[];
 
     @OneToMany(type => Oc, oc => oc.id, {
         cascade: true
     })
-    @JoinColumn()
-    oc_id: Oc[];
+    oc: Oc[];
 
     @OneToMany(type => Of, of => of.id, {
         cascade: true
     })
-    @JoinColumn()
-    of_id: Of[];
-    articlesFK: any;
+    of: Of[];
 
-    private constructor() {     
+    private constructor() {
     }
 
     public getInstance(): Company {
         if (!Company.instance) {
             Company.instance = new Company();
         }
-        this.record = this.record.getInstance();
+        // this.record = this.record.getInstance();
         return Company.instance;
     }
 
@@ -88,14 +79,14 @@ export class Company {
         this.logo = path;
     }
 
-    public getArticles(): Article[] {
+/*     public getArticles(): Article[] {
         return this.articles;
     }
 
     public setArticles(articles: Article[]): void {
         this.articles = articles;
     }
-
+ */
     public getOc(): Oc[] {
         return this.oc;
     }
@@ -112,7 +103,7 @@ export class Company {
         this.of = _of;
     }
 
-    public getRecord(): Record {
+/*     public getRecord(): Record {
         return this.record;
-    }
+    } */
 }

@@ -1,15 +1,15 @@
-import { PrimaryGeneratedColumn, Column, Entity, UpdateDateColumn, JoinColumn, OneToOne, OneToMany } from "typeorm";
+import { PrimaryGeneratedColumn, Column, Entity, UpdateDateColumn, JoinColumn, OneToOne, ManyToOne } from "typeorm";
 import { Article } from "../../article/entities/article.entity";
 import { User } from '../../user/entities/user.entity'
 import { Company } from "../../company/entities/company.entity";
+import { Of } from "./of.entity";
 
 @Entity()
 export class Oc {
     @PrimaryGeneratedColumn()
     id: number;
 
-    // @Column()
-    private article: Article;
+    // private article: Article;
 
     @UpdateDateColumn()
     private initialDate: Date;
@@ -23,25 +23,32 @@ export class Oc {
     @Column()
     private state: number;
 
-    // @Column()
-    private client: User;
+    // private client: User;
 
     @OneToOne(type => Article)
     @JoinColumn()
-    article_id: Article;
+    articleFK: Article;
 
     @OneToOne(type => User)
     @JoinColumn()
-    user_id: User;
+    client: User;
 
-    @OneToMany(type => Company, company => company.id, {
+    @ManyToOne(type => Company, company => company.id, {
         cascade: true
     })
-    @JoinColumn()
-    companyFK: Company[];
+    company: Company;
 
+    @ManyToOne(type => Of, of => of.id, {
+        cascade: true
+    })
+    oF: Of;
+
+   
+   /*  
     public constructor(article: Article, deliveryDate: Date, quantity: number, state: number, client: User) {
-        this.article = article;
+        this.article = article; */
+
+    public constructor(deliveryDate: Date, quantity: number, state: number, client: User) {
         this.deliveryDate = deliveryDate;
         this.quantity = quantity;
         this.state = state;
@@ -51,11 +58,11 @@ export class Oc {
     public getID(): number {
         return this.id;
     }
-
+/* 
     public getArticle(): Article {
         return this.article;
     }
-
+ */
     public getInitialDate(): Date {
         return this.initialDate;
     }

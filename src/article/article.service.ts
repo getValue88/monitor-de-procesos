@@ -25,7 +25,7 @@ export class ArticleService {
 
     public async create(articleDto: ArticleDTO): Promise<Article[]> {
         try {
-            let newArticle = new Article(articleDto.name, articleDto.description, articleDto.nivelCambio);
+            let newArticle = new Article(articleDto.name, articleDto.description/* , articleDto.nivelCambio */);
             await this.articleRepository.save(newArticle);
             return await this.getAll();
         }

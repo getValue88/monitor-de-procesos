@@ -9,9 +9,9 @@ export class NivelCambio {
     @Column()
     private date: Date;
 
-    // @Column()
+/* 
     private process: Process;
-
+ */
     @Column()
     private plano: string;
 
@@ -22,9 +22,11 @@ export class NivelCambio {
     @JoinColumn()
     process_id: Process;
 
-    public constructor(date: Date, process: Process, plano: string, image?: string) {
+    // public constructor(date: Date, process: Process, plano: string, image?: string) {
+
+    public constructor(date: Date, plano: string, image?: string) {
         this.date = date;
-        this.process = process;
+        // this.process = process;
         this.plano = plano;
         this.image = image;
     }
@@ -36,11 +38,11 @@ export class NivelCambio {
     public getDate(): Date {
         return this.date;
     }
-
+/* 
     public getProcess(): Process {
         return this.process;
     }
-
+ */
     public getPlano(): string {
         return this.plano;
     }

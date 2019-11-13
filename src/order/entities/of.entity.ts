@@ -1,6 +1,6 @@
-import { PrimaryGeneratedColumn, Column, Entity, OneToOne, JoinColumn, OneToMany} from "typeorm";
+import { PrimaryGeneratedColumn, Column, Entity, OneToOne, JoinColumn, ManyToOne } from "typeorm";
 import { User } from '../../user/entities/user.entity';
-import { Oc } from "./oc.entity";
+// import { Oc } from "./oc.entity";
 import { Company } from "../../company/entities/company.entity";
 
 @Entity()
@@ -8,8 +8,7 @@ export class Of {
     @PrimaryGeneratedColumn()
     id: number;
 
-    // @Column()
-    private admin: User;
+    // private admin: User;
 
     @Column()
     private initialDate: Date;
@@ -17,27 +16,25 @@ export class Of {
     @Column()
     private endDate: Date;
 
-    // @Column()
-    private items: Oc[] = [];
+
+    // private items: Oc[] = [];
 
     @OneToOne(type => User)
     @JoinColumn()
-    user_id: User;
+    admin: User;
 
-    @OneToMany(type => Oc, oc => oc.id)
-    ocs: Oc[];
-
-    @OneToMany(type => Company, company => company.id, {
+    @ManyToOne(type => Company, company => company.id, {
         cascade: true
     })
-    @JoinColumn()
     companyFK: Company;
 
-    public constructor(admin: User, initialDate: Date, endDate: Date, items: Oc[]) {
+
+    // public constructor(admin: User, initialDate: Date, endDate: Date, items: Oc[]) {
+    public constructor(admin: User, initialDate: Date, endDate: Date) {
         this.admin = admin;
         this.initialDate = initialDate;
         this.endDate = endDate;
-        this.items = items;
+        // this.items = items;
     }
 
     public getID(): number {
@@ -60,7 +57,7 @@ export class Of {
         this.endDate = value;
     }
 
-    public getItems(): Oc[] {
+/*     public getItems(): Oc[] {
         return this.items;
-    }
+    } */
 }
