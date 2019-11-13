@@ -4,12 +4,12 @@ import { PrimaryGeneratedColumn, Column, Entity, OneToOne, JoinColumn } from "ty
 @Entity()
 export class NivelCambio {
     @PrimaryGeneratedColumn()
-    private id: number;
+    id: number;
 
     @Column()
     private date: Date;
 
-    @Column()
+    // @Column()
     private process: Process;
 
     @Column()
@@ -18,7 +18,7 @@ export class NivelCambio {
     @Column()
     private image?: string;
 
-    @OneToOne(type => Process)
+    @OneToOne(type => Process, process => process.id)
     @JoinColumn()
     process_id: Process;
 

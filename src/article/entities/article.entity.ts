@@ -1,12 +1,13 @@
 
 import { NivelCambio } from './nivelCambio.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
+import { Company } from '../../company/entities/company.entity';
 
 @Entity()
 export class Article {
 
     @PrimaryGeneratedColumn()
-    private id: number;
+    id: number;
 
     @Column()
     private name: string;
@@ -14,12 +15,15 @@ export class Article {
     @Column()
     private description: string;
 
-    @Column()
+    // @Column()
     private nivelCambio: NivelCambio;
 
-    @OneToOne(type => NivelCambio)
+    @OneToOne(type => NivelCambio, nivelCambio => nivelCambio.id)
     @JoinColumn()
-    nvCambio_id: NivelCambio;
+    nvCambioFK: NivelCambio;
+
+    @ManyToOne(type => Company, company => company.articlesFK)
+    companyFK: Company;
 
     public constructor(name: string, description: string, nivelCambio: NivelCambio) {
         this.name = name;

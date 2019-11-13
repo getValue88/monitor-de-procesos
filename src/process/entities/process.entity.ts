@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, JoinColumn } from "typeorm";
 import { Task } from "./task.entity";
 import { User } from "../../user/entities/user.entity";
 import { Alarm } from "./alarm.entity";
@@ -6,7 +6,7 @@ import { Alarm } from "./alarm.entity";
 @Entity()
 export class Process {
     @PrimaryGeneratedColumn()
-    private id: number;
+    id: number;
 
     @Column()
     private name: string;
@@ -14,7 +14,7 @@ export class Process {
     @Column()
     private description: string;
 
-    @Column()
+    // @Column()
     private tasks: Task[] = [];
 
     @Column()
@@ -26,14 +26,22 @@ export class Process {
     @Column()
     private deliveryDate: Date;
 
-    @Column()
+    // @Column()
     private responsible: User;
 
-    @Column()
+    // @Column()
     private alarm?: Alarm;
 
     @OneToMany(type => Task, task => task.id)
     task_id: Task[];
+
+    @OneToOne(type => User, user => user.id)
+    @JoinColumn()
+    user_id: User;
+
+    @OneToOne(type => Alarm, alarm => alarm.id)
+    @JoinColumn()
+    alarm_id: Alarm;
 
     public constructor(name: string, description: string, tasks: Task[], state: number, startDate: Date, deliveryDate: Date, responsible: User, alarm?: Alarm) {
         this.name = name;

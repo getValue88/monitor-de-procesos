@@ -1,13 +1,14 @@
 import { PrimaryGeneratedColumn, Column, Entity, OneToOne, JoinColumn, OneToMany} from "typeorm";
 import { User } from '../../user/entities/user.entity';
 import { Oc } from "./oc.entity";
+import { Company } from "../../company/entities/company.entity";
 
 @Entity()
 export class Of {
     @PrimaryGeneratedColumn()
-    private id: number;
+    id: number;
 
-    @Column()
+    // @Column()
     private admin: User;
 
     @Column()
@@ -16,7 +17,7 @@ export class Of {
     @Column()
     private endDate: Date;
 
-    @Column()
+    // @Column()
     private items: Oc[] = [];
 
     @OneToOne(type => User)
@@ -25,6 +26,12 @@ export class Of {
 
     @OneToMany(type => Oc, oc => oc.id)
     ocs: Oc[];
+
+    @OneToMany(type => Company, company => company.id, {
+        cascade: true
+    })
+    @JoinColumn()
+    companyFK: Company;
 
     public constructor(admin: User, initialDate: Date, endDate: Date, items: Oc[]) {
         this.admin = admin;

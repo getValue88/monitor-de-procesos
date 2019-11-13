@@ -1,13 +1,14 @@
-import { PrimaryGeneratedColumn, Column, Entity, UpdateDateColumn, JoinColumn, OneToOne } from "typeorm";
+import { PrimaryGeneratedColumn, Column, Entity, UpdateDateColumn, JoinColumn, OneToOne, OneToMany } from "typeorm";
 import { Article } from "../../article/entities/article.entity";
 import { User } from '../../user/entities/user.entity'
+import { Company } from "../../company/entities/company.entity";
 
 @Entity()
 export class Oc {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    // @Column()
     private article: Article;
 
     @UpdateDateColumn()
@@ -22,7 +23,7 @@ export class Oc {
     @Column()
     private state: number;
 
-    @Column()
+    // @Column()
     private client: User;
 
     @OneToOne(type => Article)
@@ -32,6 +33,12 @@ export class Oc {
     @OneToOne(type => User)
     @JoinColumn()
     user_id: User;
+
+    @OneToMany(type => Company, company => company.id, {
+        cascade: true
+    })
+    @JoinColumn()
+    companyFK: Company[];
 
     public constructor(article: Article, deliveryDate: Date, quantity: number, state: number, client: User) {
         this.article = article;

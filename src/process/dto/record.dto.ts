@@ -1,5 +1,5 @@
-import { Oc } from "src/order/entities/oc.entity";
-import { Of } from "src/order/entities/of.entity";
+import { Oc } from "../../order/entities/oc.entity";
+import { Of } from "../../order/entities/of.entity";
 import { Process } from "../entities/process.entity";
 import { Task } from "../entities/task.entity";
 

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn, JoinTable } from "typeorm";
 import { Article } from "../../article/entities/article.entity";
 import { Oc } from "../../order/entities/oc.entity";
 import { Of } from "../../order/entities/of.entity";
@@ -9,7 +9,7 @@ export class Company {
     private static instance: Company;
 
     @PrimaryGeneratedColumn()
-    private id: number;
+    id: number;
 
     @Column()
     private name: string;
@@ -20,26 +20,43 @@ export class Company {
     @Column()
     private logo?: string;
 
-    @Column()
-    private articles: Article[];
+    // @Column()
+    articles: Article[];
 
-    @Column()
+    // @Column()
     private oc: Oc[];
 
-    @Column()
+    // @Column()
     private of: Of[];
 
-    @Column()
+    // @Column()
     private record: Record;
+    
+    
+    @OneToMany(type => Article, articles => articles.companyFK)
+    articleFK: Article[];
 
-    private constructor() {
-        this.record = this.record.getInstance();
+    @OneToMany(type => Oc, oc => oc.id, {
+        cascade: true
+    })
+    @JoinColumn()
+    oc_id: Oc[];
+
+    @OneToMany(type => Of, of => of.id, {
+        cascade: true
+    })
+    @JoinColumn()
+    of_id: Of[];
+    articlesFK: any;
+
+    private constructor() {     
     }
 
     public getInstance(): Company {
         if (!Company.instance) {
             Company.instance = new Company();
         }
+        this.record = this.record.getInstance();
         return Company.instance;
     }
 
