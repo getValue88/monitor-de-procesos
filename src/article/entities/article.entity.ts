@@ -10,21 +10,23 @@ export class Article {
     private id: number;
 
     @Column()
-    private name: string;
+    private number: number;
 
     @Column()
-    private description: string;
+    private name: string;
 
-/* 
-    private nivelCambio: NivelCambio;
- */
-    @OneToOne(type => NivelCambio, nivelCambio => nivelCambio.getID)
+    @OneToOne(type => NivelCambio, nivelCambio => nivelCambio.getID, { nullable: true })
     @JoinColumn()
-    nvCambioFK: NivelCambio;
+    private nivelCambio: NivelCambio;
 
- 
+    @Column()
+    private plane: string;
+
+    @Column({ nullable: true })
+    private description?: string;
+
     @ManyToOne(type => Company, company => company.getID)
-    company: Company;
+    private company: Company;
 
 
     public constructor(name: string, description: string/* , nivelCambio: NivelCambio */) {
@@ -37,24 +39,40 @@ export class Article {
         return this.id;
     }
 
-    public setName(value: string): void {
-        this.name = value;
+    public getNumber(): number {
+        return this.number;
     }
 
     public getName(): string {
         return this.name;
     }
 
-    public setDescription(value: string): void {
-        this.description = value;
+    public setName(value: string): void {
+        this.name = value;
+    }
+
+    public getNivelCambio(): NivelCambio {
+        return this.nivelCambio;
+    }
+
+    public getPlane(): string {
+        return this.plane;
+    }
+
+    public setPlane(path: string): void {
+        this.plane = path;
     }
 
     public getDescription(): string {
         return this.description;
     }
-/* 
-    public getNivelCambio(): NivelCambio {
-        return this.nivelCambio;
-    } */
+
+    public setDescription(value: string): void {
+        this.description = value;
+    }
+
+    public getCompany(): Company {
+        return this.company;
+    }
 }
 

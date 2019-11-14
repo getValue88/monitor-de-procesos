@@ -1,8 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn, JoinTable } from "typeorm";
-// import { Article } from "../../article/entities/article.entity";
-import { Oc } from "../../order/entities/oc.entity";
-import { Of } from "../../order/entities/of.entity";
-// import { Record } from "../../process/entities/record.entity";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn, JoinTable, OneToOne } from "typeorm";
 
 @Entity()
 export class Company {
@@ -12,33 +8,19 @@ export class Company {
     private id: number;
 
     @Column()
-    private name: string;
+    private rs: string;
 
     @Column()
-    private description: string;
+    private address: string;
+
+    @Column()
+    private impositiveCategory: string;
+
+    @Column()
+    private cuit: string;
 
     @Column()
     private logo?: string;
-
-
-    // articles: Article[];
-
-
-    // private of: Of[];
-
- 
-    // private record: Record;
-    
-
-    @OneToMany(type => Oc, oc => oc.getID, {
-        cascade: true
-    })
-    oc: Oc[];
-
-    @OneToMany(type => Of, of => of.getID, {
-        cascade: true
-    })
-    of: Of[];
 
     private constructor() {
     }
@@ -55,20 +37,36 @@ export class Company {
         return this.id;
     }
 
-    public getName(): string {
-        return this.name;
+    public getRs(): string {
+        return this.rs;
     }
 
-    public setName(value: string): void {
-        this.name = value;
+    public setRs(value: string): void {
+        this.rs = value;
     }
 
-    public getDescription(): string {
-        return this.description;
+    public getAddress(): string {
+        return this.address;
     }
 
-    public setDescription(value: string): void {
-        this.description = value;
+    public setAddress(value: string): void {
+        this.address = value;
+    }
+
+    public getImpositiveCategory(): string {
+        return this.impositiveCategory;
+    }
+
+    public setImpositiveCategory(value: string): void {
+        this.impositiveCategory = value;
+    }
+
+    public getCuit(): string {
+        return this.cuit;
+    }
+
+    public setCuit(value: string): void {
+        this.cuit = value;
     }
 
     public getLogo(): string {
@@ -78,32 +76,4 @@ export class Company {
     public setLogo(path: string): void {
         this.logo = path;
     }
-
-/*     public getArticles(): Article[] {
-        return this.articles;
-    }
-
-    public setArticles(articles: Article[]): void {
-        this.articles = articles;
-    }
- */
-    public getOc(): Oc[] {
-        return this.oc;
-    }
-
-    public setOc(oc: Oc[]): void {
-        this.oc = oc;
-    }
-
-    public getOf(): Of[] {
-        return this.of;
-    }
-
-    public setOf(_of: Of[]): void {
-        this.of = _of;
-    }
-
-/*     public getRecord(): Record {
-        return this.record;
-    } */
 }

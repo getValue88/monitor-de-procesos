@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
-import { Process } from "../../process/entities/process.entity";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne } from "typeorm";
+import { Company } from "../../company/entities/company.entity";
 
 @Entity()
 export class User {
@@ -17,6 +17,9 @@ export class User {
 
     @Column({ nullable: true })
     private observations?: string;
+
+    @ManyToOne(type => Company, company => company.getID, { nullable: true })
+    private company: Company;
 
     public constructor(id: number, name: string, password: string, privilege: string, observations?: string) {
         this.id = id;
@@ -60,5 +63,9 @@ export class User {
 
     public setObservations(value: string): void {
         this.observations = value;
+    }
+
+    public getCompany(): Company {
+        return this.company;
     }
 }

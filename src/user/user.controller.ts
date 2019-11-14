@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param } from '@nestjs/common';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -10,4 +10,8 @@ export class UserController {
         return this.userService.login(uData);
     }
 
+    @Get('company/:userId')
+    getCompany(@Param('userId') userId) {
+        return this.userService.getCompany(userId);
+    }
 }

@@ -1,4 +1,8 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
+import { CompanyService } from './company.service';
 
 @Controller('company')
-export class CompanyController {}
+export class CompanyController {
+    public constructor(private readonly companyService: CompanyService) { }
+
+}
