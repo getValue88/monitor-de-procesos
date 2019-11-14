@@ -1,4 +1,4 @@
-import { Process } from "src/process/entities/process.entity";
+import { Process } from "../../process/entities/process.entity";
 
 export class NivelCambioDTO {
     readonly id: number;

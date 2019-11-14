@@ -3,7 +3,7 @@ import { PrimaryGeneratedColumn, Column, Entity } from "typeorm";
 @Entity()
 export class Alarm {
     @PrimaryGeneratedColumn()
-    id: number;
+    private id: number;
 
     @Column()
     private description: string;

@@ -7,7 +7,7 @@ import { Company } from '../../company/entities/company.entity';
 export class Article {
 
     @PrimaryGeneratedColumn()
-    id: number;
+    private id: number;
 
     @Column()
     private name: string;
@@ -18,12 +18,12 @@ export class Article {
 /* 
     private nivelCambio: NivelCambio;
  */
-    @OneToOne(type => NivelCambio, nivelCambio => nivelCambio.id)
+    @OneToOne(type => NivelCambio, nivelCambio => nivelCambio.getID)
     @JoinColumn()
     nvCambioFK: NivelCambio;
 
  
-    @ManyToOne(type => Company, company => company.id)
+    @ManyToOne(type => Company, company => company.getID)
     company: Company;
 
 

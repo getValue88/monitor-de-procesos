@@ -9,7 +9,7 @@ export class Company {
     private static instance: Company;
 
     @PrimaryGeneratedColumn()
-    id: number;
+    private id: number;
 
     @Column()
     private name: string;
@@ -30,12 +30,12 @@ export class Company {
     // private record: Record;
     
 
-    @OneToMany(type => Oc, oc => oc.id, {
+    @OneToMany(type => Oc, oc => oc.getID, {
         cascade: true
     })
     oc: Oc[];
 
-    @OneToMany(type => Of, of => of.id, {
+    @OneToMany(type => Of, of => of.getID, {
         cascade: true
     })
     of: Of[];

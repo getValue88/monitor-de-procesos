@@ -6,7 +6,7 @@ import { Record } from "./record.entity";
 @Entity()
 export class Process {
     @PrimaryGeneratedColumn()
-    id: number;
+    private id: number;
 
     @Column()
     private name: string;
@@ -30,17 +30,17 @@ export class Process {
     // private alarm?: Alarm;
 
 
-    @OneToOne(type => User, user => user.id)
+    @OneToOne(type => User, user => user.getID)
     @JoinColumn()
     responsible: User;
 
-    @OneToOne(type => Alarm, alarm => alarm.id)
     @JoinColumn()
+    @OneToOne(type => Alarm, alarm => alarm.getID)
     alarm: Alarm;
 
 
     // public constructor(name: string, description: string, tasks: Task[], state: number, startDate: Date, deliveryDate: Date, responsible: User, alarm?: Alarm) {
-    @ManyToOne(type => Record, record => record.id)
+    @ManyToOne(type => Record, record => record.getID)
     record: Record;
 
     public constructor(name: string, description: string, state: number, startDate: Date, deliveryDate: Date) {

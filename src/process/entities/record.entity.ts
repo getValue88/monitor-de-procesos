@@ -10,7 +10,7 @@ export class Record {
 
 
     @PrimaryGeneratedColumn()
-    id: number;
+    private id: number;
 /* 
 
     private oc?: Oc[] = [];

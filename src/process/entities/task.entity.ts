@@ -5,7 +5,7 @@ import { Process } from "./process.entity";
 @Entity()
 export class Task {
     @PrimaryGeneratedColumn()
-    id: number;
+    private id: number;
 
     @Column()
     private description: string;
@@ -29,10 +29,10 @@ export class Task {
     })
     prevTask: Task[];
 
-    @ManyToOne(type => Process, process => process.id)
+    @ManyToOne(type => Process, process => process.getID)
     process: Process;
 
-    @OneToOne(type => Alarm, alarm => alarm.id)
+    @OneToOne(type => Alarm, alarm => alarm)
     @JoinColumn()
     alarm: Alarm;
 

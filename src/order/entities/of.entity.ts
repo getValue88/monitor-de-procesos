@@ -6,7 +6,7 @@ import { Company } from "../../company/entities/company.entity";
 @Entity()
 export class Of {
     @PrimaryGeneratedColumn()
-    id: number;
+    private id: number;
 
     // private admin: User;
 
@@ -23,7 +23,7 @@ export class Of {
     @JoinColumn()
     admin: User;
 
-    @ManyToOne(type => Company, company => company.id, {
+    @ManyToOne(type => Company, company => company.getID, {
         cascade: true
     })
     companyFK: Company;

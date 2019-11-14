@@ -7,7 +7,7 @@ import { Of } from "./of.entity";
 @Entity()
 export class Oc {
     @PrimaryGeneratedColumn()
-    id: number;
+    private id: number;
 
     // private article: Article;
 
@@ -33,12 +33,12 @@ export class Oc {
     @JoinColumn()
     client: User;
 
-    @ManyToOne(type => Company, company => company.id, {
+    @ManyToOne(type => Company, company => company.getID, {
         cascade: true
     })
     company: Company;
 
-    @ManyToOne(type => Of, of => of.id, {
+    @ManyToOne(type => Of, of => of.getID, {
         cascade: true
     })
     oF: Of;

@@ -1,9 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
+import { Process } from "../../process/entities/process.entity";
 
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()
-    id: number;
+    private id: number;
 
     @Column()
     private name: string;
