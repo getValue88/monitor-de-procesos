@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { ArticleDTO } from './dto/article.dto';
 
@@ -7,13 +7,22 @@ export class ArticleController {
 
     public constructor(private readonly articleService: ArticleService) { }
 
-    @Get()
-    getAll() {
-        return this.articleService.getAll();
+    @Get('company/:companyId')
+    getByCompany(@Param('companyId') companyId: number) {
+        return this.articleService.getByCompany(companyId);
     }
 
-    @Post()
-    create(@Body() articleDto: ArticleDTO) {
-        return this.articleService.create(articleDto);
-    }
+    /* 
+        @Get()
+        getAll() {
+            return this.articleService.getAll();
+        }
+    */
+
+    /* 
+        @Post()
+        create(@Body() articleDto: ArticleDTO) {
+            return this.articleService.create(articleDto);
+        }
+     */
 }
