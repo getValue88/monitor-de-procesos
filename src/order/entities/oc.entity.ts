@@ -9,8 +9,6 @@ export class Oc {
     @PrimaryGeneratedColumn()
     private id: number;
 
-    // private article: Article;
-
     @UpdateDateColumn()
     private initialDate: Date;
 
@@ -21,37 +19,35 @@ export class Oc {
     private quantity: number;
 
     @Column()
-    private state: number;
-
-    // private client: User;
+    private status: number;
 
     @OneToOne(type => Article)
     @JoinColumn()
-    articleFK: Article;
+    private article: Article;
 
     @OneToOne(type => User)
     @JoinColumn()
-    client: User;
+    private client: User;
 
     @ManyToOne(type => Company, company => company.getID, {
         cascade: true
     })
-    company: Company;
+    private company: Company;
 
     @ManyToOne(type => Of, of => of.getID, {
         cascade: true
     })
-    oF: Of;
+    private oF: Of;
 
    
    /*  
     public constructor(article: Article, deliveryDate: Date, quantity: number, state: number, client: User) {
         this.article = article; */
 
-    public constructor(deliveryDate: Date, quantity: number, state: number, client: User) {
+    public constructor(deliveryDate: Date, quantity: number, status: number, client: User) {
         this.deliveryDate = deliveryDate;
         this.quantity = quantity;
-        this.state = state;
+        this.status = status;
         this.client = client;
     }
 
@@ -84,11 +80,11 @@ export class Oc {
     }
 
     public getState(): number {
-        return this.state;
+        return this.status;
     }
 
     public setState(value: number): void {
-        this.state = value;
+        this.status = value;
     }
 
     public getClient(): User {

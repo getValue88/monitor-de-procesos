@@ -9,7 +9,7 @@ export class Alarm {
     private description: string;
 
     @Column()
-    private disparador: boolean;
+    private trigger: boolean;
 
     @Column()
     private date: Date;
@@ -17,7 +17,7 @@ export class Alarm {
     public constructor(id: number, description: string, disparador: boolean, date: Date) {
         this.id = id;
         this.description = description;
-        this.disparador = false;
+        this.trigger = false;
         this.date = date;
     }
 
@@ -34,11 +34,11 @@ export class Alarm {
     }
 
     public getDisparador(): boolean {
-        return this.disparador;
+        return this.trigger;
     }
 
     public setDisparador(value: boolean): void {
-        this.disparador = value;
+        this.trigger = value;
     }
 
     public getDate(): Date {

@@ -14,21 +14,17 @@ export class Process {
     @Column()
     private description: string;
 
-    // private tasks: Task[] = [];
+    @Column()
+    private status: number;
 
     @Column()
-    private state: number;
-
-    @Column()
-    private startDate: Date;
+    private initialDate: Date;
 
     @Column()
     private deliveryDate: Date;
 
-    // private responsible: User;
-
-    // private alarm?: Alarm;
-
+    @Column()
+    private endDate: Date;
 
     @OneToOne(type => User, user => user.getID)
     @JoinColumn()
@@ -41,14 +37,14 @@ export class Process {
 
     // public constructor(name: string, description: string, tasks: Task[], state: number, startDate: Date, deliveryDate: Date, responsible: User, alarm?: Alarm) {
     @ManyToOne(type => Record, record => record.getID)
-    record: Record;
+    private log: Record;
 
-    public constructor(name: string, description: string, state: number, startDate: Date, deliveryDate: Date) {
+    public constructor(name: string, description: string, status: number, initialDate: Date, deliveryDate: Date) {
         this.name = name;
         this.description = description;
         // this.tasks = tasks;
-        this.state = state;
-        this.startDate = startDate;
+        this.status = status;
+        this.initialDate = initialDate;
         this.deliveryDate = deliveryDate;
         // this.responsible = responsible;
         // this.alarm = alarm;
@@ -83,20 +79,20 @@ export class Process {
     }
  */
     public getState(): number {
-        return this.state;
+        return this.status;
     }
 
     public setState(value: number): void {
         if (value >= 0 && value <= 100)
-            this.state = value;
+            this.status = value;
     }
 
     public getStartDate(): Date {
-        return this.startDate;
+        return this.initialDate;
     }
 
     public setStartDate(value: Date): void {
-        this.startDate = value;
+        this.initialDate = value;
     }
 
     public getDeliveryDate(): Date {

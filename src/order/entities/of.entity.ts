@@ -8,25 +8,20 @@ export class Of {
     @PrimaryGeneratedColumn()
     private id: number;
 
-    // private admin: User;
-
     @Column()
     private initialDate: Date;
 
     @Column()
     private endDate: Date;
 
-
-    // private items: Oc[] = [];
-
     @OneToOne(type => User)
     @JoinColumn()
-    admin: User;
+    private admin: User;
 
     @ManyToOne(type => Company, company => company.getID, {
         cascade: true
     })
-    companyFK: Company;
+    private company: Company;
 
 
     // public constructor(admin: User, initialDate: Date, endDate: Date, items: Oc[]) {
