@@ -16,8 +16,8 @@ export class StandardTask {
     @Column()
     private requiredTime: number;
 
-    @ManyToOne(type => StandardProcess, process => process.getID)
-    private process: StandardProcess;
+    @ManyToOne(type => StandardProcess, process => process.standardTasks)
+    process: StandardProcess;
 
     public constructor(name:string, description: string, requiredTime: number) {
         this.name = name;

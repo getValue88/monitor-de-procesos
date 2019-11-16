@@ -11,8 +11,13 @@ export class ArticleService {
         @InjectRepository(NivelCambio) private readonly nivelCambioRepository: Repository<NivelCambio>) { }
 
     public async getByCompany(companyId): Promise<Article[]> {
-        return await this.articleRepository.find({ where: { 'company': companyId } });
+        return await this.articleRepository.createQueryBuilder('article')
+        .innerJoinAndSelect('article.nivelCambio', 'nivelCambio')
+        .innerJoinAndSelect('nivelCambio.process', 'standardProcess')
+        .innerJoinAndSelect('standardProcess.standardTasks', 'standardTasks')
+        .where({'company': companyId}).getMany();
     }
+
 
     /* 
         public async getAll(): Promise<Article[]> {

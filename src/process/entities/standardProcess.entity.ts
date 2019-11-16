@@ -15,8 +15,8 @@ export class StandardProcess {
     @Column()
     private requiredTime: Date;
 
-    @OneToMany(type => StandardTask, stdTask => stdTask.getId)
-    private standardTasks: StandardTask[];
+    @OneToMany(type => StandardTask, stdTask => stdTask.process)
+    standardTasks: StandardTask[];
 
     public constructor(name: string, description: string, requiredTime: Date, standardTasks: StandardTask[]) {
         this.name = name;
