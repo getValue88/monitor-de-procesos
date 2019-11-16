@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Article } from './entities/article.entity';
 import { Repository } from 'typeorm';
-import { ArticleDTO } from './dto/article.dto';
 import { NivelCambio } from './entities/nivelCambio.entity';
 
 @Injectable()

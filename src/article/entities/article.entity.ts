@@ -19,9 +19,6 @@ export class Article {
     @JoinColumn()
     private nivelCambio: NivelCambio;
 
-    @Column()
-    private plane: string;
-
     @Column({ nullable: true })
     private description?: string;
 
@@ -29,10 +26,12 @@ export class Article {
     private company: Company;
 
 
-    public constructor(name: string, description: string/* , nivelCambio: NivelCambio */) {
+    public constructor(name: string, number: number, description: string, nivelCambio: NivelCambio, company: Company) {
         this.name = name;
+        this.number = number;
         this.description = description;
-        // this.nivelCambio = nivelCambio;
+        this.nivelCambio = nivelCambio;
+        this.company = company;
     }
 
     public getID(): number {
@@ -53,14 +52,6 @@ export class Article {
 
     public getNivelCambio(): NivelCambio {
         return this.nivelCambio;
-    }
-
-    public getPlane(): string {
-        return this.plane;
-    }
-
-    public setPlane(path: string): void {
-        this.plane = path;
     }
 
     public getDescription(): string {

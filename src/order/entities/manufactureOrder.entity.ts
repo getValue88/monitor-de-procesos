@@ -1,15 +1,17 @@
 import { PrimaryGeneratedColumn, Column, Entity, OneToOne, JoinColumn, ManyToOne } from "typeorm";
 import { User } from '../../user/entities/user.entity';
-// import { Oc } from "./oc.entity";
 import { Company } from "../../company/entities/company.entity";
 
 @Entity()
-export class Of {
+export class manufactureOrder {
     @PrimaryGeneratedColumn()
     private id: number;
 
     @Column()
     private initialDate: Date;
+
+    @Column()
+    private deliveryDate: Date;
 
     @Column()
     private endDate: Date;
@@ -23,25 +25,28 @@ export class Of {
     })
     private company: Company;
 
-
-    // public constructor(admin: User, initialDate: Date, endDate: Date, items: Oc[]) {
-    public constructor(admin: User, initialDate: Date, endDate: Date) {
-        this.admin = admin;
+    public constructor(initialDate: Date, deliveryDate: Date, endDate: Date, admin: User, company: Company) {
         this.initialDate = initialDate;
+        this.deliveryDate = deliveryDate;
         this.endDate = endDate;
-        // this.items = items;
+        this.admin = admin;
+        this.company = company;
     }
 
     public getID(): number {
         return this.id;
     }
 
-    public getAdmin(): User {
-        return this.admin;
-    }
-
     public getInitialDate(): Date {
         return this.initialDate;
+    }
+
+    public getDeliveryDate(): Date {
+        return this.deliveryDate;
+    }
+
+    public setDeliveryDate(value: Date): void {
+        this.deliveryDate = value;
     }
 
     public getEndDate(): Date {
@@ -52,7 +57,8 @@ export class Of {
         this.endDate = value;
     }
 
-/*     public getItems(): Oc[] {
-        return this.items;
-    } */
+    public getAdmin(): User {
+        return this.admin;
+    }
+
 }

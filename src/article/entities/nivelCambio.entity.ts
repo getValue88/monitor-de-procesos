@@ -1,4 +1,4 @@
-import { Process } from '../../process/entities/process.entity';
+import { StandardProcess } from '../../process/entities/standardProcess.entity';
 import { PrimaryGeneratedColumn, Column, Entity, OneToOne, JoinColumn } from "typeorm";
 
 @Entity()
@@ -10,21 +10,21 @@ export class NivelCambio {
     private date: Date;
 
     @Column()
-    private plano: string;
+    private plan: string;
 
     @Column()
     private image?: string;
 
-    @OneToOne(type => Process, process => process.getID)
+    @OneToOne(type => StandardProcess, process => process.getID)
     @JoinColumn()
-    process: Process;
+    private process: StandardProcess;
 
     // public constructor(date: Date, process: Process, plano: string, image?: string) {
 
-    public constructor(date: Date, plano: string, image?: string) {
+    public constructor(date: Date, plan: string,process:StandardProcess, image?: string) {
         this.date = date;
-        // this.process = process;
-        this.plano = plano;
+        this.process = process;
+        this.plan = plan;
         this.image = image;
     }
 
@@ -36,12 +36,12 @@ export class NivelCambio {
         return this.date;
     }
 
-    public getProcess(): Process {
+    public getProcess(): StandardProcess {
         return this.process;
     }
 
     public getPlano(): string {
-        return this.plano;
+        return this.plan;
     }
 
     public setImage(src: string): void {
@@ -50,5 +50,13 @@ export class NivelCambio {
 
     public getImage(): string {
         return this.image;
+    }
+
+    public getPlan(): string {
+        return this.plan;
+    }
+
+    public setPlan(path: string): void {
+        this.plan = path;
     }
 }

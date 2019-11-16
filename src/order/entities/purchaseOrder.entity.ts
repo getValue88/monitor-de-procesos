@@ -2,10 +2,10 @@ import { PrimaryGeneratedColumn, Column, Entity, UpdateDateColumn, JoinColumn, O
 import { Article } from "../../article/entities/article.entity";
 import { User } from '../../user/entities/user.entity'
 import { Company } from "../../company/entities/company.entity";
-import { Of } from "./of.entity";
+import { manufactureOrder } from "./manufactureOrder.entity";
 
 @Entity()
-export class Oc {
+export class purchaseOrder {
     @PrimaryGeneratedColumn()
     private id: number;
 
@@ -15,15 +15,15 @@ export class Oc {
     @Column()
     private deliveryDate: Date;
 
+    @OneToOne(type => Article)
+    @JoinColumn()
+    private article: Article;
+    
     @Column()
     private quantity: number;
 
     @Column()
     private status: number;
-
-    @OneToOne(type => Article)
-    @JoinColumn()
-    private article: Article;
 
     @OneToOne(type => User)
     @JoinColumn()
@@ -34,31 +34,29 @@ export class Oc {
     })
     private company: Company;
 
-    @ManyToOne(type => Of, of => of.getID, {
-        cascade: true
+    @ManyToOne(type => manufactureOrder, mf => mf.getID, {
+        cascade: true, nullable: true
     })
-    private oF: Of;
+    private manufactureOrder: manufactureOrder;
 
-   
-   /*  
-    public constructor(article: Article, deliveryDate: Date, quantity: number, state: number, client: User) {
-        this.article = article; */
-
-    public constructor(deliveryDate: Date, quantity: number, status: number, client: User) {
+    public constructor(deliveryDate: Date, quantity: number, status: number, article: Article, client: User, company: Company, manufactureOrder: manufactureOrder) {
         this.deliveryDate = deliveryDate;
         this.quantity = quantity;
         this.status = status;
+        this.article = article;
         this.client = client;
+        this.company = company;
+        this.manufactureOrder = manufactureOrder;
     }
 
     public getID(): number {
         return this.id;
     }
-/* 
+
     public getArticle(): Article {
         return this.article;
     }
- */
+
     public getInitialDate(): Date {
         return this.initialDate;
     }
@@ -79,15 +77,27 @@ export class Oc {
         this.quantity = value;
     }
 
-    public getState(): number {
+    public getStatus(): number {
         return this.status;
     }
 
-    public setState(value: number): void {
+    public setStatus(value: number): void {
         this.status = value;
     }
 
     public getClient(): User {
         return this.client;
+    }
+
+    public getCompany(): Company {
+        return this.company;
+    }
+
+    public getManufactureOrder(): manufactureOrder {
+        return this.manufactureOrder;
+    }
+
+    public setManufactureOrder(manufactureOrder: manufactureOrder): void {
+        this.manufactureOrder = manufactureOrder;
     }
 }
