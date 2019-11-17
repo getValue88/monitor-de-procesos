@@ -3,7 +3,7 @@ import { User } from '../../user/entities/user.entity';
 import { Company } from "../../company/entities/company.entity";
 
 @Entity()
-export class manufactureOrder {
+export class ManufactureOrder {
     @PrimaryGeneratedColumn()
     private id: number;
 

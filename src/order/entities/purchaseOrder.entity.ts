@@ -2,10 +2,10 @@ import { PrimaryGeneratedColumn, Column, Entity, UpdateDateColumn, JoinColumn, O
 import { Article } from "../../article/entities/article.entity";
 import { User } from '../../user/entities/user.entity'
 import { Company } from "../../company/entities/company.entity";
-import { manufactureOrder } from "./manufactureOrder.entity";
+import { ManufactureOrder } from "./manufactureOrder.entity";
 
 @Entity()
-export class purchaseOrder {
+export class PurchaseOrder {
     @PrimaryGeneratedColumn()
     private id: number;
 
@@ -34,12 +34,13 @@ export class purchaseOrder {
     })
     private company: Company;
 
-    @ManyToOne(type => manufactureOrder, mf => mf.getID, {
+    @ManyToOne(type => ManufactureOrder, mf => mf.getID, {
         cascade: true, nullable: true
     })
-    private manufactureOrder: manufactureOrder;
+    private manufactureOrder: ManufactureOrder;
 
-    public constructor(deliveryDate: Date, quantity: number, status: number, article: Article, client: User, company: Company, manufactureOrder: manufactureOrder) {
+    public constructor(deliveryDate: Date, quantity: number, status: number, article: Article, client: User, company: Company, manufactureOrder: ManufactureOrder) {
+        this.initialDate = new Date();
         this.deliveryDate = deliveryDate;
         this.quantity = quantity;
         this.status = status;
@@ -93,11 +94,11 @@ export class purchaseOrder {
         return this.company;
     }
 
-    public getManufactureOrder(): manufactureOrder {
+    public getManufactureOrder(): ManufactureOrder {
         return this.manufactureOrder;
     }
 
-    public setManufactureOrder(manufactureOrder: manufactureOrder): void {
+    public setManufactureOrder(manufactureOrder: ManufactureOrder): void {
         this.manufactureOrder = manufactureOrder;
     }
 }

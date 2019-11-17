@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Article } from './entities/article.entity';
 import { Repository } from 'typeorm';
 import { NivelCambio } from './entities/nivelCambio.entity';
+import { ArticleDTO } from './dto/article.dto';
 
 @Injectable()
 export class ArticleService {
@@ -18,13 +19,13 @@ export class ArticleService {
             .where({ 'company': companyId }).getMany();
     }
 
-    public async createArticle(articleDto: import("./dto/article.dto").ArticleDTO): Promise<Boolean> {
+    public async createArticle(articleDto: ArticleDTO): Promise<Boolean> {
         try {
             let newArticle = new Article(
                 articleDto['name'],
                 articleDto['number'],
                 articleDto['description'],
-                null,
+                articleDto['nivelCambio'],
                 articleDto['company']
             );
             await this.articleRepository.save(newArticle);
@@ -40,7 +41,7 @@ export class ArticleService {
             let newNivelCambio = new NivelCambio(
                 nivelCambioDto['date'],
                 nivelCambioDto['plan'],
-                null,
+                nivelCambioDto['process'],
                 nivelCambioDto['image']
             );
             this.nivelCambioRepository.save(newNivelCambio);
