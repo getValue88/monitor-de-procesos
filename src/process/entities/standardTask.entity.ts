@@ -8,7 +8,7 @@ export class StandardTask {
     private id: number;
 
     @Column()
-    private name:string;
+    private name: string;
 
     @Column()
     private description: string;
@@ -19,10 +19,11 @@ export class StandardTask {
     @ManyToOne(type => StandardProcess, process => process.standardTasks)
     process: StandardProcess;
 
-    public constructor(name:string, description: string, requiredTime: number) {
+    public constructor(name: string, description: string, requiredTime: number, process: StandardProcess) {
         this.name = name;
         this.description = description;
         this.requiredTime = requiredTime;
+        this.process = process;
     }
 
     public getProcess(): StandardProcess {

@@ -5,5 +5,5 @@ export class StandardProcessDTO {
     readonly name: string;
     readonly description: string;
     readonly tasks: StandardTask[];
-    readonly requiredTime: Date;
+    readonly requiredTime: number;
 }

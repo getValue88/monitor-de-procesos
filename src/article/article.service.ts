@@ -12,12 +12,44 @@ export class ArticleService {
 
     public async getByCompany(companyId): Promise<Article[]> {
         return await this.articleRepository.createQueryBuilder('article')
-        .innerJoinAndSelect('article.nivelCambio', 'nivelCambio')
-        .innerJoinAndSelect('nivelCambio.process', 'standardProcess')
-        .innerJoinAndSelect('standardProcess.standardTasks', 'standardTasks')
-        .where({'company': companyId}).getMany();
+            .innerJoinAndSelect('article.nivelCambio', 'nivelCambio')
+            .innerJoinAndSelect('nivelCambio.process', 'standardProcess')
+            .innerJoinAndSelect('standardProcess.standardTasks', 'standardTasks')
+            .where({ 'company': companyId }).getMany();
     }
 
+    public async createArticle(articleDto: import("./dto/article.dto").ArticleDTO): Promise<Boolean> {
+        try {
+            let newArticle = new Article(
+                articleDto['name'],
+                articleDto['number'],
+                articleDto['description'],
+                null,
+                articleDto['company']
+            );
+            await this.articleRepository.save(newArticle);
+            return true;
+        }
+        catch {
+            return false;
+        }
+    }
+
+    public async createNivelCambio(nivelCambioDto): Promise<Boolean> {
+        try {
+            let newNivelCambio = new NivelCambio(
+                nivelCambioDto['date'],
+                nivelCambioDto['plan'],
+                null,
+                nivelCambioDto['image']
+            );
+            this.nivelCambioRepository.save(newNivelCambio);
+            return true;
+        }
+        catch {
+            return false;
+        }
+    }
 
     /* 
         public async getAll(): Promise<Article[]> {
