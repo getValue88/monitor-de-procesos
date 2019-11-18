@@ -18,7 +18,7 @@ export class ArticleService {
             .innerJoinAndSelect('standardProcess.standardTasks', 'standardTasks')
             .where({ 'company': companyId }).getMany();
     }
-
+/* 
     public async createArticle(articleDto: ArticleDTO): Promise<Boolean> {
         try {
             let newArticle = new Article(
@@ -35,7 +35,7 @@ export class ArticleService {
             return false;
         }
     }
-
+ */
     public async createNivelCambio(nivelCambioDto): Promise<Boolean> {
         try {
             let newNivelCambio = new NivelCambio(

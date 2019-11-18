@@ -5,10 +5,10 @@ import { ManufactureOrder } from "../entities/manufactureOrder.entity";
 
 export class PurchaseOrderDTO {
     readonly deliveryDate: Date;
-    readonly article: Article;
+    readonly article: number;
     readonly quantity: number;
     readonly status: number;
-    readonly client: User;
-    readonly company: Company;
-    readonly manufactureOrder?: ManufactureOrder;
+    readonly client: number;
+    readonly company: number;
+    readonly manufactureOrder?: number;
 }

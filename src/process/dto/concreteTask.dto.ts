@@ -8,7 +8,7 @@ export class ConcreteTaskDTO{
     readonly deliveryDate:Date;
     readonly endDate: Date;
     readonly status: number;
-    readonly standardTask: StandardTask;
-    readonly previousTask: ConcreteTask[];
-    readonly alarm: Alarm;
+    readonly standardTask: number;
+    readonly previousTask: number[];
+    readonly alarm: number;
 }

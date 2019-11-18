@@ -4,11 +4,11 @@ import { StandardProcess } from "../entities/standardProcess.entity";
 
 export class ConcreteProcessDTO {
     readonly id: number;
-    readonly standardProcess: StandardProcess;
+    readonly standardProcess: number;
     readonly status: number;
     readonly initialDate: Date;
     readonly deliveryDate: Date;
     readonly endDate: Date;
-    readonly responsible: User;
-    readonly alarm?: Alarm;
+    readonly responsible: number;
+    readonly alarm?: number;
 }

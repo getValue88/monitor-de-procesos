@@ -12,12 +12,12 @@ export class ArticleController {
     getByCompany(@Param('companyId') companyId: number) {
         return this.articleService.getByCompany(companyId);
     }
-
+/* 
     @Post()
     createArticle(@Body() articleDto: ArticleDTO) {
         return this.articleService.createArticle(articleDto);
     }
-
+ */
     @Post('nc')
     createNivelCambio(@Body() nivelCambioDto: NivelCambioDTO) {
         return this.articleService.createNivelCambio(nivelCambioDto);

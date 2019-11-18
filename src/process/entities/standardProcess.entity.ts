@@ -18,11 +18,10 @@ export class StandardProcess {
     @OneToMany(type => StandardTask, stdTask => stdTask.process)
     standardTasks: StandardTask[];
 
-    public constructor(name: string, description: string, requiredTime: number, standardTasks: StandardTask[]) {
+    public constructor(name: string, description: string, requiredTime: number) {
         this.name = name;
         this.description = description;
         this.requiredTime = requiredTime;
-        this.standardTasks = standardTasks;
     }
 
     public getID(): number {

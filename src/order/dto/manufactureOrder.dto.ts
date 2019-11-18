@@ -7,7 +7,7 @@ export class ManufactureOrderDTO {
     readonly initialDate: Date;
     readonly deliveryDate: Date;
     readonly endDate: Date;
-    readonly purchaseOrders: PurchaseOrder[];
-    readonly admin: User;
-    readonly company: Company;
+    readonly purchaseOrders: number[];
+    readonly admin: number;
+    readonly company: number;
 }
