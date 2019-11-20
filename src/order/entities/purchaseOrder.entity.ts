@@ -15,7 +15,7 @@ export class PurchaseOrder {
     @Column()
     private deliveryDate: Date;
 
-    @OneToOne(type => Article)
+    @ManyToOne(type => Article, article => article)
     @JoinColumn()
     private article: Article;
     
@@ -25,29 +25,28 @@ export class PurchaseOrder {
     @Column()
     private status: number;
 
-    @OneToOne(type => User)
-    @JoinColumn()
+    @ManyToOne(type => User, user => user)
     private client: User;
 
-    @ManyToOne(type => Company, company => company.getID, {
+    @ManyToOne(type => Company, company => company, {
         cascade: true
     })
     private company: Company;
 
-    @ManyToOne(type => ManufactureOrder, mf => mf.getID, {
+    @ManyToOne(type => ManufactureOrder, mf => mf, {
         cascade: true, nullable: true
     })
     private manufactureOrder: ManufactureOrder;
 
-    public constructor(deliveryDate: Date, quantity: number, status: number, article: Article, client: User, company: Company, manufactureOrder: ManufactureOrder) {
+    public constructor(deliveryDate: Date, quantity: number, article: Article, client: User, company: Company) {
         this.initialDate = new Date();
         this.deliveryDate = deliveryDate;
         this.quantity = quantity;
-        this.status = status;
+        this.status = 0;
         this.article = article;
         this.client = client;
         this.company = company;
-        this.manufactureOrder = manufactureOrder;
+        this.manufactureOrder = null;
     }
 
     public getID(): number {

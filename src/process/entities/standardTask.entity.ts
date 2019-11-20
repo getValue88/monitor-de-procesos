@@ -1,5 +1,4 @@
-import { PrimaryGeneratedColumn, Column, Entity, OneToOne, JoinColumn, ManyToOne } from "typeorm";
-import { Alarm } from "./alarm.entity";
+import { PrimaryGeneratedColumn, Column, Entity, ManyToOne } from "typeorm";
 import { StandardProcess } from "./standardProcess.entity";
 
 @Entity()
