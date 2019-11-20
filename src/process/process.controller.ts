@@ -1,7 +1,6 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { ProcessService } from './process.service';
-import { StandardTaskDTO } from './dto/standardTask.dto';
-import { StandardProcess } from './entities/standardProcess.entity';
+import { StandardTaskDTO } from './dto/standardTask.dto'
 import { StandardProcessDTO } from './dto/standardProcess.dto';
 
 @Controller('process')
