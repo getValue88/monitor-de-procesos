@@ -16,18 +16,37 @@ async function loguear() {
         "password": password,
     }
     // Para debug
-    alert("datos enviados: " + JSON.stringify(registro));
+    console.log("Datos enviados: " + JSON.stringify(registro));
     // Envío el registro a la API con el método POST
-    let response = await fetch("/login", {
+    let response = await fetch("user/login", {
         "method": "POST",
         "headers": {
             "Content-Type": "application/json"
         },
         "body": JSON.stringify(registro)
     });
-    // Evaluo la respuesta de la API
-    
+    let respuesta = await response.json();
     // Para debug
-    alert("Datos recibidos: " + JSON.stringify(response));
-
+    console.log("Datos recibidos: ", respuesta['response']);
+    
+    // Evaluo la respuesta de la API
+    if (respuesta['response']=="ok") {
+        switch (respuesta['privilege']) {
+            case 'admin': {
+                alert("Hola admin");
+                break;
+            }
+            case 'cliente': {
+                alert("Hola cliente");
+                break;
+            }
+            case 'supervisor': {
+                alert("Hola supervisor");
+                break;
+            }
+        }
+    }
+    else {
+        alert("Error. Usuario y/o contraseña incorrectos")
+    }    
 }
