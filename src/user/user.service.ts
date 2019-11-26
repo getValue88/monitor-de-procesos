@@ -17,13 +17,18 @@ export class UserService {
                     return {
                         'id': `${uFound.getID()}`,
                         'username': `${uFound.getName()}`,
-                        'privilege': `${uFound.getPrivilege()}`
+                        'privilege': `${uFound.getPrivilege()},
+                        'response': ok`
                     }
                 } else {
-                    return null;
+                    return {
+                        'response': null
+                    };
                 }
             } else {
-                return null;
+                return {
+                    'response': null
+                };
             }
         }
         catch {
