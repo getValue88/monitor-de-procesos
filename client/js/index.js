@@ -47,6 +47,8 @@ async function loguear() {
         }
     }
     else {
-        alert("Error. Usuario y/o contraseña incorrectos")
+        let loginFooter = document.querySelector('#login-footer');
+        loginFooter.innerHTML = "Usuario y/o Contraseña incorrectos."
+        loginFooter.classList.add('loginError');
     }    
 }

@@ -85,3 +85,7 @@ body {
 .modal-login .modal-footer a {
     color: #999;
 }
+
+.loginError{
+    color: red;
+}
