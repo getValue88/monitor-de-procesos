@@ -15,17 +15,20 @@ export class ProcessService {
     public async createStdTask(stdTask): Promise<boolean> {
         try {
             let process = stdTask[0]['process'];
+            let processTime;
             stdTask.forEach(async (task) => {
                 let newStdTask = new StandardTask(
                     task['name'],
                     task['description'],
                     task['requiredTime'],
+                    task['parentTask'],
                     process
                 );
-                // console.log(newStdTask);
                 await this.stdTaskRepository.save(newStdTask);
             });
-
+           /*  processTime = this.stdTaskRepository.createQueryBuilder('time')
+                .select('SUM(time.requiredTime)', 'sum')
+                .where({ id: process }) */
             return true;
         }
         catch{
@@ -37,8 +40,8 @@ export class ProcessService {
         try {
             let newStdPrc = new StandardProcess(
                 standardProcessDto['name'],
-                standardProcessDto['description'],
-                standardProcessDto['requiredTime'],
+                standardProcessDto['description']
+                // standardProcessDto['requiredTime'],
             );
 
             await this.stdProcessRepository.save(newStdPrc);
@@ -46,8 +49,8 @@ export class ProcessService {
                 .select(['process.id'])
                 .where({
                     'name': standardProcessDto['name'],
-                    'description': standardProcessDto['description'],
-                    'requiredTime': standardProcessDto['requiredTime']
+                    'description': standardProcessDto['description']
+                    // 'requiredTime': standardProcessDto['requiredTime']
                 }).getOne();
 
         }
