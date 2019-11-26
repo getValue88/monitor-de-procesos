@@ -17,8 +17,8 @@ export class UserService {
                     return {
                         'id': `${uFound.getID()}`,
                         'username': `${uFound.getName()}`,
-                        'privilege': `${uFound.getPrivilege()},
-                        'response': ok`
+                        'privilege': `${uFound.getPrivilege()}`,
+                        'response': 'ok'
                     }
                 } else {
                     return {

@@ -11,7 +11,7 @@ export class CompanyService {
         try {
             let toUpdateCompany = await this.companyRepository.findOne(companyId);
 
-            toUpdateCompany['name'] = companyDto['name'];
+            toUpdateCompany['rs'] = companyDto['rs'];
             toUpdateCompany['address'] = companyDto['address'];
             toUpdateCompany['impositiveCategory'] = companyDto['impositiveCategory'];
             toUpdateCompany['cuit'] = companyDto['cuit'];
