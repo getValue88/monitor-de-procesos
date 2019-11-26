@@ -12,17 +12,16 @@ export class StandardProcess {
     @Column()
     private description: string;
 
-    @Column()
+    @Column({ nullable: true })
     private requiredTime: number;
 
     @OneToMany(type => StandardTask, stdTask => stdTask.process)
     standardTasks: StandardTask[];
 
-    public constructor(name: string, description: string, requiredTime: number, standardTasks: StandardTask[]) {
+    public constructor(name: string, description: string) {
         this.name = name;
         this.description = description;
-        this.requiredTime = requiredTime;
-        this.standardTasks = standardTasks;
+        this.requiredTime = null;
     }
 
     public getID(): number {

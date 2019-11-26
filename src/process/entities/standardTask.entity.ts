@@ -1,5 +1,4 @@
-import { PrimaryGeneratedColumn, Column, Entity, OneToOne, JoinColumn, ManyToOne } from "typeorm";
-import { Alarm } from "./alarm.entity";
+import { PrimaryGeneratedColumn, Column, Entity, ManyToOne } from "typeorm";
 import { StandardProcess } from "./standardProcess.entity";
 
 @Entity()
@@ -16,13 +15,17 @@ export class StandardTask {
     @Column()
     private requiredTime: number;
 
+    @ManyToOne(type => StandardTask, task => task.parentTask)
+    private parentTask: StandardTask;
+
     @ManyToOne(type => StandardProcess, process => process.standardTasks)
     process: StandardProcess;
 
-    public constructor(name: string, description: string, requiredTime: number, process: StandardProcess) {
+    public constructor(name: string, description: string, requiredTime: number,parentTask:StandardTask, process: StandardProcess) {
         this.name = name;
         this.description = description;
         this.requiredTime = requiredTime;
+        this.parentTask = parentTask;
         this.process = process;
     }
 

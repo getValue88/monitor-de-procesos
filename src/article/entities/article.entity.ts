@@ -15,14 +15,14 @@ export class Article {
     @Column()
     private name: string;
 
-    @OneToOne(type => NivelCambio, nivelCambio => nivelCambio.getID, { nullable: true })
+    @OneToOne(type => NivelCambio, nivelCambio => nivelCambio)
     @JoinColumn()
     private nivelCambio: NivelCambio;
 
     @Column({ nullable: true })
     private description?: string;
 
-    @ManyToOne(type => Company, company => company.getID)
+    @ManyToOne(type => Company, company => company)
     private company: Company;
 
 

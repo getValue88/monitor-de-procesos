@@ -21,7 +21,7 @@ export class NivelCambio {
 
     // public constructor(date: Date, process: Process, plano: string, image?: string) {
 
-    public constructor(date: Date, plan: string,process:StandardProcess, image?: string) {
+    public constructor(date: Date, plan: string, process: StandardProcess, image?: string) {
         this.date = date;
         this.process = process;
         this.plan = plan;
@@ -38,6 +38,10 @@ export class NivelCambio {
 
     public getProcess(): StandardProcess {
         return this.process;
+    }
+
+    public setProcess(stdProcess: StandardProcess): void {
+        this.process = stdProcess;
     }
 
     public getPlano(): string {

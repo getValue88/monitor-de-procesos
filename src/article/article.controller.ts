@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { ArticleService } from './article.service';
-import { ArticleDTO } from './dto/article.dto';
 import { NivelCambioDTO } from './dto/nivelCambio.dto';
+import { ArticleDTO } from './dto/article.dto';
 
 @Controller('article')
 export class ArticleController {

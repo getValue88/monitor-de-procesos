@@ -1,5 +1,3 @@
-import { Entity } from "typeorm";
-
 export class CompanyDTO {
     readonly name: string;
     readonly rs: string;
