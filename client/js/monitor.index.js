@@ -1,4 +1,3 @@
-
 // Inicializo los botones y les agrego sus listeners de eventos
 
 // Botón Login
@@ -7,16 +6,17 @@ btnLogin.addEventListener("click", loguear);
 
 // Función que intenta loguear al usuario
 async function loguear() {
+    
     // Obtengo los datos del DOM
     let username = document.querySelector('#username').value;
     let password = document.querySelector('#password').value;
+    
     // Armo un registro con los datos obtenidos
     let registro = {
         "username": username,
         "password": password,
     }
-    // Para debug
-    console.log("Datos enviados: " + JSON.stringify(registro));
+    
     // Envío el registro a la API con el método POST
     let response = await fetch("user/login", {
         "method": "POST",
@@ -26,14 +26,17 @@ async function loguear() {
         "body": JSON.stringify(registro)
     });
     let respuesta = await response.json();
-    // Para debug
-    console.log("Datos recibidos: ", respuesta['response']);
     
     // Evaluo la respuesta de la API
     if (respuesta['response']=="ok") {
         switch (respuesta['privilege']) {
             case 'admin': {
                 alert("Hola admin");
+                // El tratamiento se realiza en una página auxiliar
+                let userId = respuesta['id'];
+                alert("Redirección a otra página pasando como argumento el Id de usuario");
+                alert("El id de usuario es " + userId);
+                location.href = `/html/monitor.admin.principal.html?userId=${userId}`;               
                 break;
             }
             case 'cliente': {
