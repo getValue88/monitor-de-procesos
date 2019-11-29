@@ -6,6 +6,7 @@ import { NivelCambio } from './entities/nivelCambio.entity';
 import { ArticleDTO } from './dto/article.dto';
 import { StandardProcess } from '../process/entities/standardProcess.entity';
 import { Company } from '../company/entities/company.entity';
+//create new branch
 
 @Injectable()
 export class ArticleService {
