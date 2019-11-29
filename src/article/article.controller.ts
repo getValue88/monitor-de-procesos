@@ -18,11 +18,6 @@ export class ArticleController {
         return this.articleService.createArticle(articleDto);
     }
 
-    @Post('nc')
-    createNivelCambio(@Body() nivelCambioDto: NivelCambioDTO) {
-        return this.articleService.createNivelCambio(nivelCambioDto);
-    }
-
     /* 
         @Get()
         getAll() {

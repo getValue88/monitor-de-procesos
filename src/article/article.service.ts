@@ -6,7 +6,7 @@ import { NivelCambio } from './entities/nivelCambio.entity';
 import { ArticleDTO } from './dto/article.dto';
 import { StandardProcess } from '../process/entities/standardProcess.entity';
 import { Company } from '../company/entities/company.entity';
-//create new branch
+
 
 @Injectable()
 export class ArticleService {
@@ -28,13 +28,12 @@ export class ArticleService {
 
     public async createArticle(articleDto: ArticleDTO): Promise<Article[]> {
         try {
-            let nvCambio = await this.nivelCambioRepository.findOne({ where: { id: articleDto['nivelCambio'] } });
             let comp = await this.companyRepository.findOne({ where: { id: articleDto['company'] } })
             let newArticle = new Article(
                 articleDto['name'],
                 articleDto['number'],
                 articleDto['description'],
-                nvCambio,
+                null,
                 comp
             );
             await this.articleRepository.save(newArticle);
@@ -44,66 +43,4 @@ export class ArticleService {
             return null;
         }
     }
-
-    public async createNivelCambio(nivelCambioDto): Promise<any> {
-        try {
-            let stdProcess = await this.standardProcessRepository.findOne({ where: { id: nivelCambioDto['standardProcess'] } })
-            let newNivelCambio = new NivelCambio(
-                nivelCambioDto['date'],
-                nivelCambioDto['plan'],
-                stdProcess,
-                nivelCambioDto['image']
-            );
-            await this.nivelCambioRepository.save(newNivelCambio);
-            return await this.nivelCambioRepository.createQueryBuilder('nc')
-                .select(['nc.id'])
-                .where({
-                    'date': nivelCambioDto['date'],
-                    'plan': nivelCambioDto['plan'],
-                    'image': nivelCambioDto['image'],
-                    'standardProcess': nivelCambioDto['standardProcess']
-                }).getOne();
-        }
-        catch {
-            return null;
-        }
-    }
-
-    /* 
-        public async getAll(): Promise<Article[]> {
-            try {
-                return await this.articleRepository.find();
-            }
-            catch{
-                return null;
-            }
-        }
-     */
-
-    /* 
-        public async getById(id: number): Promise<Article> {
-            return await this.articleRepository.findOne(id);
-        }
-     */
-
-    /* 
-        public async create(articleDto: ArticleDTO): Promise<Article[]> {
-            try {
-                let newArticle = new Article(articleDto.name, articleDto.description, articleDto.nivelCambio );
-                await this.articleRepository.save(newArticle);
-                return await this.getAll();
-            }
-            catch{
-                return null;
-            }
-        }
-    */
-
-    /* 
-        public async getNivelesCambio(): Promise<NivelCambio[]> {
-            return await this.nivelCambioRepository.find();
-        }
-    */
-
-
 }
