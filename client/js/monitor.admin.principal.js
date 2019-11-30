@@ -42,7 +42,7 @@ async function empresa(){
 }
 
 async function articulos(){
-    alert("Aquí la funcionalidad del boton #btnArticulos");
+    location.href = `/html/monitor.admin.principal.articulo.html?userId=${userId}`; 
 }
 
 async function ordenesCompra(){

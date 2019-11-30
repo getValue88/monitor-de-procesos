@@ -27,43 +27,34 @@ async function load(userId) {
     try {
         let response = await fetch(`../user/company/${userId}`);
         let respuesta = await response.json();
-       
+
         companyID = respuesta['id'];
-        // Se cargan los campos del formulario con los datos recibidos
-        document.querySelector('#rs').value = respuesta['rs'];
-        document.querySelector('#address').value = respuesta['address'];
-        document.querySelector('#impositiveCategory').value = respuesta['impositiveCategory'];
-        document.querySelector('#cuit').value = respuesta['cuit'];
-        document.querySelector('#logo').value = respuesta['logo'];
 
     } catch (err) {
         alert(err.message);
     }
-    
+
 }
 
-// Función que guarda los datos de la empresa
+// Función que guarda los datos del artículo
 async function guardar() {
-    
+
     // Obtengo los datos del DOM
-    let rs = document.querySelector('#rs').value;
-    let address = document.querySelector('#address').value;
-    let impositiveCategory = document.querySelector('#impositiveCategory').value;
-    let cuit = document.querySelector('#cuit').value;
-    let logo = document.querySelector('#logo').value;
+    let number = document.querySelector('#number').value;
+    let name = document.querySelector('#name').value;
+    let description = document.querySelector('#description').value;
 
     // Armo un registro con los datos obtenidos
     let registro = {
-        "rs": rs,
-        "address": address,
-        "impositiveCategory": impositiveCategory,
-        "cuit": cuit,
-        "logo": logo
+        "number": number,
+        "name": name,
+        "description": description,
+        "company": companyID
     }
 
-    // Solicito el PUT al servidor
-    let response = await fetch(`../company/${companyID}`, {
-        "method": "PUT",
+    // Solicito el POST al servidor
+    let response = await fetch(`../article/`, {
+        "method": "POST",
         "headers": {
             "Content-Type": "application/json"
         },
