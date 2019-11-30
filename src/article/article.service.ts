@@ -13,7 +13,6 @@ export class ArticleService {
 
     public constructor(
         @InjectRepository(Article) private readonly articleRepository: Repository<Article>,
-        @InjectRepository(NivelCambio) private readonly nivelCambioRepository: Repository<NivelCambio>,
         @InjectRepository(StandardProcess) private readonly standardProcessRepository: Repository<StandardProcess>,
         @InjectRepository(Company) private readonly companyRepository: Repository<Company>
     ) { }
@@ -26,7 +25,7 @@ export class ArticleService {
             .where({ 'company': companyId }).getMany();
     }
 
-    public async createArticle(articleDto: ArticleDTO): Promise<Article[]> {
+    public async createArticle(articleDto: ArticleDTO): Promise<any> {
         try {
             let comp = await this.companyRepository.findOne({ where: { id: articleDto['company'] } })
             let newArticle = new Article(
@@ -37,7 +36,7 @@ export class ArticleService {
                 comp
             );
             await this.articleRepository.save(newArticle);
-            return this.getByCompany(articleDto['company']);
+            return await this.standardProcessRepository.createQueryBuilder().select("max(id)", "processId").getRawOne();            
         }
         catch {
             return null;
