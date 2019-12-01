@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { NivelCambioDTO } from './dto/nivelCambio.dto';
 import { ArticleDTO } from './dto/article.dto';
@@ -16,6 +16,16 @@ export class ArticleController {
     @Post()
     createArticle(@Body() articleDto: ArticleDTO) {
         return this.articleService.createArticle(articleDto);
+    }
+
+    @Get('nc/:ncID')
+    getNivelCambio(@Param('ncID') ncID: number) {
+        return this.articleService.getNivelCambio(ncID);
+    }
+
+    @Put('nc/:ncID')
+    setNivelCambio(@Param('ncID') ncID, @Body() nivelCambioDto: NivelCambioDTO) {
+        return this.articleService.setNivelCambio(ncID, nivelCambioDto);
     }
 
     /* 

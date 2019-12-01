@@ -7,7 +7,6 @@ import { StandardProcess } from './entities/standardProcess.entity';
 
 @Injectable()
 export class ProcessService {
-
     public constructor(
         @InjectRepository(StandardTask) private readonly stdTaskRepository: Repository<StandardTask>,
         @InjectRepository(StandardProcess) private readonly stdProcessRepository: Repository<StandardProcess>) { }
@@ -54,4 +53,27 @@ export class ProcessService {
             return null;
         }
     }
+
+    public async getProcessById(processId: number): Promise<StandardProcess> {
+        try {
+            return await this.stdProcessRepository.findOne({ where: { id: processId } });
+        }
+        catch {
+            return null;
+        }
+    }
+/* 
+    public async updateStdProcess(id:any, standardProcessDto: StandardProcessDTO): Promise<Boolean> {
+        try {
+            let toUpdateProcess = await this.stdProcessRepository.findOne(id);
+            toUpdateProcess['name'] = standardProcessDto['name'];
+            toUpdateProcess['description'] = standardProcessDto['description'];
+            console.log(toUpdateProcess);
+            await this.stdProcessRepository.save(toUpdateProcess);
+            return true;
+        }
+        catch {
+            return false;
+        }
+    } */
 }
