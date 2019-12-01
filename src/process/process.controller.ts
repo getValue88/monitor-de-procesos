@@ -21,9 +21,9 @@ export class ProcessController {
     getProcessById(@Param('id') processId: number) {
         return this.processService.getProcessById(processId);
     }
-/* 
+
     @Put('stdPrcs/:id')
-    updateProcess(@Param('id') id, standardProcessDto: StandardProcessDTO) {
+    updateProcess(@Param('id') id: number, @Body() standardProcessDto: StandardProcessDTO) {
         return this.processService.updateStdProcess(id, standardProcessDto);
-    } */
+    }
 }

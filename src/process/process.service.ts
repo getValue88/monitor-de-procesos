@@ -62,8 +62,8 @@ export class ProcessService {
             return null;
         }
     }
-/* 
-    public async updateStdProcess(id:any, standardProcessDto: StandardProcessDTO): Promise<Boolean> {
+
+    public async updateStdProcess(id: number, standardProcessDto: StandardProcessDTO): Promise<Boolean> {
         try {
             let toUpdateProcess = await this.stdProcessRepository.findOne(id);
             toUpdateProcess['name'] = standardProcessDto['name'];
@@ -75,5 +75,5 @@ export class ProcessService {
         catch {
             return false;
         }
-    } */
+    }
 }
