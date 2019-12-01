@@ -15,17 +15,13 @@ export class StandardTask {
     @Column()
     private requiredTime: number;
 
-    @ManyToOne(type => StandardTask, task => task.parentTask)
-    private parentTask: StandardTask;
-
     @ManyToOne(type => StandardProcess, process => process.standardTasks)
     process: StandardProcess;
 
-    public constructor(name: string, description: string, requiredTime: number,parentTask:StandardTask, process: StandardProcess) {
+    public constructor(name: string, description: string, requiredTime: number, process: StandardProcess) {
         this.name = name;
         this.description = description;
         this.requiredTime = requiredTime;
-        this.parentTask = parentTask;
         this.process = process;
     }
 

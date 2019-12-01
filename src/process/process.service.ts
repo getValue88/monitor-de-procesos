@@ -15,20 +15,21 @@ export class ProcessService {
     public async createStdTask(stdTask): Promise<boolean> {
         try {
             let process = stdTask[0]['process'];
-            let processTime;
+            let processTime = 0;
             stdTask.forEach(async (task) => {
                 let newStdTask = new StandardTask(
                     task['name'],
                     task['description'],
                     task['requiredTime'],
-                    task['parentTask'],
                     process
                 );
+                processTime += parseInt(task['requiredTime']);
                 await this.stdTaskRepository.save(newStdTask);
             });
-           /*  processTime = this.stdTaskRepository.createQueryBuilder('time')
-                .select('SUM(time.requiredTime)', 'sum')
-                .where({ id: process }) */
+            await this.stdProcessRepository.update(process, { 'requiredTime': processTime });
+            /*  processTime = this.stdTaskRepository.createQueryBuilder('time')
+                 .select('SUM(time.requiredTime)', 'sum')
+                 .where({ id: process }) */
             return true;
         }
         catch{

@@ -13,7 +13,7 @@ export class StandardProcess {
     private description: string;
 
     @Column({ nullable: true })
-    private requiredTime: number;
+    public requiredTime: number;
 
     @OneToMany(type => StandardTask, stdTask => stdTask.process)
     standardTasks: StandardTask[];
