@@ -27,9 +27,6 @@ export class ProcessService {
                 await this.stdTaskRepository.save(newStdTask);
             });
             await this.stdProcessRepository.update(process, { 'requiredTime': processTime });
-            /*  processTime = this.stdTaskRepository.createQueryBuilder('time')
-                 .select('SUM(time.requiredTime)', 'sum')
-                 .where({ id: process }) */
             return true;
         }
         catch{
@@ -42,7 +39,6 @@ export class ProcessService {
             let newStdPrc = new StandardProcess(
                 standardProcessDto['name'],
                 standardProcessDto['description']
-                // standardProcessDto['requiredTime'],
             );
 
             await this.stdProcessRepository.save(newStdPrc);
@@ -51,7 +47,6 @@ export class ProcessService {
                 .where({
                     'name': standardProcessDto['name'],
                     'description': standardProcessDto['description']
-                    // 'requiredTime': standardProcessDto['requiredTime']
                 }).getOne();
 
         }

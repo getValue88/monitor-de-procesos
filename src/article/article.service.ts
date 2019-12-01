@@ -4,7 +4,6 @@ import { Article } from './entities/article.entity';
 import { Repository } from 'typeorm';
 import { NivelCambio } from './entities/nivelCambio.entity';
 import { ArticleDTO } from './dto/article.dto';
-import { StandardProcess } from '../process/entities/standardProcess.entity';
 import { Company } from '../company/entities/company.entity';
 
 
@@ -13,7 +12,7 @@ export class ArticleService {
 
     public constructor(
         @InjectRepository(Article) private readonly articleRepository: Repository<Article>,
-        @InjectRepository(StandardProcess) private readonly standardProcessRepository: Repository<StandardProcess>,
+        @InjectRepository(NivelCambio) private readonly nivelCambioRepository: Repository<NivelCambio>,
         @InjectRepository(Company) private readonly companyRepository: Repository<Company>
     ) { }
 
@@ -36,7 +35,7 @@ export class ArticleService {
                 comp
             );
             await this.articleRepository.save(newArticle);
-            return await this.standardProcessRepository.createQueryBuilder().select("max(id)", "processId").getRawOne();            
+            return await this.nivelCambioRepository.createQueryBuilder().select("max(id)", "ncID").getRawOne();            
         }
         catch {
             return null;
