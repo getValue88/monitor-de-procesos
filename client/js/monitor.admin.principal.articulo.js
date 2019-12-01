@@ -47,9 +47,7 @@ async function siguiente() {
         "company": companyId
     }
 
-    alert(registro.companyId);
-
-    // Solicito el POST al servidor
+        // Solicito el POST al servidor
     let response = await fetch(`../article/`, {
         "method": "POST",
         "headers": {

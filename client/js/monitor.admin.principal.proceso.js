@@ -10,26 +10,24 @@ for (let i = 0; i < paramarr.length; i++) {
 }
 
 let userId = params['userId'];
-let ncId = params['ncId'];
-let processId;
+let processId = params['processId'];
 
-alert(" userId: " + userId + " ncId: " + ncId);
+alert(" userId: " + userId + " processId: " + processId);
+
 // Botón Siguiente
 let btnSiguiente = document.querySelector("#btnSiguiente");
 btnSiguiente.addEventListener("click", siguiente);
 
 // Se llama a la función que actualiza el formulario
-load(ncId);
+load(processId);
 
-// Función que solicita al servidor los datos del nivel de cambio
+// Función que solicita al servidor los datos del proceso
 async function load(ncId) {
     try {
-        let response = await fetch(`../article/nc/${ncId}`);
+        let response = await fetch(`../article/process/${processId}`);
         let respuesta = await response.json();
-        document.querySelector('#date').value = respuesta['date'];
-        document.querySelector('#plan').value = respuesta['plan'];
-        document.querySelector('#image').value = respuesta['image'];
-        processId = respuesta['process']['id'];
+        document.querySelector('#date').value = respuesta['name'];
+        document.querySelector('#plan').value = respuesta['description'];
     } catch (err) {
         alert(err.message);
     }
@@ -39,19 +37,17 @@ async function load(ncId) {
 async function siguiente() {
 
     // Obtengo los datos del DOM
-    let date = document.querySelector('#date').value;
-    let plan = document.querySelector('#plan').value;
-    let image = document.querySelector('#image').value;
+    let name = document.querySelector('#name').value;
+    let description = document.querySelector('#description').value;
 
     // Armo un registro con los datos obtenidos
     let registro = {
-        "date": date,
-        "plan": plan,
-        "image": image
+        "name": name,
+        "description": description
     }
 
     // Solicito el PUT al servidor
-    let response = await fetch(`../article/nc/${ncId}`, {
+    let response = await fetch(`../article/process/${processId}`, {
         "method": "PUT",
         "headers": {
             "Content-Type": "application/json"
