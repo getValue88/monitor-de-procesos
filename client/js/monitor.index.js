@@ -31,11 +31,8 @@ async function loguear() {
     if (respuesta['response']=="ok") {
         switch (respuesta['privilege']) {
             case 'admin': {
-                alert("Hola admin");
                 // El tratamiento se realiza en una página auxiliar
                 let userId = respuesta['id'];
-                alert("Redirección a otra página pasando como argumento el Id de usuario");
-                alert("El id de usuario es " + userId);
                 location.href = `/html/monitor.admin.principal.html?userId=${userId}`;               
                 break;
             }

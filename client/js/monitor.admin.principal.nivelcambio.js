@@ -10,58 +10,55 @@ for (let i = 0; i < paramarr.length; i++) {
 }
 
 let userId = params['userId'];
-let companyId;
-let ncId;
+let ncId = params['ncId'];
 
+alert(" userId: " + userId + " ncId: " + ncId);
 // Botón Siguiente
 let btnSiguiente = document.querySelector("#btnSiguiente");
 btnSiguiente.addEventListener("click", siguiente);
 
 // Se llama a la función que actualiza el formulario
-load(userId);
+load(ncId);
 
-// Función que solicita al servidor los datos de la empresa
-async function load(userId) {
+// Función que solicita al servidor los datos del nivel de cambio
+async function load(ncId) {
     try {
-        let response = await fetch(`../user/company/${userId}`);
+        let response = await fetch(`../article/nc/${ncId}`);
         let respuesta = await response.json();
-        companyId = respuesta['id'];
+        document.querySelector('#date').value = respuesta['date'];
+        document.querySelector('#plan').value = respuesta['plan'];
+        document.querySelector('#image').value = respuesta['image'];
+
     } catch (err) {
         alert(err.message);
     }
 }
 
-// Función que guarda los datos del artículo y avanza al paso siguiente
+// Función que guarda los datos del nivel de cambio y avanza al paso siguiente
 async function siguiente() {
-    
+
     // Obtengo los datos del DOM
-    let number = document.querySelector('#number').value;
-    let name = document.querySelector('#name').value;
-    let description = document.querySelector('#description').value;
+    let date = document.querySelector('#date').value;
+    let plan = document.querySelector('#plan').value;
+    let image = document.querySelector('#image').value;
 
     // Armo un registro con los datos obtenidos
     let registro = {
-        "number": number,
-        "name": name,
-        "description": description,
-        "company": companyId
+        "date": date,
+        "plan": plan,
+        "image": image
     }
 
-    alert(registro.companyId);
-
-    // Solicito el POST al servidor
-    let response = await fetch(`../article/`, {
-        "method": "POST",
+    // Solicito el PUT al servidor
+    let response = await fetch(`../article/nc/${ncId}`, {
+        "method": "PUT",
         "headers": {
             "Content-Type": "application/json"
         },
         "body": JSON.stringify(registro)
     })
     
-    // Obtengo el Id de nivel de cambio
-    let respuesta = await response.json();
-    ncId = respuesta['ncID'];
-    
     // Avanza hacia el paso siguiente
-    location.href = `/html/monitor.admin.principal.nivelcambio.html?userId=${userId}&ncId=${ncId}`;
+    // location.href = `/html/monitor.admin.principal.Proceso.html?userId=${userId}&ncId=${ncId}`;
+    location.href = `/html/monitor.admin.principal.html?userId=${userId}`;
 }
