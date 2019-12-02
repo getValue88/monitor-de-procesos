@@ -19,17 +19,35 @@ export class OrderService {
     public async createPurchaseOrder(purchaseOrderDto: PurchaseOrderDTO): Promise<PurchaseOrder[]> {
         try {
             let client = await this.userRepository.findOne({ where: { id: purchaseOrderDto['client'] } });
-            let company = await this.companyRepository.findOne({ where: { id: purchaseOrderDto['company'] } });
-            let article = await this.articleRepository.findOne({ where: { id: purchaseOrderDto['article'] } });
+            let article = await this.articleRepository.findOne({ relations: ['company'], where: { id: purchaseOrderDto['article'] } });
             let newPurchaseOrder = new PurchaseOrder(
                 purchaseOrderDto['deliveryDate'],
                 purchaseOrderDto['quantity'],
                 article,
                 client,
-                company
+                article['company']
             );
+            console.log(newPurchaseOrder);
             await this.purchaseOrderRepository.save(newPurchaseOrder);
-            return this.purchaseOrderRepository.find({ relations: ['article'], where: { clientId: purchaseOrderDto['client'] } });
+            return this.getPurchaseOrdersByUserId(purchaseOrderDto['client']);
+        }
+        catch {
+            return null;
+        }
+    }
+
+    public async getPurchaseOrdersByCompanyId(companyId: number): Promise<PurchaseOrder[]> {
+        try {
+            return this.purchaseOrderRepository.find({ where: { 'companyId': companyId } });
+        }
+        catch {
+            return null;
+        }
+    }
+
+    public async getPurchaseOrdersByUserId(userId: number): Promise<PurchaseOrder[]> {
+        try {
+            return await this.purchaseOrderRepository.find({ relations: ['article'], where: { clientId: userId } });
         }
         catch {
             return null;

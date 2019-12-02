@@ -68,7 +68,6 @@ export class ProcessService {
             let toUpdateProcess = await this.stdProcessRepository.findOne(id);
             toUpdateProcess['name'] = standardProcessDto['name'];
             toUpdateProcess['description'] = standardProcessDto['description'];
-            console.log(toUpdateProcess);
             await this.stdProcessRepository.save(toUpdateProcess);
             return true;
         }
