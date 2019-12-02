@@ -3,5 +3,4 @@ export class PurchaseOrderDTO {
     readonly quantity: number;
     readonly article: number;
     readonly client: number;
-    readonly company: number;
 }
