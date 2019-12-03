@@ -27,7 +27,6 @@ export class OrderService {
                 client,
                 article['company']
             );
-            console.log(newPurchaseOrder);
             await this.purchaseOrderRepository.save(newPurchaseOrder);
             return this.getPurchaseOrdersByUserId(purchaseOrderDto['client']);
         }
@@ -38,7 +37,10 @@ export class OrderService {
 
     public async getPurchaseOrdersByCompanyId(companyId: number): Promise<PurchaseOrder[]> {
         try {
-            return this.purchaseOrderRepository.find({ where: { 'companyId': companyId } });
+            return await this.purchaseOrderRepository.createQueryBuilder('order')
+            .innerJoinAndSelect('order.company', 'comp')
+            .where('comp.id= :coId', { coId: companyId })
+            .getMany();
         }
         catch {
             return null;
