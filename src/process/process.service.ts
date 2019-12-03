@@ -12,15 +12,17 @@ export class ProcessService {
         @InjectRepository(StandardProcess) private readonly stdProcessRepository: Repository<StandardProcess>) { }
 
     public async createStdTask(stdTask): Promise<boolean> {
+
         try {
             let process = stdTask[0]['process'];
             let processTime = 0;
-            stdTask.forEach(async (task) => {
+            stdTask.forEach(async (task, i) => {
                 let newStdTask = new StandardTask(
                     task['name'],
                     task['description'],
                     task['requiredTime'],
-                    process
+                    process,
+                    i+1
                 );
                 processTime += parseInt(task['requiredTime']);
                 await this.stdTaskRepository.save(newStdTask);

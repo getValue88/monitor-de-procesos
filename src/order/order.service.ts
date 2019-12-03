@@ -38,9 +38,9 @@ export class OrderService {
     public async getPurchaseOrdersByCompanyId(companyId: number): Promise<PurchaseOrder[]> {
         try {
             return await this.purchaseOrderRepository.createQueryBuilder('order')
-            .innerJoinAndSelect('order.company', 'comp')
-            .where('comp.id= :coId', { coId: companyId })
-            .getMany();
+                .innerJoinAndSelect('order.company', 'comp')
+                .where('comp.id= :coId', { coId: companyId })
+                .getMany();
         }
         catch {
             return null;
@@ -49,7 +49,10 @@ export class OrderService {
 
     public async getPurchaseOrdersByUserId(userId: number): Promise<PurchaseOrder[]> {
         try {
-            return await this.purchaseOrderRepository.find({ relations: ['article'], where: { clientId: userId } });
+            return await this.purchaseOrderRepository.createQueryBuilder('order')
+                .innerJoinAndSelect('order.client', 'cli')
+                .where('cli.id= :cId', { cId: userId })
+                .getMany();
         }
         catch {
             return null;
