@@ -24,12 +24,12 @@ export class ConcreteProcess {
     @Column()
     private endDate: Date;
 
-    @OneToOne(type => User, user => user.getID)
+    @OneToOne(type => User, user => user)
     @JoinColumn()
     responsible: User;
 
     @JoinColumn()
-    @OneToOne(type => Alarm, alarm => alarm.getID)
+    @OneToOne(type => Alarm, alarm => alarm)
     alarm: Alarm;
 
     public constructor(standardProcess: StandardProcess, status: number, initialDate: Date, deliveryDate: Date, responsible: User, alarm: Alarm) {

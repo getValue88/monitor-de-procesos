@@ -12,46 +12,46 @@ export class ProcessService {
         @InjectRepository(StandardProcess) private readonly stdProcessRepository: Repository<StandardProcess>) { }
 
     public async createStdTask(stdTask): Promise<boolean> {
-
         try {
             let process = stdTask[0]['process'];
             let processTime = 0;
+
             stdTask.forEach(async (task, i) => {
                 let newStdTask = new StandardTask(
                     task['name'],
                     task['description'],
                     task['requiredTime'],
                     process,
-                    i+1
+                    i + 1
                 );
+
                 processTime += parseInt(task['requiredTime']);
                 await this.stdTaskRepository.save(newStdTask);
             });
+
             await this.stdProcessRepository.update(process, { 'requiredTime': processTime });
             return true;
-        }
-        catch{
+        } catch{
             return false;
         }
     }
 
     public async createStandardProcess(standardProcessDto: StandardProcessDTO): Promise<any> {
         try {
-            let newStdPrc = new StandardProcess(
+            await this.stdProcessRepository.save(new StandardProcess(
                 standardProcessDto['name'],
                 standardProcessDto['description']
-            );
+            ));
 
-            await this.stdProcessRepository.save(newStdPrc);
             return await this.stdProcessRepository.createQueryBuilder('process')
                 .select(['process.id'])
                 .where({
                     'name': standardProcessDto['name'],
                     'description': standardProcessDto['description']
-                }).getOne();
+                })
+                .getOne();
 
-        }
-        catch {
+        } catch {
             return null;
         }
     }
@@ -68,12 +68,14 @@ export class ProcessService {
     public async updateStdProcess(id: number, standardProcessDto: StandardProcessDTO): Promise<Boolean> {
         try {
             let toUpdateProcess = await this.stdProcessRepository.findOne(id);
+
             toUpdateProcess['name'] = standardProcessDto['name'];
             toUpdateProcess['description'] = standardProcessDto['description'];
             await this.stdProcessRepository.save(toUpdateProcess);
+
             return true;
-        }
-        catch {
+            
+        } catch {
             return false;
         }
     }

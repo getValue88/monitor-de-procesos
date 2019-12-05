@@ -12,6 +12,7 @@ export class UserService {
     public async login(uData: any): Promise<any> {
         try {
             let uFound = await this.userRepository.findOne({ where: { name: uData['username'] } });
+
             if (uFound) {
                 if (uData['password'] === uFound.getPassword()) {
                     return {
@@ -42,6 +43,19 @@ export class UserService {
             return user.getCompany();
         }
         catch {
+            return null;
+        }
+    }
+
+    public async getSupervisoresByCompanyId(companyId: number): Promise<User[]> {
+        try {
+            return await this.userRepository.createQueryBuilder('user')
+                .innerJoin('user.company', 'co')
+                .select(['user.id', 'user.name'])
+                .where({ privilege: 'supervisor' })
+                .andWhere('co.id= :coId', { coId: companyId })
+                .getMany();
+        } catch (error) {
             return null;
         }
     }

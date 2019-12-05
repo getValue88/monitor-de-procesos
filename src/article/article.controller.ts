@@ -27,18 +27,4 @@ export class ArticleController {
     setNivelCambio(@Param('ncID') ncID, @Body() nivelCambioDto: NivelCambioDTO) {
         return this.articleService.setNivelCambio(ncID, nivelCambioDto);
     }
-
-    /* 
-        @Get()
-        getAll() {
-            return this.articleService.getAll();
-        }
-    */
-
-    /* 
-        @Post()
-        create(@Body() articleDto: ArticleDTO) {
-            return this.articleService.create(articleDto);
-        }
-     */
 }

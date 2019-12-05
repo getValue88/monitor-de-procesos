@@ -21,37 +21,40 @@ export class ArticleService {
             .innerJoinAndSelect('article.nivelCambio', 'nivelCambio')
             /*             .innerJoinAndSelect('nivelCambio.process', 'standardProcess')
                         .innerJoinAndSelect('standardProcess.standardTasks', 'standardTasks') */
-            .where({ 'company': companyId }).getMany();
+            .where({ 'company': companyId })
+            .getMany();
     }
 
     public async createArticle(articleDto: ArticleDTO): Promise<any> {
         try {
-            let comp = await this.companyRepository.findOne({ where: { id: articleDto['company'] } })
-            let newArticle = new Article(
+            let comp = await this.companyRepository.findOne({ where: { id: articleDto['company'] } });
+
+            await this.articleRepository.save(new Article(
                 articleDto['name'],
                 articleDto['number'],
                 articleDto['description'],
                 null,
                 comp
-            );
-            await this.articleRepository.save(newArticle);
-            return await this.nivelCambioRepository.createQueryBuilder().select("max(id)", "ncID").getRawOne();
-        }
-        catch {
+            ));
+
+            return await this.nivelCambioRepository.createQueryBuilder()
+                .select("max(id)", "ncID")
+                .getRawOne();
+
+        } catch {
             return null;
         }
     }
 
     public async getNivelCambio(ncID: number): Promise<NivelCambio> {
         try {
-            // console.log(await this.nivelCambioRepository.findOne({ relations: ['process'], where: { id: ncID } }));
             return await this.nivelCambioRepository.createQueryBuilder('nc')
                 .select(['nc', 'process.id'])
                 .where('nc.id =:id', { id: ncID })
                 .innerJoin('nc.process', 'process')
                 .getOne();
-        }
-        catch {
+
+        } catch {
             return null;
         }
     }
@@ -59,14 +62,15 @@ export class ArticleService {
     public async setNivelCambio(ncID: any, nivelCambioDto: NivelCambioDTO): Promise<Boolean> {
         try {
             let toUpdateNC = await this.nivelCambioRepository.findOne(ncID);
-            
+
             toUpdateNC['date'] = nivelCambioDto['date'];
             toUpdateNC['plan'] = nivelCambioDto['plan'];
             toUpdateNC['image'] = nivelCambioDto['image'];
             await this.nivelCambioRepository.save(toUpdateNC);
+
             return true;
-        }
-        catch {
+
+        } catch {
             return false;
         }
     }

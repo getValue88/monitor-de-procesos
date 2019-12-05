@@ -31,7 +31,7 @@ export class ConcreteTask {
     @JoinColumn()
     private alarm: Alarm;
     
-        @ManyToOne(type => ConcreteProcess, process => process.getID)
+        @ManyToOne(type => ConcreteProcess, process => process)
         private concreteProcess: ConcreteProcess;
     
     public constructor(initialDate: Date, deliveryDate: Date, endDate: Date, status: number, standardTask: StandardTask, concreteProcess: ConcreteProcess, previousTask?: ConcreteTask[]) {

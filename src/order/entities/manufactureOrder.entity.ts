@@ -1,6 +1,7 @@
 import { PrimaryGeneratedColumn, Column, Entity, OneToOne, JoinColumn, ManyToOne } from "typeorm";
 import { User } from '../../user/entities/user.entity';
 import { Company } from "../../company/entities/company.entity";
+import { PurchaseOrder } from "./purchaseOrder.entity";
 
 @Entity()
 export class ManufactureOrder {
@@ -13,23 +14,28 @@ export class ManufactureOrder {
     @Column()
     private deliveryDate: Date;
 
-    @Column()
+    @Column({ nullable: true })
     private endDate: Date;
+
+    @OneToOne(type => PurchaseOrder)
+    @JoinColumn()
+    private purchaseOrder: PurchaseOrder;
 
     @OneToOne(type => User)
     @JoinColumn()
-    private admin: User;
+    private supervisor: User;
 
-    @ManyToOne(type => Company, company => company.getID, {
+    @ManyToOne(type => Company, company => company, {
         cascade: true
     })
     private company: Company;
 
-    public constructor(initialDate: Date, deliveryDate: Date, endDate: Date, admin: User, company: Company) {
+    public constructor(initialDate: Date, deliveryDate: Date, purchaseOrder: PurchaseOrder, supervisor: User, company: Company) {
         this.initialDate = initialDate;
         this.deliveryDate = deliveryDate;
-        this.endDate = endDate;
-        this.admin = admin;
+        this.endDate = null;
+        this.purchaseOrder = purchaseOrder;
+        this.supervisor = supervisor;
         this.company = company;
     }
 
@@ -57,8 +63,7 @@ export class ManufactureOrder {
         this.endDate = value;
     }
 
-    public getAdmin(): User {
-        return this.admin;
+    public getSupervisor(): User {
+        return this.supervisor;
     }
-
 }

@@ -16,10 +16,11 @@ export class CompanyService {
             toUpdateCompany['impositiveCategory'] = companyDto['impositiveCategory'];
             toUpdateCompany['cuit'] = companyDto['cuit'];
             toUpdateCompany['logo'] = companyDto['logo'];
+        
             await this.companyRepository.save(toUpdateCompany);
             return true;
-        }
-        catch {
+
+        } catch {
             return false;
         }
     }

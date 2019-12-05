@@ -8,8 +8,15 @@ import { StandardProcess } from '../process/entities/standardProcess.entity';
 import { Company } from '../company/entities/company.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Article,NivelCambio,StandardProcess,Company])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Article,
+      NivelCambio,
+      StandardProcess,
+      Company
+    ])
+  ],
   controllers: [ArticleController],
   providers: [ArticleService]
 })
-export class ArticleModule {}
+export class ArticleModule { }

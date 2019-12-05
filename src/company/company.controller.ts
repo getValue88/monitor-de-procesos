@@ -6,10 +6,8 @@ import { CompanyDTO } from './dto/company.dto';
 export class CompanyController {
     public constructor(private readonly companyService: CompanyService) { }
 
-
     @Put(':companyId')
     public updateCompany(@Param('companyId') companyId, @Body() companyDto: CompanyDTO) {
         return this.companyService.updateCompany(companyId,companyDto);
     }
-
 }

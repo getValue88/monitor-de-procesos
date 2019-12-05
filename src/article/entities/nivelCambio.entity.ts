@@ -15,11 +15,9 @@ export class NivelCambio {
     @Column()
     private image?: string;
 
-    @OneToOne(type => StandardProcess, process => process.getID)
+    @OneToOne(type => StandardProcess, process => process)
     @JoinColumn()
     private process: StandardProcess;
-
-    // public constructor(date: Date, process: Process, plano: string, image?: string) {
 
     public constructor(date: Date, plan: string, process: StandardProcess, image?: string) {
         this.date = date;

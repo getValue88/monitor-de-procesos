@@ -18,7 +18,7 @@ export class User {
     @Column({ nullable: true })
     private observations?: string;
 
-    @ManyToOne(type => Company, company => company.getID, { nullable: true })
+    @ManyToOne(type => Company, company => company, { nullable: true })
     private company: Company;
 
     public constructor(id: number, name: string, password: string, privilege: string, observations?: string) {
