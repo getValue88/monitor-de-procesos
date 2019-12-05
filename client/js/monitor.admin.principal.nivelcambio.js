@@ -1,6 +1,8 @@
-// Leo el parámetro que viene del llamado de la página anterior (monitor.index.js)
-// para obtener el userId del admin de la empresa a modificar.
-// Se accede a la misma con la sentencia: params['userId']
+// Leo el parámetro que viene del llamado de la página anterior
+// para obtener el userId del admin y el ncId del cambio.
+// Se accede a los mismos con las sentencias: 
+// params['userId'] y params['ncId']
+
 let paramstr = window.location.search.substr(1);
 let paramarr = paramstr.split("&");
 let params = [];
@@ -8,12 +10,13 @@ for (let i = 0; i < paramarr.length; i++) {
     let tmparr = paramarr[i].split("=");
     params[tmparr[0]] = tmparr[1];
 }
-
 let userId = params['userId'];
 let ncId = params['ncId'];
 let processId;
 
-alert(" userId: " + userId + " ncId: " + ncId);
+// Debug
+console.log(" userId: " + userId + " ncId: " + ncId);
+
 // Botón Siguiente
 let btnSiguiente = document.querySelector("#btnSiguiente");
 btnSiguiente.addEventListener("click", siguiente);

@@ -1,6 +1,7 @@
-// Leo el parámetro que viene del llamado de la página anterior (monitor.index.js)
-// para obtener el userId del admin de la empresa a modificar.
-// Se accede a la misma con la sentencia: params['userId']
+// Leo el parámetro que viene del llamado de la página anterior
+// para obtener el userId del admin.
+// Se accede al mismo con la sentencia: params['userId']
+
 let paramstr = window.location.search.substr(1);
 let paramarr = paramstr.split("&");
 let params = [];
@@ -47,7 +48,7 @@ async function siguiente() {
         "company": companyId
     }
 
-        // Solicito el POST al servidor
+    // Solicito el POST al servidor
     let response = await fetch(`../article/`, {
         "method": "POST",
         "headers": {

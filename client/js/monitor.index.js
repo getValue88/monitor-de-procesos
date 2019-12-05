@@ -31,18 +31,28 @@ async function loguear() {
     if (respuesta['response']=="ok") {
         switch (respuesta['privilege']) {
             case 'admin': {
+                // Debug
+                console.log("Hola admin");
+                console.log("UserId: " + respuesta['id']);
                 // El tratamiento se realiza en una página auxiliar
                 let userId = respuesta['id'];
                 location.href = `/html/monitor.admin.principal.html?userId=${userId}`;               
                 break;
             }
             case 'cliente': {
-                alert("Hola cliente");
+                // Debug
+                console.log("Hola cliente");
+                console.log("UserId: " + respuesta['id']);
+                // El tratamiento se realiza en una página auxiliar
+                let userId = respuesta['id'];
+                location.href = `/html/monitor.cliente.principal.html?userId=${userId}`;               
                 break;
             }
             case 'supervisor': {
-                alert("Hola supervisor");
-                break;
+                // Debug
+                console.log("Hola supervisor");
+                console.log("UserId: " + respuesta['id']);
+                // El tratamiento se realiza en una página auxiliar
             }
         }
     }

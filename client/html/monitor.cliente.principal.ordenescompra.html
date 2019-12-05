@@ -6,11 +6,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Monitor de Procesos - Admin - Principal - Tareas</title>
+    <title>Monitor de Procesos - Cliente - Ordenes de Compra</title>
 
     <!-- CSS References-->
     <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/monitor.admin.principal.tareas.css">
+    <link rel="stylesheet" href="../css/monitor.cliente.principal.ordenescompra.css">
 </head>
 
 <body>
@@ -18,7 +18,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <!-- <a class="navbar-brand">Monitor de Procesos - Inicio</a> -->
         <span class="navbar-text">
-            Monitor de Procesos -> Principal -> Articulo -> Nivel de Cambio -> Proceso -> Tareas
+            Monitor de Procesos -> Principal -> Ordenes de Compra
         </span>
         <button class="navbar-toggler" type="button btn-lg" data-toggle="collapse" data-target="#navbarText"
             aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,51 +34,47 @@
         </div>
     </nav>
 
-    <br>
-    <h3>Paso 4 de 4 - Cargar Tareas</h3> <br>
-
     <div class="row">
-        <!-- Contenedor para el form de carga de una tarea -->
-        <div class="col-6 border">
+        <!-- Contenedor para el form de carga de una orden de compra -->
+        <div class="col-4">
             <div class="row">
-                <label for="name" class="col-4 col-form-label mt-xs-1 mt-md-2">Nombre</label>
+                <label for="article" class="col-4 col-form-label mt-xs-1 mt-md-2">articuloId</label>
                 <div class="col-8 mt-md-2">
-                    <input type="text" class="form-control" id="name">
+                    <input type="number" class="form-control" id="article">
                 </div>
-                <label for="description" class="col-4 col-form-label mt-xs-1 mt-md-2">Descripción</label>
+                <label for="quantity" class="col-4 col-form-label mt-xs-1 mt-md-2">Cantidad</label>
                 <div class="col-8 mt-xs-1 mt-md-2">
-                    <input type="text" class="form-control" id="description">
+                    <input type="number" class="form-control" id="quantity">
                 </div>
-                <label for="requiredTime" class="col-4 col-form-label mt-xs-1 mt-md-2">Tiempo requerido</label>
+                <label for="deliveryDate" class="col-4 col-form-label mt-xs-1 mt-md-2">Fecha de entrega</label>
                 <div class="col-8 mt-xs-1 mt-md-2">
-                    <input type="number" class="form-control" id="requiredTime">
+                    <input type="date" class="form-control" id="deliveryDate">
                 </div>
             </div>
             <br>
             <div class="row">
                 <div class="col-2">
-
                 </div>
                 <div class="col-4">
                     <button type="button" class="btn btn-success btn-block" id="btnGuardar">Guardar</button>
                 </div>
                 <div class="col-4">
-                    <button type="button" class="btn btn-success btn-block" id="btnTerminar">Terminar</button>
+                    <button type="button" class="btn btn-success btn-block" id="btnVolver">Volver</button>
                 </div>
-                
             </div>
-            <br>
         </div>
 
-        <!-- Contenedor para la tabla de las tareas que se van cargando-->
-        <div class="col-6 border">
+        <!-- Contenedor para la tabla de las ordenes de compra que se van cargando-->
+        <div class="col-8">
             <table id="tbl" class="border">
                 <tr>
-                    <th>Nombre</th>
-                    <th>Descripción</th>
-                    <th>Tiempo Requerido</th>
+                    <th>Fecha de Alta</th>
+                    <th>Artículo</th>
+                    <th>Cantidad</th>
+                    <th>Fecha de Entrega</th>
+                    <th>Estado</th>
                 </tr>
-                <tbody id="tblTareas">
+                <tbody id="tblOrdenesCompra">
                     <!-- El cuerpo de la tabla se redefine por javascript -->
                 </tbody>
             </table>
@@ -90,7 +86,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
-    <script src="../js/monitor.admin.principal.tareas.js"></script>
+    <script src="../js/monitor.cliente.principal.ordenescompra.js"></script>
 
 </body>
 

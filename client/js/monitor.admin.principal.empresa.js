@@ -1,6 +1,8 @@
-// Leo el parámetro que viene del llamado de la página anterior (monitor.index.js)
-// para obtener el userId del admin de la empresa a modificar.
-// Se accede a la misma con la sentencia: params['userId']
+// Leo el parámetro que viene del llamado de la página anterior
+// para obtener el userId del admin.
+// Se accede al mismo con las sentencia: 
+// params['userId']
+
 let paramstr = window.location.search.substr(1);
 let paramarr = paramstr.split("&");
 let params = [];
@@ -25,10 +27,12 @@ load(userId);
 // Función que solicita al servidor los datos de la empresa
 async function load(userId) {
     try {
+        // Busco la compania que corresponde al userId
         let response = await fetch(`../user/company/${userId}`);
         let respuesta = await response.json();
-       
         companyID = respuesta['id'];
+        // Debug
+        console.log("userId: " + userId + " companyId: " + companyID);
         // Se cargan los campos del formulario con los datos recibidos
         document.querySelector('#rs').value = respuesta['rs'];
         document.querySelector('#address').value = respuesta['address'];
