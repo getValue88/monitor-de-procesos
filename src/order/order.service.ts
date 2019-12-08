@@ -46,6 +46,7 @@ export class OrderService {
         try {
             return await this.purchaseOrderRepository.createQueryBuilder('order')
                 .innerJoinAndSelect('order.company', 'comp')
+                .innerJoinAndSelect('order.article', 'article')
                 .where('comp.id= :coId', { coId: companyId })
                 .getMany();
 
@@ -58,6 +59,7 @@ export class OrderService {
         try {
             return await this.purchaseOrderRepository.createQueryBuilder('order')
                 .innerJoinAndSelect('order.client', 'cli')
+                .innerJoinAndSelect('order.article', 'article')
                 .where('cli.id= :cId', { cId: clientId })
                 .getMany();
 
