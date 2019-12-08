@@ -65,20 +65,33 @@ export class OrderService {
 
     public async createManufactureOrder(manufactureOrderDto: ManufactureOrderDTO): Promise<Boolean> {
         try {
-            const purchaseOrder = await this.purchaseOrderRepository.findOne({ where: { id: manufactureOrderDto['purchaseOrder'] } });
+
+            // const purchaseOrder = await this.purchaseOrderRepository.findOne({ where: { id: manufactureOrderDto['purchaseOrder'] } });
+            const purchaseOrder = await this.purchaseOrderRepository.createQueryBuilder('purchase')
+                .innerJoinAndSelect('purchase.article', 'article')
+                .innerJoinAndSelect('article.nivelCambio', 'nivelCambio')
+                .innerJoinAndSelect('nivelCambio.process', 'process')
+                .where('purchase.id= :pId', { pId: manufactureOrderDto['purchaseOrder'] })
+                .getOne();
+
             const supervisor = await this.userRepository.findOne({ where: { id: manufactureOrderDto['supervisor'] } });
             const company = await this.companyRepository.findOne({ where: { id: manufactureOrderDto['company'] } });
 
+            const manufactureTime = purchaseOrder.getArticle().getNivelCambio().getProcess().getRequiredTime() * purchaseOrder.getQuantity();
+
+            let deliveryDate = new Date(manufactureOrderDto['initialDate'])
+            deliveryDate.setMinutes(deliveryDate.getMinutes() + manufactureTime);
+
             await this.manufactureOrderRepository.save(new ManufactureOrder(
                 manufactureOrderDto['initialDate'],
-                manufactureOrderDto['deliveryDate'],
+                deliveryDate,
                 purchaseOrder,
                 supervisor,
                 company
             ));
             return true
 
-        } catch {
+        } catch (error) {
             return false;
         }
     }

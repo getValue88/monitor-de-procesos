@@ -21,8 +21,7 @@ export class ManufactureOrder {
     @JoinColumn()
     private purchaseOrder: PurchaseOrder;
 
-    @OneToOne(type => User)
-    @JoinColumn()
+    @ManyToOne(type => User, supervisor => supervisor)
     private supervisor: User;
 
     @ManyToOne(type => Company, company => company, {
