@@ -31,4 +31,9 @@ export class OrderController {
     getManufactureOrderByCompanyId(@Param('companyId') companyId: number) {
         return this.orderService.getManufactureOrderByCompanyId(companyId);
     }
+
+    @Get('manufacture/supervisor/:supervisorId')
+    getManufactureOrderBySupervisorId(@Param('supervisorId') supervisorId: number) {
+        return this.orderService.getManufactureOrderBySupervisorId(supervisorId);
+    }
 }

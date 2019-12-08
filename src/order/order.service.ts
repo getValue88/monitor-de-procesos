@@ -11,6 +11,7 @@ import { ManufactureOrder } from './entities/manufactureOrder.entity';
 
 @Injectable()
 export class OrderService {
+    
     public constructor(
         @InjectRepository(PurchaseOrder) private readonly purchaseOrderRepository: Repository<PurchaseOrder>,
         @InjectRepository(User) private readonly userRepository: Repository<User>,
@@ -95,5 +96,18 @@ export class OrderService {
         } catch (error) {
             return null;
         }
+    }
+
+    public async getManufactureOrderBySupervisorId(supervisorId: number): Promise<ManufactureOrder[]> {
+        try {
+            return await this.manufactureOrderRepository.createQueryBuilder('order')
+                .innerJoinAndSelect('order.company', 'comp')
+                .innerJoinAndSelect('order.purchaseOrder', 'po')
+                .innerJoinAndSelect('order.supervisor', 'sup')
+                .where('sup.id = :supId', { supId: supervisorId})
+                .getMany();
+        } catch (error) {
+            return null;
+        }      
     }
 }
