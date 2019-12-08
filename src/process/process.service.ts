@@ -94,11 +94,15 @@ export class ProcessService {
         );
         await this.concreteProcessRepository.save(newConcreteProcess);
 
-        const savedProcessId = await this.concreteProcessRepository.createQueryBuilder('process').select("max(id)", 'concretePrcsId').getRawOne();
-        this.createConcreteTasks(savedProcessId, newConcreteProcess);
+    
+        this.createConcreteTasks(newConcreteProcess);
     }
 
-    private createConcreteTasks(concreteProcessId: number, concreteProcess: ConcreteProcess) {
-        console.log(concreteProcess.getID(),concreteProcessId);
+    private async createConcreteTasks(concreteProcess: ConcreteProcess) {
+        const stdTask = await this.stdTaskRepository.createQueryBuilder('stdTask')
+            .innerJoin('stdTask.process', 'process')
+            .where('process.id = :prId', { prId: concreteProcess.getStandardProcess().getID()})
+            .getMany();
+        console.log(stdTask); 
     }
 }
