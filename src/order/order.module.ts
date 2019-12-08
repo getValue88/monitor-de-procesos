@@ -7,6 +7,7 @@ import { Company } from '../company/entities/company.entity';
 import { Article } from '../article/entities/article.entity';
 import { User } from '../user/entities/user.entity';
 import { ManufactureOrder } from './entities/manufactureOrder.entity';
+import { ProcessModule } from '../process/process.module';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { ManufactureOrder } from './entities/manufactureOrder.entity';
       User,
       Company,
       Article
-    ])
+    ]),
+    ProcessModule
   ],
   controllers: [OrderController],
   providers: [OrderService]

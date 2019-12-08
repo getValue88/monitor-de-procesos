@@ -4,12 +4,15 @@ import { StandardTask } from './entities/standardTask.entity';
 import { Repository } from 'typeorm';
 import { StandardProcessDTO } from './dto/standardProcess.dto';
 import { StandardProcess } from './entities/standardProcess.entity';
+import { ManufactureOrder } from '../order/entities/manufactureOrder.entity';
+import { ConcreteProcess } from './entities/concreteProcess.entity';
 
 @Injectable()
 export class ProcessService {
     public constructor(
         @InjectRepository(StandardTask) private readonly stdTaskRepository: Repository<StandardTask>,
-        @InjectRepository(StandardProcess) private readonly stdProcessRepository: Repository<StandardProcess>) { }
+        @InjectRepository(StandardProcess) private readonly stdProcessRepository: Repository<StandardProcess>,
+        @InjectRepository(ConcreteProcess) private readonly concreteProcessRepository: Repository<ConcreteProcess>) { }
 
     public async createStdTask(stdTask): Promise<boolean> {
         try {
@@ -74,9 +77,28 @@ export class ProcessService {
             await this.stdProcessRepository.save(toUpdateProcess);
 
             return true;
-            
+
         } catch {
             return false;
         }
+    }
+
+    public async createConcreteProcess(manufactureOrder: ManufactureOrder): Promise<void> {
+        const newConcreteProcess = new ConcreteProcess(
+            manufactureOrder.getPurchaseOrder().getArticle().getNivelCambio().getProcess(),
+            0,
+            manufactureOrder.getInitialDate(),
+            manufactureOrder.getDeliveryDate(),
+            manufactureOrder.getSupervisor(),
+            null
+        );
+        await this.concreteProcessRepository.save(newConcreteProcess);
+
+        const savedProcessId = await this.concreteProcessRepository.createQueryBuilder('process').select("max(id)", 'concretePrcsId').getRawOne();
+        this.createConcreteTasks(savedProcessId, newConcreteProcess);
+    }
+
+    private createConcreteTasks(concreteProcessId: number, concreteProcess: ConcreteProcess) {
+        console.log(concreteProcess.getID(),concreteProcessId);
     }
 }

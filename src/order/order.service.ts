@@ -8,16 +8,18 @@ import { Company } from '../company/entities/company.entity';
 import { Article } from '../article/entities/article.entity';
 import { ManufactureOrderDTO } from './dto/manufactureOrder.dto';
 import { ManufactureOrder } from './entities/manufactureOrder.entity';
+import { ProcessService } from '../process/process.service';
 
 @Injectable()
 export class OrderService {
-    
+
     public constructor(
         @InjectRepository(PurchaseOrder) private readonly purchaseOrderRepository: Repository<PurchaseOrder>,
         @InjectRepository(User) private readonly userRepository: Repository<User>,
         @InjectRepository(Article) private readonly articleRepository: Repository<Article>,
         @InjectRepository(Company) private readonly companyRepository: Repository<Company>,
-        @InjectRepository(ManufactureOrder) private readonly manufactureOrderRepository: Repository<ManufactureOrder>
+        @InjectRepository(ManufactureOrder) private readonly manufactureOrderRepository: Repository<ManufactureOrder>,
+        private readonly processService: ProcessService
     ) { }
 
     public async createPurchaseOrder(purchaseOrderDto: PurchaseOrderDTO): Promise<PurchaseOrder[]> {
@@ -33,7 +35,7 @@ export class OrderService {
                 article['company']
             ));
 
-            return this.getPurchaseOrdersByUserId(purchaseOrderDto['client']);
+            return this.getPurchaseOrdersByClientId(purchaseOrderDto['client']);
 
         } catch {
             return null;
@@ -52,11 +54,11 @@ export class OrderService {
         }
     }
 
-    public async getPurchaseOrdersByUserId(userId: number): Promise<PurchaseOrder[]> {
+    public async getPurchaseOrdersByClientId(clientId: number): Promise<PurchaseOrder[]> {
         try {
             return await this.purchaseOrderRepository.createQueryBuilder('order')
                 .innerJoinAndSelect('order.client', 'cli')
-                .where('cli.id= :cId', { cId: userId })
+                .where('cli.id= :cId', { cId: clientId })
                 .getMany();
 
         } catch {
@@ -66,8 +68,6 @@ export class OrderService {
 
     public async createManufactureOrder(manufactureOrderDto: ManufactureOrderDTO): Promise<Boolean> {
         try {
-
-            // const purchaseOrder = await this.purchaseOrderRepository.findOne({ where: { id: manufactureOrderDto['purchaseOrder'] } });
             const purchaseOrder = await this.purchaseOrderRepository.createQueryBuilder('purchase')
                 .innerJoinAndSelect('purchase.article', 'article')
                 .innerJoinAndSelect('article.nivelCambio', 'nivelCambio')
@@ -83,13 +83,17 @@ export class OrderService {
             let deliveryDate = new Date(manufactureOrderDto['initialDate'])
             deliveryDate.setMinutes(deliveryDate.getMinutes() + manufactureTime);
 
-            await this.manufactureOrderRepository.save(new ManufactureOrder(
+
+            let manufatureOrder = new ManufactureOrder(
                 manufactureOrderDto['initialDate'],
                 deliveryDate,
                 purchaseOrder,
                 supervisor,
                 company
-            ));
+            );
+
+            await this.manufactureOrderRepository.save(manufatureOrder);
+            this.processService.createConcreteProcess(manufatureOrder);
             return true
 
         } catch (error) {
@@ -102,7 +106,7 @@ export class OrderService {
             return await this.manufactureOrderRepository.createQueryBuilder('order')
                 .innerJoinAndSelect('order.company', 'comp')
                 .innerJoinAndSelect('order.purchaseOrder', 'po')
-                .innerJoinAndSelect('order.supervisor', 'sup')
+                .innerJoin('order.supervisor', 'sup')
                 .where('comp.id= :coId', { coId: companyId })
                 .getMany();
 
@@ -116,11 +120,12 @@ export class OrderService {
             return await this.manufactureOrderRepository.createQueryBuilder('order')
                 .innerJoinAndSelect('order.company', 'comp')
                 .innerJoinAndSelect('order.purchaseOrder', 'po')
-                .innerJoinAndSelect('order.supervisor', 'sup')
-                .where('sup.id = :supId', { supId: supervisorId})
+                .innerJoin('order.supervisor', 'sup')
+                .where('sup.id = :supId', { supId: supervisorId })
                 .getMany();
+
         } catch (error) {
             return null;
-        }      
+        }
     }
 }

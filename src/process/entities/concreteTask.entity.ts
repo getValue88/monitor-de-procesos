@@ -24,24 +24,24 @@ export class ConcreteTask {
     @JoinColumn()
     private standardTask: StandardTask;
 
-    @OneToMany(type => ConcreteTask, tasks => tasks.previousTask)
-    private previousTask: ConcreteTask[] = [];
+    @Column()
+    private code: number;
 
     @OneToOne(type => Alarm)
     @JoinColumn()
     private alarm: Alarm;
-    
-        @ManyToOne(type => ConcreteProcess, process => process)
-        private concreteProcess: ConcreteProcess;
-    
-    public constructor(initialDate: Date, deliveryDate: Date, endDate: Date, status: number, standardTask: StandardTask, concreteProcess: ConcreteProcess, previousTask?: ConcreteTask[]) {
+
+    @ManyToOne(type => ConcreteProcess, process => process)
+    private concreteProcess: ConcreteProcess;
+
+    public constructor(initialDate: Date, deliveryDate: Date, standardTask: StandardTask, concreteProcess: ConcreteProcess, code: number) {
         this.initialDate = initialDate;
         this.deliveryDate = deliveryDate;
-        this.endDate = endDate;
-        this.status = status;
+        this.endDate = null;
+        this.status = 0;
         this.standardTask = standardTask;
         this.concreteProcess = concreteProcess;
-        this.previousTask = previousTask;
+        this.code = code;
     }
 
     public getID(): number {
@@ -88,14 +88,6 @@ export class ConcreteTask {
         this.standardTask = standardTask;
     }
 
-    public getPreviousTask(): ConcreteTask[] {
-        return this.previousTask;
-    }
-
-    public setPreviousTask(previousTask: ConcreteTask[]): void {
-        this.previousTask = previousTask;
-    }
-
     public getAlarm(): Alarm {
         return this.alarm;
     }
@@ -103,12 +95,4 @@ export class ConcreteTask {
     public setAlarm(alarm: Alarm): void {
         this.alarm = alarm;
     }
-    /* 
-        public getConcreteProcess(): ConcreteProcess {
-            return this.concreteProcess;
-        }
-    
-        public setConcreteProcess(concreteProcess: ConcreteProcess): void {
-            this.concreteProcess = concreteProcess;
-        } */
 }

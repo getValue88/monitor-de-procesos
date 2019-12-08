@@ -17,9 +17,9 @@ export class OrderController {
         return this.orderService.getPurchaseOrdersByCompanyId(companyId);
     }
 
-    @Get('purchase/client/:userId')
-    getPurchaseOrdersByUserId(@Param('userId') userId: number) {
-        return this.orderService.getPurchaseOrdersByUserId(userId);
+    @Get('purchase/client/:clientId')
+    getPurchaseOrdersByUserId(@Param('clientId') userId: number) {
+        return this.orderService.getPurchaseOrdersByClientId(userId);
     }
 
     @Post('manufacture')

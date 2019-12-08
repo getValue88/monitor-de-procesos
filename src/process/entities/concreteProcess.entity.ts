@@ -1,4 +1,4 @@
-import { PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, Entity } from "typeorm";
+import { PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, Entity, ManyToOne } from "typeorm";
 import { User } from "../../user/entities/user.entity";
 import { Alarm } from "./alarm.entity";
 import { StandardProcess } from "./standardProcess.entity";
@@ -8,8 +8,7 @@ export class ConcreteProcess {
     @PrimaryGeneratedColumn()
     private id: number;
 
-    @OneToOne(type => StandardProcess)
-    @JoinColumn()
+    @ManyToOne(type => StandardProcess, standardProcess => standardProcess)
     private standardProcess: StandardProcess;
 
     @Column()
@@ -21,23 +20,23 @@ export class ConcreteProcess {
     @Column()
     private deliveryDate: Date;
 
-    @Column()
+    @Column({ nullable: true })
     private endDate: Date;
 
-    @OneToOne(type => User, user => user)
-    @JoinColumn()
-    responsible: User;
+    @ManyToOne(type => User, supervisor => supervisor)
+    supervisor: User;
 
     @JoinColumn()
     @OneToOne(type => Alarm, alarm => alarm)
     alarm: Alarm;
 
-    public constructor(standardProcess: StandardProcess, status: number, initialDate: Date, deliveryDate: Date, responsible: User, alarm: Alarm) {
+    public constructor(standardProcess: StandardProcess, status: number, initialDate: Date, deliveryDate: Date, supervisor: User, alarm: Alarm) {
         this.standardProcess = standardProcess;
         this.status = status;
         this.initialDate = initialDate;
         this.deliveryDate = deliveryDate;
-        this.responsible = responsible;
+        this.supervisor = supervisor;
+        this.endDate = null;
         this.alarm = alarm;
     }
 
@@ -82,12 +81,12 @@ export class ConcreteProcess {
         this.endDate = value;
     }
 
-    public getResponsible(): User {
-        return this.responsible;
+    public getSupervisor(): User {
+        return this.supervisor;
     }
 
-    public setResponsible(user: User) {
-        this.responsible = user;
+    public setSupervisor(user: User) {
+        this.supervisor = user;
     }
 
     public getAlarm(): Alarm {

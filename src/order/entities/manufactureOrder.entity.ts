@@ -65,4 +65,12 @@ export class ManufactureOrder {
     public getSupervisor(): User {
         return this.supervisor;
     }
+
+    public getPurchaseOrder(): PurchaseOrder {
+        return this.purchaseOrder;
+    }
+
+    public setPurchaseOrder(purchaseOrder: PurchaseOrder): void {
+        this.purchaseOrder = purchaseOrder;
+    }
 }
