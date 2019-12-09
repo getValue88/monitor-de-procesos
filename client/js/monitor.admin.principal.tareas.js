@@ -45,19 +45,35 @@ async function guardar() {
     let description = document.querySelector('#description').value;
     let requiredTime = document.querySelector('#requiredTime').value;
 
-    // Armo un registro con los datos obtenidos
-    let registro = {
-        "name": name,
-        "description": description,
-        "requiredTime": requiredTime,
-        "process": processId
-    }
+    // Asumo que el dato requiredTime que venga va a ser incorrecto
+    document.querySelector('#requiredTime').classList.add('is-invalid');
+    
+    // Valido que requiredTime sea un número y mayor a cero
+    if (!isNaN(requiredTime) && (requiredTime > 0)) {
 
-    // Guardo la tarea en el arreglo de tareas
-    tareas.push(registro);
+        // Como requiredTime es correcto le elimino la clase de dato inválido
+        document.querySelector('#requiredTime').classList.remove('is-invalid');
+        
+        // Armo un registro con los datos obtenidos
+        let registro = {
+            "name": name,
+            "description": description,
+            "requiredTime": requiredTime,
+            "process": processId
+        }
 
-    // Actualizo la tabla
-    mostrarTablaTareas(tareas);
+        // Guardo la tarea en el arreglo de tareas
+        tareas.push(registro);
+
+        // Actualizo la tabla
+        mostrarTablaTareas(tareas);
+
+        // Vacio los datos de los inputs
+        document.querySelector('#name').value="";
+        document.querySelector('#description').value="";
+        document.querySelector('#requiredTime').value="";
+
+    } 
 }
 
 async function terminar() {
