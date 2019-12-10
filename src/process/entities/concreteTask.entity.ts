@@ -8,13 +8,13 @@ export class ConcreteTask {
     @PrimaryGeneratedColumn()
     private id: number;
 
-    @Column()
+    @Column({nullable : true})
     private initialDate: Date;
 
-    @Column()
+    @Column({nullable : true})
     private deliveryDate: Date;
 
-    @Column()
+    @Column({nullable : true})
     private endDate: Date;
 
     @Column()

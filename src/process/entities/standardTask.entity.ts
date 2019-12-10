@@ -68,4 +68,13 @@ export class StandardTask {
     public setId(id: number): void {
         this.id = id;
     }
+
+    public getCode(): number {
+        return this.code;
+    }
+
+    public setCode(code: number): void {
+        this.code = code;
+    }
+
 }

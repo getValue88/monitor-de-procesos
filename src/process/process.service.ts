@@ -6,13 +6,15 @@ import { StandardProcessDTO } from './dto/standardProcess.dto';
 import { StandardProcess } from './entities/standardProcess.entity';
 import { ManufactureOrder } from '../order/entities/manufactureOrder.entity';
 import { ConcreteProcess } from './entities/concreteProcess.entity';
+import { ConcreteTask } from './entities/concreteTask.entity';
 
 @Injectable()
 export class ProcessService {
     public constructor(
         @InjectRepository(StandardTask) private readonly stdTaskRepository: Repository<StandardTask>,
         @InjectRepository(StandardProcess) private readonly stdProcessRepository: Repository<StandardProcess>,
-        @InjectRepository(ConcreteProcess) private readonly concreteProcessRepository: Repository<ConcreteProcess>) { }
+        @InjectRepository(ConcreteProcess) private readonly concreteProcessRepository: Repository<ConcreteProcess>,
+        @InjectRepository(ConcreteTask) private readonly concreteTaskRepository: Repository<ConcreteTask>) { }
 
     public async createStdTask(stdTask): Promise<boolean> {
         try {
@@ -94,15 +96,30 @@ export class ProcessService {
         );
         await this.concreteProcessRepository.save(newConcreteProcess);
 
-    
         this.createConcreteTasks(newConcreteProcess);
     }
 
     private async createConcreteTasks(concreteProcess: ConcreteProcess) {
-        const stdTask = await this.stdTaskRepository.createQueryBuilder('stdTask')
-            .innerJoin('stdTask.process', 'process')
-            .where('process.id = :prId', { prId: concreteProcess.getStandardProcess().getID()})
-            .getMany();
-        console.log(stdTask); 
+        try {
+            const stdTask = await this.stdTaskRepository.createQueryBuilder('stdTask')
+                .innerJoin('stdTask.process', 'process')
+                .where('process.id = :prId', { prId: concreteProcess.getStandardProcess().getID() })
+                .getMany();
+
+            stdTask.forEach(async (task, i) => {
+                let initialDate: Date = null;
+                let deliveryDate: Date = null;
+                if (i == 0) {
+                    initialDate = concreteProcess.getInitialDate();
+                    deliveryDate = initialDate;
+                    deliveryDate.setMinutes(deliveryDate.getMinutes() + task.getRequiredTime());
+                }
+                console.log(new ConcreteTask(initialDate, deliveryDate, task, concreteProcess, task.getCode()));
+                await this.concreteTaskRepository.save(new ConcreteTask(initialDate, deliveryDate, task, concreteProcess, task.getCode()));
+            });
+        }
+        catch (error) {
+            console.log(error);
+        }
     }
 }
