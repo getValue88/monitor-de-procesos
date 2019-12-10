@@ -44,7 +44,7 @@ async function articulos(){
 }
 
 async function ordenesCompra(){
-    alert("Aquí la funcionalidad del boton #btnOrdenesCompra");
+    location.href = `/html/monitor.admin.principal.ordenescompra.html?userId=${userId}`; 
 }
 
 async function ordenesFabricacion(){
