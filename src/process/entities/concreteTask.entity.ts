@@ -20,8 +20,7 @@ export class ConcreteTask {
     @Column()
     private status: number;
 
-    @OneToOne(type => StandardTask)
-    @JoinColumn()
+    @ManyToOne(type => StandardTask, standardTask => standardTask)
     private standardTask: StandardTask;
 
     @Column()

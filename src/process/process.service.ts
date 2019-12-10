@@ -110,8 +110,8 @@ export class ProcessService {
                 let initialDate: Date = null;
                 let deliveryDate: Date = null;
                 if (i == 0) {
-                    initialDate = concreteProcess.getInitialDate();
-                    deliveryDate = initialDate;
+                    initialDate = new Date(concreteProcess.getInitialDate());
+                    deliveryDate = new Date(initialDate);
                     deliveryDate.setMinutes(deliveryDate.getMinutes() + task.getRequiredTime());
                 }
                 console.log(new ConcreteTask(initialDate, deliveryDate, task, concreteProcess, task.getCode()));
