@@ -26,4 +26,9 @@ export class ProcessController {
     updateProcess(@Param('id') id: number, @Body() standardProcessDto: StandardProcessDTO) {
         return this.processService.updateStdProcess(id, standardProcessDto);
     }
+
+    @Put('concreteTask/:id')
+    updateConcreteTaskStatus(@Param('id') id: number, @Body() status: number) {
+        return this.processService.updateConcreteTaskStatus(id, status);
+    }
 }

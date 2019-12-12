@@ -94,4 +94,21 @@ export class ConcreteTask {
     public setAlarm(alarm: Alarm): void {
         this.alarm = alarm;
     }
+
+    
+    public getConcreteProcess(): ConcreteProcess {
+        return this.concreteProcess;
+    }
+
+    public setConcreteProcess(concreteProcess: ConcreteProcess): void {
+        this.concreteProcess = concreteProcess;
+    }
+
+    public getCode(): number {
+        return this.code;
+    }
+
+    public setCode(code: number): void {
+        this.code = code;
+    }
 }

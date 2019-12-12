@@ -99,7 +99,7 @@ export class ProcessService {
         this.createConcreteTasks(newConcreteProcess);
     }
 
-    private async createConcreteTasks(concreteProcess: ConcreteProcess) {
+    private async createConcreteTasks(concreteProcess: ConcreteProcess): Promise<Boolean> {
         try {
             const stdTask = await this.stdTaskRepository.createQueryBuilder('stdTask')
                 .innerJoin('stdTask.process', 'process')
@@ -114,12 +114,56 @@ export class ProcessService {
                     deliveryDate = new Date(initialDate);
                     deliveryDate.setMinutes(deliveryDate.getMinutes() + task.getRequiredTime());
                 }
-                console.log(new ConcreteTask(initialDate, deliveryDate, task, concreteProcess, task.getCode()));
-                await this.concreteTaskRepository.save(new ConcreteTask(initialDate, deliveryDate, task, concreteProcess, task.getCode()));
+
+                await this.concreteTaskRepository.save(new ConcreteTask(
+                    initialDate,
+                    deliveryDate,
+                    task,
+                    concreteProcess,
+                    task.getCode()
+                ));
             });
+            return true;
         }
         catch (error) {
             console.log(error);
+            return false;
+        }
+    }
+
+    public async updateConcreteTaskStatus(id: number, status: number): Promise<boolean> {
+        try {
+            let concreteTask = await this.concreteTaskRepository.findOne({ relations: ['concreteProcess'], where: { id: id } });
+
+            concreteTask.setStatus(status['status']);
+
+            if (status['status'] >= 100) {
+                concreteTask.setEndDate(new Date());
+
+                let nextTask = await this.concreteTaskRepository.createQueryBuilder('nxtTask')
+                    .where({ concreteProcess: concreteTask.getConcreteProcess() })
+                    .andWhere('code =:cd', { cd: concreteTask.getCode() + 1 })
+                    .getOne();
+
+                if (nextTask) {
+                    const stdTask = await this.stdTaskRepository.findOne(nextTask.getStandardTask());
+                    const requiredTime = stdTask.getRequiredTime();
+                    let deliveryDate;
+
+                    nextTask.setInitialDate(new Date());
+                    deliveryDate = new Date(nextTask.getInitialDate());
+                    deliveryDate.setMinutes(deliveryDate.getMinutes() + requiredTime)
+                    nextTask.setDeliveryDate(deliveryDate);
+
+                    await this.concreteTaskRepository.save(nextTask);
+                }
+            }
+            await this.concreteTaskRepository.save(concreteTask);
+            return true;
+
+        } catch (error) {
+            console.log(error);
+            return false;
         }
     }
 }
