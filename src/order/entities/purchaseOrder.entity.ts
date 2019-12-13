@@ -33,11 +33,6 @@ export class PurchaseOrder {
     })
     private company: Company;
 
-    @ManyToOne(type => ManufactureOrder, mf => mf, {
-        cascade: true, nullable: true
-    })
-    private manufactureOrder: ManufactureOrder;
-
     public constructor(deliveryDate: Date, quantity: number, article: Article, client: User, company: Company) {
         this.initialDate = new Date();
         this.deliveryDate = deliveryDate;
@@ -46,7 +41,6 @@ export class PurchaseOrder {
         this.article = article;
         this.client = client;
         this.company = company;
-        this.manufactureOrder = null;
     }
 
     public getID(): number {
@@ -91,13 +85,5 @@ export class PurchaseOrder {
 
     public getCompany(): Company {
         return this.company;
-    }
-
-    public getManufactureOrder(): ManufactureOrder {
-        return this.manufactureOrder;
-    }
-
-    public setManufactureOrder(manufactureOrder: ManufactureOrder): void {
-        this.manufactureOrder = manufactureOrder;
     }
 }

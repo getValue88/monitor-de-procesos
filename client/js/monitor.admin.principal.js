@@ -23,10 +23,6 @@ btnArticulos.addEventListener("click", articulos);
 let btnOrdenesCompra = document.querySelector("#btnOrdenesCompra");
 btnOrdenesCompra.addEventListener("click", ordenesCompra);
 
-// Botón OrdenesFabricacion
-let btnOrdenesFabricacion = document.querySelector("#btnOrdenesFabricacion");
-btnOrdenesFabricacion.addEventListener("click", ordenesFabricacion);
-
 // Botón MonitoreoProceso
 let btnMonitoreoProcesos = document.querySelector("#btnMonitoreoProcesos");
 btnMonitoreoProcesos.addEventListener("click", monitoreoProcesos);
