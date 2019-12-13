@@ -85,6 +85,7 @@ export class OrderService {
             let deliveryDate = new Date(manufactureOrderDto['initialDate'])
             deliveryDate.setMinutes(deliveryDate.getMinutes() + manufactureTime);
 
+            purchaseOrder.setStatus(1);
 
             let manufatureOrder = new ManufactureOrder(
                 manufactureOrderDto['initialDate'],
@@ -95,6 +96,7 @@ export class OrderService {
             );
 
             await this.manufactureOrderRepository.save(manufatureOrder);
+            await this.purchaseOrderRepository.save(purchaseOrder);
             this.processService.createConcreteProcess(manufatureOrder);
             return true
 
