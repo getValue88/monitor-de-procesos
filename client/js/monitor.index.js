@@ -53,6 +53,10 @@ async function loguear() {
                 console.log("Hola supervisor");
                 console.log("UserId: " + respuesta['id']);
                 // El tratamiento se realiza en una página auxiliar
+                let userId = respuesta['id'];
+                location.href = `/html/monitor.supervisor.principal.html?userId=${userId}`;               
+                break;
+
             }
         }
     }
