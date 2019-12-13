@@ -133,9 +133,12 @@ export class ProcessService {
 
     public async updateConcreteTaskStatus(id: number, status: number): Promise<boolean> {
         try {
-            let concreteTask = await this.concreteTaskRepository.findOne({ relations: ['concreteProcess'], where: { id: id } });
+            let concreteTask = await this.concreteTaskRepository.findOne({ relations: ['concreteProcess','standardTask'], where: { id: id } });
 
-            concreteTask.setStatus(status['status']);
+            concreteTask.setStatus(status['status']); 
+            
+            this.updateConcreteProcessStatus(concreteTask.getConcreteProcess(),concreteTask.getStandardTask().getRequiredTime());
+            //console.log(concreteTask.getStandardTask().getRequiredTime());
 
             if (status['status'] >= 100) {
                 concreteTask.setEndDate(new Date());
@@ -161,6 +164,20 @@ export class ProcessService {
             await this.concreteTaskRepository.save(concreteTask);
             return true;
 
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
+    private async updateConcreteProcessStatus (concreteProcess: ConcreteProcess, taskTime: number) : Promise<Boolean> {
+        try {
+            let concreteProcessTime = concreteProcess.getDeliveryDate().getTime() - concreteProcess.getInitialDate().getTime();
+            concreteProcessTime = concreteProcessTime/(1000*60);
+            console.log(concreteProcessTime);    
+            concreteProcess.setStatus(Math.round((taskTime*100)/concreteProcessTime));
+            await this.concreteProcessRepository.save(concreteProcess);
+            return true;
         } catch (error) {
             console.log(error);
             return false;
