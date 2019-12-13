@@ -19,6 +19,10 @@ let ordenesCompra = [];
 // Se llama a la función que actualiza el formulario
 mostrarTablaOrdenes();
 
+// Botón Volver
+let btnVolver = document.querySelector("#btnVolver");
+btnVolver.addEventListener("click", volver);
+
 // Función que muestra por pantalla la tabla de ordenes de compra
 async function mostrarTablaOrdenes() {
 
@@ -47,7 +51,13 @@ async function mostrarTablaOrdenes() {
     // Se genera contenido html
     let table = document.getElementById("tbl");
     let html = "";
+    let estadoDisabled;
+    
     for (let r of ordenesCompra) {
+        estadoDisabled = "";
+        if (r.status != 0) {
+            estadoDisabled = ` disabled `;
+        }
         html += `
             <tr>
                 <td>${formatearFecha(r.initialDate)}</td>
@@ -55,7 +65,7 @@ async function mostrarTablaOrdenes() {
                 <td>${r.quantity}</td>
                 <td>${formatearFecha(r.deliveryDate)}</td>
                 <td>${statusOC(r.status)}</td>
-                <td><button id="${r.id}" class="btn-asignarOF btn btn-secondary btn-block">Asignar OF</button></td>
+                <td><button type="button" id="${r.id}" class="btn-asignarOF btn btn-secondary btn-block" ${estadoDisabled}>Asignar OF</button></td>
             </tr>    
         `;
     }
@@ -74,26 +84,10 @@ async function mostrarTablaOrdenes() {
 
 }
 
-// Función que asigna una orden de fabricación segun el número de OC (id) indicado como parámetro
-async function asignarOF(id) {
-
-    // Armo un registro con los datos obtenidos
-    let registro = {
-        "initialDate": "2019-2-5 12:00:00",
-        "purchaseOrder": id,
-        "company": 1,
-        "supervisor": 2    
-    }
-
-    // Solicito el POST al servidor
-    let response = await fetch(`../order/manufacture/`, {
-        "method": "POST",
-        "headers": {
-            "Content-Type": "application/json"
-        },
-        "body": JSON.stringify(registro)
-    });
-
+// Función que asigna una orden de fabricación segun el número de orden de compra
+// (purchaceOrderId) indicado como parámetro
+async function asignarOF(purchaceOrderId) {
+    location.href = `/html/monitor.admin.principal.ordenfabricacion.html?userId=${userId}&purchaceOrderId=${purchaceOrderId}`;
 }
 
 // Función que dada una fecha completa de sistema (de tipo string) la formatea a 'dd-mm-aaaa'
@@ -140,4 +134,8 @@ function statusOC(status) {
         default:
             return "Sin estado";
     }
+}
+
+function volver() {
+    location.href = `/html/monitor.admin.principal.html?userId=${userId}`;
 }
