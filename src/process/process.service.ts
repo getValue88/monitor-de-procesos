@@ -173,7 +173,7 @@ export class ProcessService {
 
     private async updateConcreteProcessStatus (concreteProcess: ConcreteProcess, taskTime: number) : Promise<Boolean> {
         try {
-            
+            const 
             let concreteProcessTime = concreteProcess.getDeliveryDate().getTime() - concreteProcess.getInitialDate().getTime();
             concreteProcessTime = concreteProcessTime/(1000*60);
             console.log(concreteProcessTime);    
