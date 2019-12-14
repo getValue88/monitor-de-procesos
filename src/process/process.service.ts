@@ -151,7 +151,7 @@ export class ProcessService {
 
     public async getConcreteTasksByConcreteProcessId(concreteProcessId: number): Promise<ConcreteTask[]> {
         try {
-            return await this.concreteTaskRepository.find({ where: { concreteProcess: concreteProcessId } });
+            return await this.concreteTaskRepository.find({relations:['standardTask'], where: { concreteProcess: concreteProcessId } });
 
         } catch (error) {
             console.log(error);
