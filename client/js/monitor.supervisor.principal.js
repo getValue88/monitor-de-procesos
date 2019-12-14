@@ -13,15 +13,14 @@ let userId = params['userId'];
 
 // Botón Ordenes de Compra
 let btnOrdenesCompra = document.querySelector("#btnDesempenio");
-btnOrdenesCompra.addEventListener("click", informarDesempenio);
-
+btnOrdenesCompra.addEventListener("click", ordenesFabricacion);
+ 
 // Botón Cerrar Sesión
 let btnCerrarSesion = document.querySelector("#btnCerrarSesion");
 btnCerrarSesion.addEventListener("click", cerrarSesion);
 
-function informarDesempenio(){
-    alert("Aquí funcionalidad de informar desempeño");
-    // location.href = `/html/monitor.supervisor.principal.desempenio.html?userId=${userId}`; 
+function ordenesFabricacion(){
+    location.href = `/html/monitor.supervisor.principal.ordenesfabricacion.html?userId=${userId}`; 
 }
 
 function cerrarSesion(){

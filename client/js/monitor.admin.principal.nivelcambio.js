@@ -29,7 +29,9 @@ async function load(ncId) {
     try {
         let response = await fetch(`../article/nc/${ncId}`);
         let respuesta = await response.json();
-        document.querySelector('#date').value = respuesta['date'];
+        // Obtengo la fecha de hoy y le doy el formato esperado por el input
+        let hoy = new Date();
+        document.querySelector('#date').value = formatearFechaForInput(hoy);
         document.querySelector('#plan').value = respuesta['plan'];
         document.querySelector('#image').value = respuesta['image'];
         processId = respuesta['process']['id'];
@@ -64,4 +66,18 @@ async function siguiente() {
     
     // Avanza hacia el paso siguiente
     location.href = `/html/monitor.admin.principal.proceso.html?userId=${userId}&processId=${processId}`;
+}
+
+// Función que dada una fecha completa de sistema (de tipo object) la formatea a lo esperado en 
+// un input de tipo 'date'
+function formatearFechaForInput(fecha) {
+    const anio = fecha.getFullYear();
+    let mes = fecha.getMonth() + 1; // Enero es 0!
+    let dia = fecha.getDate();
+    if (mes < 10)
+        mes = "0" + mes;
+    if (dia < 10)
+        dia = "0" + dia;
+    let fechaFormateada = "" + anio + "-" + mes + "-" + dia;
+    return fechaFormateada;
 }

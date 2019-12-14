@@ -185,6 +185,7 @@ async function cargarArticulos() {
     }
 
     let companyId = respuesta['id'];
+    // Debug
     console.log("Id de la compania = " + companyId);
     
     // Solicito la lista de artículos
@@ -198,6 +199,8 @@ async function cargarArticulos() {
     }
 
     let select = document.getElementById("article"); // Seleccionamos el select
+    // Aquí vaciar las opciones del select
+    select.innerHTML = "";
     
     for(let i=0; i < listaArticulos.length; i++){ 
         let option = document.createElement("option"); // Creamos la opción
