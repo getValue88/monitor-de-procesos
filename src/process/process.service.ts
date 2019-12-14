@@ -92,6 +92,7 @@ export class ProcessService {
             manufactureOrder.getInitialDate(),
             manufactureOrder.getDeliveryDate(),
             manufactureOrder.getSupervisor(),
+            manufactureOrder.getID(),
             null
         );
         await this.concreteProcessRepository.save(newConcreteProcess);
@@ -172,6 +173,7 @@ export class ProcessService {
 
     private async updateConcreteProcessStatus (concreteProcess: ConcreteProcess, taskTime: number) : Promise<Boolean> {
         try {
+            
             let concreteProcessTime = concreteProcess.getDeliveryDate().getTime() - concreteProcess.getInitialDate().getTime();
             concreteProcessTime = concreteProcessTime/(1000*60);
             console.log(concreteProcessTime);    

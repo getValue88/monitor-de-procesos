@@ -2,6 +2,7 @@ import { PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, Entity, ManyToOne
 import { User } from "../../user/entities/user.entity";
 import { Alarm } from "./alarm.entity";
 import { StandardProcess } from "./standardProcess.entity";
+import { ManufactureOrder } from "../../order/entities/manufactureOrder.entity";
 
 @Entity()
 export class ConcreteProcess {
@@ -24,18 +25,23 @@ export class ConcreteProcess {
     private endDate: Date;
 
     @ManyToOne(type => User, supervisor => supervisor)
-    supervisor: User;
+    private supervisor: User;
+
+    @JoinColumn()
+    @OneToOne(type => ManufactureOrder, manufactureOrder => manufactureOrder.getID)
+    private manufactureOrder: number;
 
     @JoinColumn()
     @OneToOne(type => Alarm, alarm => alarm)
     alarm: Alarm;
 
-    public constructor(standardProcess: StandardProcess, status: number, initialDate: Date, deliveryDate: Date, supervisor: User, alarm: Alarm) {
+    public constructor(standardProcess: StandardProcess, status: number, initialDate: Date, deliveryDate: Date, supervisor: User, manufactureOrderId: number, alarm: Alarm) {
         this.standardProcess = standardProcess;
         this.status = status;
         this.initialDate = initialDate;
         this.deliveryDate = deliveryDate;
         this.supervisor = supervisor;
+        this.manufactureOrder = manufactureOrderId;
         this.endDate = null;
         this.alarm = alarm;
     }
