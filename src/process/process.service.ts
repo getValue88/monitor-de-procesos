@@ -138,11 +138,11 @@ export class ProcessService {
     public async updateConcreteTaskStatus(id: number, status: number): Promise<boolean> {
         try {
             let concreteTask = await this.concreteTaskRepository.findOne({ relations: ['concreteProcess', 'standardTask', 'concreteProcess.manufactureOrder'], where: { id: id } });
+            
             const previousStatus = concreteTask.getStatus();
             concreteTask.setStatus(status['status']);
 
-            this.updateConcreteProcessStatus(concreteTask.getConcreteProcess(), concreteTask.getStandardTask().getRequiredTime(),previousStatus, status);
-            //console.log(concreteTask.getStandardTask().getRequiredTime());
+            this.updateConcreteProcessStatus(concreteTask.getConcreteProcess(), concreteTask.getStandardTask().getRequiredTime(), previousStatus, status['status']);
 
             if (status['status'] >= 100) {
                 concreteTask.setEndDate(new Date());
@@ -174,29 +174,37 @@ export class ProcessService {
         }
     }
 
-    private async updateConcreteProcessStatus(concreteProcess: ConcreteProcess, taskTime: number,previousStatus:number, status: number): Promise<Boolean> {
+    private async updateConcreteProcessStatus(concreteProcess: ConcreteProcess, taskTime: number, previousStatus: number, status: number): Promise<Boolean> {
         try {
-            const moId = concreteProcess.getManufactureOrder().getID();
             const manufactureOrder: ManufactureOrder = await this.manufactureOrderRepository.createQueryBuilder('manufacture')
                 .innerJoinAndSelect('manufacture.purchaseOrder', 'purchaseOrder')
-                .where('manufacture.id= :mfId', { mfId: moId })
+                .where('manufacture.id= :mfId', { mfId: concreteProcess.getManufactureOrder().getID() })
                 .getOne();
 
             let totalProcessTime = concreteProcess.getDeliveryDate().getTime() - concreteProcess.getInitialDate().getTime();
             totalProcessTime = (totalProcessTime / (1000 * 60));
-            let currentStatus = concreteProcess.getStatus();
+
+            let currentProcessStatus = concreteProcess.getStatus();
 
             const quantity = manufactureOrder.getPurchaseOrder().getQuantity();
             const taskWeight = (taskTime * quantity * 100) / totalProcessTime;
 
-            currentStatus -= previousStatus * taskWeight;
-            currentStatus += taskWeight * status;
+            currentProcessStatus -= previousStatus * taskWeight / 100;
+            currentProcessStatus += status * taskWeight / 100;
 
-            console.log(totalProcessTime);
-            concreteProcess.setStatus(currentStatus);
-            console.log(concreteProcess.getStatus());
+            /* 
+            console.log("processtime:"+ totalProcessTime +
+            "\ncurrentprocessstatus:"+currentProcessStatus+
+            "\nquantity:"+quantity+
+            "\ntaskweight:"+taskWeight+
+            "\nrest previous status:"+previousStatus * taskWeight / 100+
+            "\nSum currentstatus:"+status * taskWeight  / 100)
+ */
+            concreteProcess.setStatus(currentProcessStatus);
+
             await this.concreteProcessRepository.save(concreteProcess);
             return true;
+
         } catch (error) {
             console.log(error);
             return false;
