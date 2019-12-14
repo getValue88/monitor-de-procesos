@@ -16,7 +16,6 @@ import { ManufactureOrder } from '../order/entities/manufactureOrder.entity';
       StandardProcess,
       ConcreteProcess,
       ConcreteTask,
-      PurchaseOrder,
       ManufactureOrder
     ])
   ],

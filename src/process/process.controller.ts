@@ -31,4 +31,14 @@ export class ProcessController {
     updateConcreteTaskStatus(@Param('id') id: number, @Body() status: number) {
         return this.processService.updateConcreteTaskStatus(id, status);
     }
+
+    @Get('concreteTask/:concreteProcessId')
+    getConcreteTasksByConcreteProcessId(@Param('concreteProcessId') concreteProcessId: number) {
+        return this.processService.getConcreteTasksByConcreteProcessId(concreteProcessId);
+    }
+
+    @Get('concreteProcess/:manufactureId')
+    getConcreteProcessByManufactureId(@Param('manufactureId') manufactureId: number) {
+        return this.processService.getConcreteProcessByManufactureId(manufactureId);
+    }
 }

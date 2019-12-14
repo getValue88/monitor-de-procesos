@@ -16,7 +16,6 @@ export class ProcessService {
         @InjectRepository(StandardProcess) private readonly stdProcessRepository: Repository<StandardProcess>,
         @InjectRepository(ConcreteProcess) private readonly concreteProcessRepository: Repository<ConcreteProcess>,
         @InjectRepository(ConcreteTask) private readonly concreteTaskRepository: Repository<ConcreteTask>,
-        @InjectRepository(PurchaseOrder) private readonly purchaseOrderRepository: Repository<PurchaseOrder>,
         @InjectRepository(ManufactureOrder) private readonly manufactureOrderRepository: Repository<ManufactureOrder>) { }
 
     public async createStdTask(stdTask): Promise<boolean> {
@@ -88,6 +87,21 @@ export class ProcessService {
         }
     }
 
+    public async getConcreteProcessByManufactureId(manufactureId: number): Promise<ConcreteProcess> {
+        try {
+            return await this.concreteProcessRepository.createQueryBuilder('cctProcess')
+                .innerJoinAndSelect('cctProcess.standardProcess', 'stdPrcs')
+                .innerJoin('cctProcess.manufactureOrder', 'mfOrder')
+                .select(['cctProcess.id', 'cctProcess.status', 'stdPrcs'])
+                .where('mfOrder.id= :mfId', { mfId: manufactureId })
+                .getRawOne();
+
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
+
     public async createConcreteProcess(manufactureOrder: ManufactureOrder): Promise<void> {
         const newConcreteProcess = new ConcreteProcess(
             manufactureOrder.getPurchaseOrder().getArticle().getNivelCambio().getProcess(),
@@ -135,10 +149,20 @@ export class ProcessService {
         }
     }
 
+    public async getConcreteTasksByConcreteProcessId(concreteProcessId: number): Promise<ConcreteTask[]> {
+        try {
+            return await this.concreteTaskRepository.find({ where: { concreteProcess: concreteProcessId } });
+
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
+
     public async updateConcreteTaskStatus(id: number, status: number): Promise<boolean> {
         try {
             let concreteTask = await this.concreteTaskRepository.findOne({ relations: ['concreteProcess', 'standardTask', 'concreteProcess.manufactureOrder'], where: { id: id } });
-            
+
             const previousStatus = concreteTask.getStatus();
             concreteTask.setStatus(status['status']);
 
@@ -193,14 +217,17 @@ export class ProcessService {
             currentProcessStatus += status * taskWeight / 100;
 
             /* 
-            console.log("processtime:"+ totalProcessTime +
-            "\ncurrentprocessstatus:"+currentProcessStatus+
-            "\nquantity:"+quantity+
-            "\ntaskweight:"+taskWeight+
-            "\nrest previous status:"+previousStatus * taskWeight / 100+
-            "\nSum currentstatus:"+status * taskWeight  / 100)
- */
+                        console.log("processtime:" + totalProcessTime +
+                            "\ncurrentprocessstatus:" + currentProcessStatus +
+                            "\nquantity:" + quantity +
+                            "\ntaskweight:" + taskWeight +
+                            "\nrest previous status:" + previousStatus * taskWeight / 100 +
+                            "\nSum currentstatus:" + status * taskWeight / 100)
+             */
             concreteProcess.setStatus(currentProcessStatus);
+
+            if (currentProcessStatus >= 100)
+                concreteProcess.setEndDate(new Date());
 
             await this.concreteProcessRepository.save(concreteProcess);
             return true;

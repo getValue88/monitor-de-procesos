@@ -59,7 +59,9 @@ export class ConcreteProcess {
     }
 
     public setStatus(value: number): void {
-        if (value >= 0 && value <= 100)
+        if (value > 100)
+            value = 100;
+        if (value >= 0)
             this.status = value;
     }
 
