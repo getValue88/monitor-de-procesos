@@ -12,7 +12,6 @@ import { ProcessService } from '../process/process.service';
 
 @Injectable()
 export class OrderService {
-
     public constructor(
         @InjectRepository(PurchaseOrder) private readonly purchaseOrderRepository: Repository<PurchaseOrder>,
         @InjectRepository(User) private readonly userRepository: Repository<User>,
@@ -38,6 +37,15 @@ export class OrderService {
             return this.getPurchaseOrdersByClientId(purchaseOrderDto['client']);
 
         } catch {
+            return null;
+        }
+    }
+
+    public async getPurchaseOrderById(id: number): Promise<PurchaseOrder> {
+        try{
+            return await this.purchaseOrderRepository.findOne(id);
+        } catch(error){
+            console.log(error);
             return null;
         }
     }
@@ -132,4 +140,5 @@ export class OrderService {
             return null;
         }
     }
+
 }

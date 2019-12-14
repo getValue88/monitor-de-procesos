@@ -16,6 +16,9 @@ let processId = params['processId'];
 // Inicializo el arreglo de tareas
 let tareas = [];
 
+// Preseteo el nombre de la tarea como Op. 10, Op. 20, Op. 30, etc.
+document.querySelector('#name').value = "Op. " + (tareas.length + 1) * 10;
+
 // Debug
 console.log(" userId: " + userId + " processId: " + processId);
 
@@ -32,8 +35,8 @@ load(processId);
 
 // Función que solicita al servidor los datos de las tareas existentes
 async function load(processId) {
-    // En esta instancia no hay tareas en la base. Así que no se hace un fetch.
-    // Dejo la función armada para cuando reuse la vista para ver las ordenes de compra.
+    // En esta instancia no hay tareas en la base. Están en un arreglo de memoria.
+    // Así que no se hace un fetch.
     mostrarTablaTareas(tareas);
 }
 
@@ -47,13 +50,13 @@ async function guardar() {
 
     // Asumo que el dato requiredTime que venga va a ser incorrecto
     document.querySelector('#requiredTime').classList.add('is-invalid');
-    
+
     // Valido que requiredTime sea un número y mayor a cero
     if (!isNaN(requiredTime) && (requiredTime > 0)) {
 
         // Como requiredTime es correcto le elimino la clase de dato inválido
         document.querySelector('#requiredTime').classList.remove('is-invalid');
-        
+
         // Armo un registro con los datos obtenidos
         let registro = {
             "name": name,
@@ -69,11 +72,12 @@ async function guardar() {
         mostrarTablaTareas(tareas);
 
         // Vacio los datos de los inputs
-        document.querySelector('#name').value="";
-        document.querySelector('#description').value="";
-        document.querySelector('#requiredTime').value="";
-
-    } 
+        document.querySelector('#name').value = "";
+        document.querySelector('#description').value = "";
+        document.querySelector('#requiredTime').value = "";
+        // Preseteo el nombre de la tarea como Op. 10, Op. 20, Op. 30, etc.
+        document.querySelector('#name').value = "Op. " + (tareas.length + 1) * 10;
+    }
 }
 
 async function terminar() {

@@ -176,6 +176,7 @@ export class ProcessService {
 
     private async updateConcreteProcessStatus(concreteProcess: ConcreteProcess, taskTime: number,previousStatus:number, status: number): Promise<Boolean> {
         try {
+<<<<<<< HEAD
             const moId = concreteProcess.getManufactureOrder().getID();
             const manufactureOrder: ManufactureOrder = await this.manufactureOrderRepository.createQueryBuilder('manufacture')
                 .innerJoinAndSelect('manufacture.purchaseOrder', 'purchaseOrder')
@@ -195,6 +196,13 @@ export class ProcessService {
             console.log(totalProcessTime);
             concreteProcess.setStatus(currentStatus);
             console.log(concreteProcess.getStatus());
+=======
+            const 
+            let concreteProcessTime = concreteProcess.getDeliveryDate().getTime() - concreteProcess.getInitialDate().getTime();
+            concreteProcessTime = concreteProcessTime/(1000*60);
+            console.log(concreteProcessTime);    
+            concreteProcess.setStatus(Math.round((taskTime*100)/concreteProcessTime));
+>>>>>>> eda22b145b7658ec9eecfe031c1eeb6c280dfbc9
             await this.concreteProcessRepository.save(concreteProcess);
             return true;
         } catch (error) {
