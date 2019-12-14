@@ -6,6 +6,8 @@ import { StandardTask } from './entities/standardTask.entity';
 import { StandardProcess } from './entities/standardProcess.entity';
 import { ConcreteProcess } from './entities/concreteProcess.entity';
 import { ConcreteTask } from './entities/concreteTask.entity';
+import { PurchaseOrder } from '../order/entities/purchaseOrder.entity';
+import { ManufactureOrder } from '../order/entities/manufactureOrder.entity';
 
 @Module({
   imports: [
@@ -13,7 +15,9 @@ import { ConcreteTask } from './entities/concreteTask.entity';
       StandardTask,
       StandardProcess,
       ConcreteProcess,
-      ConcreteTask
+      ConcreteTask,
+      PurchaseOrder,
+      ManufactureOrder
     ])
   ],
   controllers: [ProcessController],

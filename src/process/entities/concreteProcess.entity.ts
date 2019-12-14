@@ -28,20 +28,20 @@ export class ConcreteProcess {
     private supervisor: User;
 
     @JoinColumn()
-    @OneToOne(type => ManufactureOrder, manufactureOrder => manufactureOrder.getID)
-    private manufactureOrder: number;
+    @OneToOne(type => ManufactureOrder, manufactureOrder => manufactureOrder)
+    private manufactureOrder: ManufactureOrder;
 
     @JoinColumn()
     @OneToOne(type => Alarm, alarm => alarm)
     alarm: Alarm;
 
-    public constructor(standardProcess: StandardProcess, status: number, initialDate: Date, deliveryDate: Date, supervisor: User, manufactureOrderId: number, alarm: Alarm) {
+    public constructor(standardProcess: StandardProcess, status: number, initialDate: Date, deliveryDate: Date, supervisor: User, manufactureOrder: ManufactureOrder, alarm: Alarm) {
         this.standardProcess = standardProcess;
         this.status = status;
         this.initialDate = initialDate;
         this.deliveryDate = deliveryDate;
         this.supervisor = supervisor;
-        this.manufactureOrder = manufactureOrderId;
+        this.manufactureOrder = manufactureOrder;
         this.endDate = null;
         this.alarm = alarm;
     }
@@ -101,5 +101,13 @@ export class ConcreteProcess {
 
     public setAlarm(alarm: Alarm): void {
         this.alarm = alarm;
+    }
+
+    public getManufactureOrder(): ManufactureOrder {
+        return this.manufactureOrder;
+    }
+
+    public setManufactureOrder(manufactureOrder: ManufactureOrder): void {
+        this.manufactureOrder = manufactureOrder;
     }
 }
