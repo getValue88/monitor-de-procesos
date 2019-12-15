@@ -93,7 +93,7 @@ export class ProcessService {
                 .innerJoinAndSelect('cctProcess.manufactureOrder', 'mfOrder')
                 .innerJoinAndSelect('mfOrder.purchaseOrder','po')
                 .innerJoinAndSelect('po.article', 'article')
-                .select(['cctProcess.id', 'cctProcess.status', 'stdPrcs','article'])
+                .select(['cctProcess.id', 'cctProcess.status','cctProcess.deliveryDate', 'stdPrcs.name','article.number','article.name','po.quantity'])
                 .where('mfOrder.id= :mfId', { mfId: manufactureId })
                 .getRawOne();
 
