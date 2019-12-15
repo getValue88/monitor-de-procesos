@@ -11,11 +11,11 @@ export class CompanyService {
         try {
             let toUpdateCompany = await this.companyRepository.findOne(companyId);
 
-            toUpdateCompany['rs'] = companyDto['rs'];
-            toUpdateCompany['address'] = companyDto['address'];
-            toUpdateCompany['impositiveCategory'] = companyDto['impositiveCategory'];
-            toUpdateCompany['cuit'] = companyDto['cuit'];
-            toUpdateCompany['logo'] = companyDto['logo'];
+            toUpdateCompany.setRs(companyDto['rs']);
+            toUpdateCompany.setAddress(companyDto['address']);
+            toUpdateCompany.setImpositiveCategory(companyDto['impositiveCategory']);
+            toUpdateCompany.setCuit(companyDto['cuit']);
+            toUpdateCompany.setLogo(companyDto['logo']);
         
             await this.companyRepository.save(toUpdateCompany);
             return true;

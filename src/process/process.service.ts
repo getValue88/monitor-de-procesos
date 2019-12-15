@@ -7,7 +7,6 @@ import { StandardProcess } from './entities/standardProcess.entity';
 import { ManufactureOrder } from '../order/entities/manufactureOrder.entity';
 import { ConcreteProcess } from './entities/concreteProcess.entity';
 import { ConcreteTask } from './entities/concreteTask.entity';
-import { PurchaseOrder } from '../order/entities/purchaseOrder.entity';
 
 @Injectable()
 export class ProcessService {
@@ -91,8 +90,10 @@ export class ProcessService {
         try {
             return await this.concreteProcessRepository.createQueryBuilder('cctProcess')
                 .innerJoinAndSelect('cctProcess.standardProcess', 'stdPrcs')
-                .innerJoin('cctProcess.manufactureOrder', 'mfOrder')
-                .select(['cctProcess.id', 'cctProcess.status', 'stdPrcs'])
+                .innerJoinAndSelect('cctProcess.manufactureOrder', 'mfOrder')
+                .innerJoinAndSelect('mfOrder.purchaseOrder','po')
+                .innerJoinAndSelect('po.article', 'article')
+                .select(['cctProcess.id', 'cctProcess.status', 'stdPrcs','article'])
                 .where('mfOrder.id= :mfId', { mfId: manufactureId })
                 .getRawOne();
 

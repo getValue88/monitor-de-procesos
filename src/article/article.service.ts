@@ -25,6 +25,13 @@ export class ArticleService {
             .getMany();
     }
 
+    public async getLastArticleByCompanyId(companyId: number): Promise<any> {
+        return await this.articleRepository.createQueryBuilder('article')
+            .select('max(number+1)','lastArticle')
+            .where('article.company= :cId', {cId: companyId})
+            .getRawOne();
+    }
+
     public async createArticle(articleDto: ArticleDTO): Promise<any> {
         try {
             let comp = await this.companyRepository.findOne({ where: { id: articleDto['company'] } });
@@ -59,7 +66,7 @@ export class ArticleService {
         }
     }
 
-    public async setNivelCambio(ncID: any, nivelCambioDto: NivelCambioDTO): Promise<Boolean> {
+    public async setNivelCambio(ncID: number, nivelCambioDto: NivelCambioDTO): Promise<Boolean> {
         try {
             let toUpdateNC = await this.nivelCambioRepository.findOne(ncID);
 

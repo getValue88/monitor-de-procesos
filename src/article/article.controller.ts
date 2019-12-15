@@ -13,6 +13,11 @@ export class ArticleController {
         return this.articleService.getByCompany(companyId);
     }
 
+    @Get('last/:companyId')
+    getLastArticleByCompanyId(@Param('companyId') companyId: number) {
+        return this.articleService.getLastArticleByCompanyId(companyId);
+    }
+
     @Post()
     createArticle(@Body() articleDto: ArticleDTO) {
         return this.articleService.createArticle(articleDto);

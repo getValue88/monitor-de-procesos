@@ -25,14 +25,6 @@ export class Company {
     private constructor() {
     }
 
-    public getInstance(): Company {
-        if (!Company.instance) {
-            Company.instance = new Company();
-        }
-        // this.record = this.record.getInstance();
-        return Company.instance;
-    }
-
     public getID(): number {
         return this.id;
     }
