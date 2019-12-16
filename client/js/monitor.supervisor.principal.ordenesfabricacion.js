@@ -87,8 +87,7 @@ async function mostrarTablaOrdenes() {
 
 // Función que informa el desempenio del proceso asociado a la orden de fabricación
 async function informarDesempenio(manufactureOrderId) {
-    // location.href = `/html/monitor.admin.principal.ordenfabricacion.html?userId=${userId}&purchaceOrderId=${purchaceOrderId}`;
-    alert("Aquí tratamiento del informar desempenio")
+    location.href = `/html/monitor.supervisor.principal.informarDesempenio.html?userId=${userId}&manufactureOrderId=${manufactureOrderId}`;
 }
 
 // Función que dada una fecha completa de sistema (de tipo string) la formatea a 'dd-mm-aaaa'

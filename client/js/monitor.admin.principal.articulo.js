@@ -21,6 +21,7 @@ btnSiguiente.addEventListener("click", siguiente);
 // Se llama a la función que actualiza el formulario
 load(userId);
 
+
 // Función que solicita al servidor los datos de la empresa
 async function load(userId) {
     try {
@@ -30,11 +31,20 @@ async function load(userId) {
     } catch (err) {
         alert(err.message);
     }
+    // Asigno valor automático al campo number
+    try {
+        let response = await fetch(`../article/last/${companyId}`);
+        respuesta = await response.json();
+        document.querySelector('#number').value = respuesta['lastArticle'];
+    }
+    catch (err) {
+        alert(err.message);
+    }
 }
 
 // Función que guarda los datos del artículo y avanza al paso siguiente
 async function siguiente() {
-    
+
     // Obtengo los datos del DOM
     let number = document.querySelector('#number').value;
     let name = document.querySelector('#name').value;
@@ -56,11 +66,11 @@ async function siguiente() {
         },
         "body": JSON.stringify(registro)
     })
-    
+
     // Obtengo el Id de nivel de cambio
     let respuesta = await response.json();
     ncId = respuesta['ncID'];
-    
+
     // Avanza hacia el paso siguiente
     location.href = `/html/monitor.admin.principal.nivelcambio.html?userId=${userId}&ncId=${ncId}`;
 }

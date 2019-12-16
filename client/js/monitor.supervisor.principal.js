@@ -11,9 +11,9 @@ for (let i = 0; i < paramarr.length; i++) {
 }
 let userId = params['userId'];
 
-// Botón Ordenes de Compra
-let btnOrdenesCompra = document.querySelector("#btnDesempenio");
-btnOrdenesCompra.addEventListener("click", ordenesFabricacion);
+// Botón Ordenes de Fabricación
+let btnOrdenesFabricacion = document.querySelector("#btnOrdenesFabricacion");
+btnOrdenesFabricacion.addEventListener("click", ordenesFabricacion);
  
 // Botón Cerrar Sesión
 let btnCerrarSesion = document.querySelector("#btnCerrarSesion");
