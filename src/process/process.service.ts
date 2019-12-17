@@ -75,8 +75,8 @@ export class ProcessService {
         try {
             let toUpdateProcess = await this.stdProcessRepository.findOne(id);
 
-            toUpdateProcess['name'] = standardProcessDto['name'];
-            toUpdateProcess['description'] = standardProcessDto['description'];
+            toUpdateProcess.setName(standardProcessDto['name']);
+            toUpdateProcess.setDescription(standardProcessDto['description']);
             await this.stdProcessRepository.save(toUpdateProcess);
 
             return true;
@@ -91,9 +91,17 @@ export class ProcessService {
             return await this.concreteProcessRepository.createQueryBuilder('cctProcess')
                 .innerJoinAndSelect('cctProcess.standardProcess', 'stdPrcs')
                 .innerJoinAndSelect('cctProcess.manufactureOrder', 'mfOrder')
-                .innerJoinAndSelect('mfOrder.purchaseOrder','po')
+                .innerJoinAndSelect('mfOrder.purchaseOrder', 'po')
                 .innerJoinAndSelect('po.article', 'article')
-                .select(['cctProcess.id', 'cctProcess.status','cctProcess.deliveryDate', 'stdPrcs.name','article.number','article.name','po.quantity'])
+                .select([
+                    'cctProcess.id',
+                    'cctProcess.status',
+                    'cctProcess.deliveryDate',
+                    'stdPrcs.name',
+                    'article.number',
+                    'article.name',
+                    'po.quantity'
+                ])
                 .where('mfOrder.id= :mfId', { mfId: manufactureId })
                 .getRawOne();
 
@@ -125,13 +133,19 @@ export class ProcessService {
                 .where('process.id = :prId', { prId: concreteProcess.getStandardProcess().getID() })
                 .getMany();
 
-            stdTask.forEach(async (task, i) => {
+            const quantity = await this.manufactureOrderRepository.createQueryBuilder('mf')
+                .innerJoinAndSelect('mf.purchaseOrder', 'po')
+                .select(['po.quantity'])
+                .where('mf.id= :mfId', { mfId: concreteProcess.getManufactureOrder().getID() })
+                .getRawOne();
+
+            stdTask.forEach(async (task) => {
                 let initialDate: Date = null;
                 let deliveryDate: Date = null;
-                if (i == 0) {
+                if (task.getCode() == 1) {
                     initialDate = new Date(concreteProcess.getInitialDate());
                     deliveryDate = new Date(initialDate);
-                    deliveryDate.setMinutes(deliveryDate.getMinutes() + task.getRequiredTime());
+                    deliveryDate.setMinutes(deliveryDate.getMinutes() + task.getRequiredTime() * quantity['po_quantity']);
                 }
 
                 await this.concreteTaskRepository.save(new ConcreteTask(
@@ -152,7 +166,7 @@ export class ProcessService {
 
     public async getConcreteTasksByConcreteProcessId(concreteProcessId: number): Promise<ConcreteTask[]> {
         try {
-            return await this.concreteTaskRepository.find({relations:['standardTask'], where: { concreteProcess: concreteProcessId } });
+            return await this.concreteTaskRepository.find({ relations: ['standardTask'], where: { concreteProcess: concreteProcessId } });
 
         } catch (error) {
             console.log(error);
@@ -162,12 +176,25 @@ export class ProcessService {
 
     public async updateConcreteTaskStatus(id: number, status: number): Promise<boolean> {
         try {
-            let concreteTask = await this.concreteTaskRepository.findOne({ relations: ['concreteProcess', 'standardTask', 'concreteProcess.manufactureOrder'], where: { id: id } });
+            let concreteTask = await this.concreteTaskRepository.findOne({
+                relations: [
+                    'concreteProcess',
+                    'standardTask',
+                    'concreteProcess.manufactureOrder',
+                    'concreteProcess.manufactureOrder.purchaseOrder'
+                ], where: { id: id }
+            });
 
+            const quantity = concreteTask.getConcreteProcess().getManufactureOrder().getPurchaseOrder().getQuantity();
             const previousStatus = concreteTask.getStatus();
             concreteTask.setStatus(status['status']);
 
-            this.updateConcreteProcessStatus(concreteTask.getConcreteProcess(), concreteTask.getStandardTask().getRequiredTime(), previousStatus, status['status']);
+            this.updateConcreteProcessStatus(
+                concreteTask.getConcreteProcess(),
+                concreteTask.getStandardTask().getRequiredTime(),
+                previousStatus,
+                status['status']
+            );
 
             if (status['status'] >= 100) {
                 concreteTask.setEndDate(new Date());
@@ -178,13 +205,13 @@ export class ProcessService {
                     .getOne();
 
                 if (nextTask) {
-                    const stdTask = await this.stdTaskRepository.findOne(nextTask.getStandardTask());
+                    const stdTask = await this.stdTaskRepository.findOne({ where: { code: concreteTask.getCode() + 1 } });
                     const requiredTime = stdTask.getRequiredTime();
                     let deliveryDate;
 
                     nextTask.setInitialDate(new Date());
                     deliveryDate = new Date(nextTask.getInitialDate());
-                    deliveryDate.setMinutes(deliveryDate.getMinutes() + requiredTime)
+                    deliveryDate.setMinutes(deliveryDate.getMinutes() + requiredTime * quantity);
                     nextTask.setDeliveryDate(deliveryDate);
 
                     await this.concreteTaskRepository.save(nextTask);
