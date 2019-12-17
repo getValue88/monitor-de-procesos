@@ -41,7 +41,7 @@ export class ProcessService {
             return false;
         }
     }
-
+/* 
     public async createStandardProcess(standardProcessDto: StandardProcessDTO): Promise<any> {
         try {
             await this.stdProcessRepository.save(new StandardProcess(
@@ -50,18 +50,14 @@ export class ProcessService {
             ));
 
             return await this.stdProcessRepository.createQueryBuilder('process')
-                .select(['process.id'])
-                .where({
-                    'name': standardProcessDto['name'],
-                    'description': standardProcessDto['description']
-                })
-                .getOne();
+                .select("max(id)", "id")
+                .getRawOne();
 
         } catch {
             return null;
         }
     }
-
+ */
     public async getProcessById(processId: number): Promise<StandardProcess> {
         try {
             return await this.stdProcessRepository.findOne({ where: { id: processId } });

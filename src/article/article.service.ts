@@ -26,10 +26,20 @@ export class ArticleService {
     }
 
     public async getLastArticleByCompanyId(companyId: number): Promise<any> {
-        return await this.articleRepository.createQueryBuilder('article')
-            .select('max(number+1)','lastArticle')
-            .where('article.company= :cId', {cId: companyId})
-            .getRawOne();
+        try {
+            const lastArticle = await this.articleRepository.createQueryBuilder('article')
+                .select('max(number+1)', 'lastArticle')
+                .where('article.company= :cId', { cId: companyId })
+                .getRawOne();
+                
+            if (!lastArticle['lastArticle'])
+                lastArticle['lastArticle'] = 1
+
+            return lastArticle
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
     }
 
     public async createArticle(articleDto: ArticleDTO): Promise<any> {

@@ -6,12 +6,12 @@ import { StandardProcessDTO } from './dto/standardProcess.dto';
 @Controller('process')
 export class ProcessController {
     public constructor(private readonly processService: ProcessService) { }
-
+/* 
     @Post('stdPrcs')
     createStandardProcess(@Body() standardProcess: StandardProcessDTO) {
         return this.processService.createStandardProcess(standardProcess);
     }
-
+ */
     @Post('stdTask')
     createStdTask(@Body() stdTaskDto: StandardTaskDTO[]) {
         return this.processService.createStdTask(stdTaskDto);
