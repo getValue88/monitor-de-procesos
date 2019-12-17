@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Monitor de Procesos - Supervisor - Principal - Ordenes Asignadas</title>
+    <title>Monitor de Procesos - Supervisor - Principal - Informar Desempeño</title>
 
     <!-- CSS References -->
     <link rel="stylesheet" href="../css/bootstrap.min.css">
@@ -18,7 +18,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <!-- <a class="navbar-brand">Monitor de Procesos - Inicio</a> -->
         <span class="navbar-text">
-            Monitor de Procesos -> Supervisor -> Ordenes Asignadas
+            Monitor de Procesos -> Supervisor -> Informar Desempeño
         </span>
         <button class="navbar-toggler" type="button btn-lg" data-toggle="collapse" data-target="#navbarText"
             aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,17 +35,27 @@
     </nav>
 
     <div class="row">
-        <!-- Contenedor para la tabla de las ordenes de compra -->
+        <!-- Contenedor para el dashboard -->
         <div class="col-12">
-            <table id="tbl" class="border">
+            <div>
+                <label for="proceso"
+                    class="col-xm-12 col-md-4 col-xl-2 col-form-label mt-xs-1 mt-md-2 ">Proceso:</label>
+                <span id="proceso"></span> <br>
+                <label for="articulo"
+                    class="col-xm-12 col-md-4 col-xl-2 col-form-label mt-xs-1 mt-md-2 ">Artículo:</label>
+                <span id="articulo"></span> <br>
+                <label for="cantidad"
+                    class="col-xm-12 col-md-4 col-xl-2 col-form-label mt-xs-1 mt-md-2 ">Cantidad:</label>
+                <span id="cantidad"></span>
+            </div>
+            <table id="tbl" class="border"> <br>
                 <tr>
-                    <th>Id</th>
-                    <th>Fecha de Inicio</th>
-                    <th>Fecha de fin prevista</th>
-                    <th>Fecha de fin real</th>
-                    <th>.</th>
+                    <th>Nombre</th>
+                    <th>Tarea</th>
+                    <th>Grado de avance</th>
+                    <th></th>
                 </tr>
-                <tbody id="tblOrdenesFabricacion">
+                <tbody id="tbltareas">
                     <!-- El cuerpo de la tabla se redefine por javascript -->
                 </tbody>
             </table>
@@ -67,7 +77,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
-    <script src="../js/monitor.supervisor.principal.ordenesfabricacion.js"></script>
+    <script src="../js/monitor.supervisor.principal.informardesempenio.js"></script>
 
 </body>
 
