@@ -70,14 +70,18 @@ async function mostrarTablaTareas() {
 
     // Genero los rows de la tabla
     html = "";
-    let estadoDisabled = "";
-
+    let estadoDisabled;
+    const now = new Date();
     for (let r of tareas) {
+        estadoDisabled = "disabled";
+        if ((r.initialDate != null) && (r.status < 100) && (now >= new Date(r.initialdate))) {
+            estadoDisabled = "";
+        }
         html += `
             <tr>
                 <td>${r.standardTask.name}</td>
                 <td>${r.standardTask.description}</td>
-                <td><input type="range" class="slider${r.id} custom-range" min="0" max="100" step="5" id=${r.id} value=${r.status}></td>
+                <td><input type="range" class="slider${r.id} custom-range" min="0" max="100" step="5" id=${r.id} value=${r.status} ${estadoDisabled}></td>
                 <td><button type="button" task_id="${r.id}" class="btn-guardar btn btn-secondary btn-block w-50 m-auto" ${estadoDisabled}>Guardar</button></td>
             </tr>    
         `;
@@ -93,6 +97,7 @@ async function mostrarTablaTareas() {
             guardar(e.getAttribute('task_id'))
         });
     });
+
 }
 
 // Función que guarda los datos de la tarea modificada
@@ -100,7 +105,7 @@ async function guardar(task_id) {
 
     // Obtengo los datos del DOM
     let status = document.querySelector(`.slider${task_id}`).value;
-    
+
     // Armo un registro con los datos obtenidos
     let registro = {
         "status": status
@@ -116,6 +121,8 @@ async function guardar(task_id) {
         "body": JSON.stringify(registro)
     })
 
+    // Hago un refresh de la tabla
+    mostrarTablaTareas();
 }
 
 // Botón Volver
