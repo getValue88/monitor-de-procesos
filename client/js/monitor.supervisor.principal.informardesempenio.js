@@ -64,11 +64,12 @@ async function mostrarTablaTareas() {
         alert(err.message);
     }
 
-    let table = document.getElementById("tbl");
-    html = "";
+    // Ordeno el arreglo de tareas
     tareas.sort((a, b) => a.code - b.code);
     console.log(tareas);
 
+    // Genero los rows de la tabla
+    html = "";
     let estadoDisabled = "";
 
     for (let r of tareas) {
@@ -76,13 +77,46 @@ async function mostrarTablaTareas() {
             <tr>
                 <td>${r.standardTask.name}</td>
                 <td>${r.standardTask.description}</td>
-                <td><input type="range" class="custom-range" min="0" max="100" step="5" id="statusRange" value=${r.status}></td>
-                <td><button type="button" id="${r.id}" class="btn-guardar btn btn-secondary btn-block w-50 m-auto" ${estadoDisabled}>Guardar</button></td>
+                <td><input type="range" class="custom-range" min="0" max="100" step="5" id=${r.id} value=${r.status}></td>
+                <td><button type="button" task_id="${r.id}" class="btn-guardar btn btn-secondary btn-block w-50 m-auto" ${estadoDisabled}>Guardar</button></td>
             </tr>    
         `;
     }
-    // Se asigna el contenido generado al body de la tabla correspondiente
+
+    // Asigno el contenido generado al body de la tabla correspondiente
     document.querySelector("#tbltareas").innerHTML = html;
+
+    // Creo un listener a cada botón de guardar
+    let botonesGuardar = document.querySelectorAll(".btn-guardar");
+    botonesGuardar.forEach(e => {
+        e.addEventListener("click", () => {
+            guardar(e.getAttribute('task_id'))
+        });
+    });
+}
+
+// Función que guarda los datos de la tarea modificada
+async function guardar(task_id) {
+
+    // Obtengo los datos del DOM
+    let sliders = document.querySelectorAll(".custom-range");
+    let status = sliders[task_id];
+
+    // Armo un registro con los datos obtenidos
+    let registro = {
+        "status": status
+    }
+
+    alert("task_id: " + task_id + " status: " + status);
+    // Solicito el PUT al servidor
+    let response = await fetch(`../process/concreteTask/${task_id}`, {
+        "method": "PUT",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": JSON.stringify(registro)
+    })
+
 }
 
 // Botón Volver
@@ -115,24 +149,6 @@ function formatearFechaForInput(fecha) {
         dia = "0" + dia;
     let fechaFormateada = "" + anio + "-" + mes + "-" + dia;
     return fechaFormateada;
-}
-
-// Función que dado el estado de una OC (de tipo number) devuelve un string descriptivo
-function statusOC(status) {
-    switch (status) {
-        case -1:
-            return "Rechazada";
-        case 0:
-            return "En análisis";
-        case 1:
-            return "Con OF asignada";
-        case 2:
-            return "En Proceso";
-        case 3:
-            return "Finalizada";
-        default:
-            return "Sin estado";
-    }
 }
 
 function volver() {
