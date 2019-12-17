@@ -77,7 +77,7 @@ async function mostrarTablaTareas() {
             <tr>
                 <td>${r.standardTask.name}</td>
                 <td>${r.standardTask.description}</td>
-                <td><input type="range" class="custom-range" min="0" max="100" step="5" id=${r.id} value=${r.status}></td>
+                <td><input type="range" class="slider${r.id} custom-range" min="0" max="100" step="5" id=${r.id} value=${r.status}></td>
                 <td><button type="button" task_id="${r.id}" class="btn-guardar btn btn-secondary btn-block w-50 m-auto" ${estadoDisabled}>Guardar</button></td>
             </tr>    
         `;
@@ -99,9 +99,8 @@ async function mostrarTablaTareas() {
 async function guardar(task_id) {
 
     // Obtengo los datos del DOM
-    let sliders = document.querySelectorAll(".custom-range");
-    let status = sliders[task_id];
-
+    let status = document.querySelector(`.slider${task_id}`).value;
+    
     // Armo un registro con los datos obtenidos
     let registro = {
         "status": status
