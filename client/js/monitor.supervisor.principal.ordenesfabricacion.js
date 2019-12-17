@@ -43,6 +43,7 @@ async function mostrarTablaOrdenes() {
     try {
         let response = await fetch(`../order/manufacture/supervisor/${userId}`);
         ordenesFabricacion = await response.json();
+        ordenesFabricacion.sort((a,b) => a.initialDate > b.initialDate);
     }
     catch (err) {
         alert(err.message);
