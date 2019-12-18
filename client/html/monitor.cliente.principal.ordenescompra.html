@@ -5,12 +5,10 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <title>Monitor de Procesos - Cliente - Ordenes de Compra</title>
-
+    <title>Ordenes de Compra - Monitor</title>
     <!-- CSS References-->
     <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/monitor.cliente.principal.ordenescompra.css">
+    <link rel="stylesheet" href="../css/monitor.tablas.css">
 </head>
 
 <body>
@@ -18,7 +16,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <!-- <a class="navbar-brand">Monitor de Procesos - Inicio</a> -->
         <span class="navbar-text">
-            Monitor de Procesos -> Cliente -> Principal -> Ordenes de Compra
+            Cliente -> Ordenes de Compra
         </span>
         <button class="navbar-toggler" type="button btn-lg" data-toggle="collapse" data-target="#navbarText"
             aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,7 +35,7 @@
     <div class="row">
         <!-- Contenedor para el form de carga de una orden de compra -->
         <div class="col-4">
-            <div class="row">
+            <div class="row ml-1">
                 <label for="article" class="col-4 col-form-label mt-xs-1 mt-md-2">Artículo</label>
                 <div class="col-8 mt-md-2">
                     <select tittle="Seleccione artículo" id="article" type="number" class="form-control"></select>
@@ -64,22 +62,24 @@
             </div>
         </div>
 
-        <!-- Contenedor para la tabla de las ordenes de compra que se van cargando-->
+        <!-- Contenedor para mostrar la tabla de las ordenes de compra que se van cargando-->
         <div class="col-8">
             <table id="tbl" class="border">
+                <!-- Encabezado -->
                 <tr>
                     <th>Fecha Alta</th>
                     <th>Artículo</th>
                     <th>Cantidad</th>
                     <th>Fecha Entrega</th>
                     <th>Estado</th>
+                    <th>Avance</th>
                 </tr>
+                <!-- Cuerpo -->
                 <tbody id="tblOrdenesCompra">
-                    <!-- El cuerpo de la tabla se redefine por javascript -->
+                    <!-- Se genera por javascript -->
                 </tbody>
             </table>
         </div>
-
     </div>
 
     <!-- JS References -->

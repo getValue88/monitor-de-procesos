@@ -10,44 +10,36 @@ for (let i = 0; i < paramarr.length; i++) {
 }
 let userId = params['userId'];
 
-// Debug
-console.log(" userId: " + userId);
-
 // Inicializo el arreglo de ordenes de compra
 let ordenesCompra = [];
 
 // Inicializo los inputs del formulario
 inicializarInputs();
 
-// Botón Guardar
+// Asigno su listener al botón Guardar
 let btnGuardar = document.querySelector("#btnGuardar");
 btnGuardar.addEventListener("click", guardar);
 
-// Botón Volver
+// Asigno su listener al botón Volver
 let btnVolver = document.querySelector("#btnVolver");
 btnVolver.addEventListener("click", volver);
 
-// Se llama a la función que actualiza el formulario
+// Llamo a la función que actualiza el formulario
 mostrarTablaOrdenes();
 
 // Función que guarda los datos de la nueva orden de compra
 async function guardar() {
-
     // Obtengo los datos del DOM
     let article = document.querySelector('#article').value;
     let quantity = document.querySelector('#quantity').value;
     let deliveryDate = new Date(document.querySelector('#deliveryDate').value);
     //deliveryDate.setMinutes(deliveryDate.getMinutes() + deliveryDate.getTimezoneOffset());
-
     // Supongo que el dato quantity que va a venir es inválido
     document.querySelector('#quantity').classList.add('is-invalid');
-
     // Compruebo que quantity sea de tipo número y mayor a cero
     if (!isNaN(quantity) && (quantity > 0)) {
-
         // Como quantity es correcto elimino la clase de dato inválido
         document.querySelector('#quantity').classList.remove('is-invalid');
-
         // Armo un registro con los datos obtenidos
         let registro = {
             "article": article,
@@ -55,7 +47,6 @@ async function guardar() {
             "deliveryDate": deliveryDate,
             "client": userId
         }
-
         // Solicito el POST al servidor
         let response = await fetch(`../order/purchase/`, {
             "method": "POST",
@@ -64,23 +55,20 @@ async function guardar() {
             },
             "body": JSON.stringify(registro)
         });
-
         // Actualizo la tabla
         mostrarTablaOrdenes();
-
-        // Inicializo los inputs
+        // Inicializo los inputs del form para una nueva carga
         inicializarInputs();
     }
 }
 
+// Función quelve a la página principal
 function volver() {
-    // Vuelve a la página principal
     location.href = `/html/monitor.cliente.principal.html?userId=${userId}`;
 }
 
 // Función que muestra por pantalla la tabla de ordenes de compra
 async function mostrarTablaOrdenes() {
-
     // Consulto las ordenes de compra existentes
     try {
         let response = await fetch(`../order/purchase/client/${userId}`);
@@ -90,10 +78,7 @@ async function mostrarTablaOrdenes() {
     catch (err) {
         alert(err.message);
     }
-
-
-    // Se genera contenido html
-    let table = document.getElementById("tbl");
+    // Genero el contenido html de la tabla
     let html = "";
     for (let r of ordenesCompra) {
         html += `
@@ -103,29 +88,28 @@ async function mostrarTablaOrdenes() {
                 <td>${r.quantity}</td>
                 <td>${formatearFecha(r.deliveryDate)}</td>
                 <td>${statusOC(r.status)}</td>
+                <td><div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: ${r.status*100/4}%" aria-valuenow="${r.status*100/4}" aria-valuemin="0" aria-valuemax="100"></div>
+              </div></td>
             </tr>    
         `;
     }
-
-    // Se asigna el contenido generado al body de la tabla
+    // Asigno el contenido generado al body de la tabla
     document.querySelector("#tblOrdenesCompra").innerHTML = html;
 }
 
 // Función que inicializa los inputs del formulario
 function inicializarInputs() {
-    // Cargo el select con artículos
+    // Cargo el select con los artículos disponibles
     cargarArticulos();
     document.querySelector('#article').value = 1;
     document.querySelector('#quantity').value = "";
-    
     // Obtengo la fecha de hoy y le sumo un plazo minimo de entrega
     let hoy = new Date();
     const plazoEntrega = 7;
     hoy.setDate(hoy.getDate() + plazoEntrega);
-    
     // Formateo dicha fecha a lo esperado por el input #deliveryDate
     let fecha = formatearFechaForInput(hoy);
-    
     // Finalmente le asigno el valor al input
     document.querySelector('#deliveryDate').value = fecha;
 }
@@ -145,7 +129,7 @@ function formatearFecha(fecha) {
     return fechaFormateada;
 }
 
-// Función que dada una fecha completa de sistema (de tipo object) la formatea a lo esperado en 
+// Función que dada una fecha completa de sistema (de tipo Date) la formatea a lo esperado en 
 // un input de tipo 'date'
 function formatearFechaForInput(fecha) {
     const anio = fecha.getFullYear();
@@ -167,7 +151,7 @@ function statusOC(status) {
         case 0:
             return "En análisis";
         case 1:
-            return "Con OF asignada";
+            return "OF asignada";
         case 2:
             return "En Proceso";
         case 3:
@@ -177,8 +161,8 @@ function statusOC(status) {
     }
 }
 
+// Función que carga el input de tipo select con los artículos disponibles
 async function cargarArticulos() {
-
     let respuesta = [];
     // Obtengo el id de la compañia a la que le compra el cliente
     try {
@@ -187,25 +171,20 @@ async function cargarArticulos() {
     } catch (err) {
         alert(err.message);
     }
-
     let companyId = respuesta['id'];
-    // Debug
-    console.log("Id de la compania = " + companyId);
-    
-    // Solicito la lista de artículos
+    // Solicito la lista de artículos utilizando el companyId
     let listaArticulos = [];
-    
     try {
         let response = await fetch(`../article/company/${companyId}`);
         listaArticulos = await response.json();
     } catch (err) {
         alert(err.message);
     }
-
-    let select = document.getElementById("article"); // Seleccionamos el select
-    // Aquí vaciar las opciones del select
+    // Identifico el inpu de tipo select
+    let select = document.getElementById("article");
+    // Vacio su lista de opciones
     select.innerHTML = "";
-    
+    // Lo cargo con los articulos disponibles
     for(let i=0; i < listaArticulos.length; i++){ 
         let option = document.createElement("option"); // Creamos la opción
         option.value = listaArticulos[i]['id']; // Indicamos su valor
