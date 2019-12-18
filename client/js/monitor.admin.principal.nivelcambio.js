@@ -12,19 +12,18 @@ for (let i = 0; i < paramarr.length; i++) {
 }
 let userId = params['userId'];
 let ncId = params['ncId'];
+
+// Declaro variables
 let processId;
 
-// Debug
-console.log(" userId: " + userId + " ncId: " + ncId);
-
-// Botón Siguiente
+// Asigno su listener al botón Siguiente
 let btnSiguiente = document.querySelector("#btnSiguiente");
 btnSiguiente.addEventListener("click", siguiente);
 
-// Se llama a la función que actualiza el formulario
+// Llamo a la función que inicializa el formulario
 load(ncId);
 
-// Función que solicita al servidor los datos del nivel de cambio
+// Función que inicializa el formulario
 async function load(ncId) {
     try {
         let response = await fetch(`../article/nc/${ncId}`);
@@ -42,20 +41,17 @@ async function load(ncId) {
 
 // Función que guarda los datos del nivel de cambio y avanza al paso siguiente
 async function siguiente() {
-
     // Obtengo los datos del DOM
     let date = new Date(document.querySelector('#date').value);
     date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
     let plan = document.querySelector('#plan').value;
     let image = document.querySelector('#image').value;
-
     // Armo un registro con los datos obtenidos
     let registro = {
         "date": date,
         "plan": plan,
         "image": image
     }
-
     // Solicito el PUT al servidor
     let response = await fetch(`../article/nc/${ncId}`, {
         "method": "PUT",
@@ -64,7 +60,6 @@ async function siguiente() {
         },
         "body": JSON.stringify(registro)
     })
-    
     // Avanza hacia el paso siguiente
     location.href = `/html/monitor.admin.principal.proceso.html?userId=${userId}&processId=${processId}`;
 }
