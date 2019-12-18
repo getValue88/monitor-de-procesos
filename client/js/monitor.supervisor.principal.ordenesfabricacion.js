@@ -43,6 +43,7 @@ async function mostrarTablaOrdenes() {
     try {
         let response = await fetch(`../order/manufacture/supervisor/${userId}`);
         ordenesFabricacion = await response.json();
+        ordenesFabricacion.sort((a, b) => new Date(a.initialDate) - new Date(b.initialDate));
     }
     catch (err) {
         alert(err.message);
@@ -62,7 +63,6 @@ async function mostrarTablaOrdenes() {
         }
         html += `
             <tr>
-                <td>${r.id}</td>
                 <td>${formatearFecha(r.initialDate)}</td>
                 <td>${formatearFecha(r.deliveryDate)}</td>
                 ${endDateHTML}

@@ -59,14 +59,11 @@ async function mostrarTablaTareas() {
     try {
         let response = await fetch(`../process/concreteTask/${concreteProcessId}`);
         tareas = await response.json();
+        tareas.sort((a, b) => a.code - b.code);
     }
     catch (err) {
         alert(err.message);
     }
-
-    // Ordeno el arreglo de tareas
-    tareas.sort((a, b) => a.code - b.code);
-    console.log(tareas);
 
     // Genero los rows de la tabla
     html = "";

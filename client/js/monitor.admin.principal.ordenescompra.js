@@ -61,7 +61,7 @@ async function mostrarTablaOrdenes() {
         html += `
             <tr>
                 <td>${formatearFecha(r.initialDate)}</td>
-                <td>${r.article['id'] + " - " + r.article['name']}</td>
+                <td>${r.article['name']}</td>
                 <td>${r.quantity}</td>
                 <td>${formatearFecha(r.deliveryDate)}</td>
                 <td>${statusOC(r.status)}</td>

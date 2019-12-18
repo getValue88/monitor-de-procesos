@@ -110,7 +110,7 @@ async function cargarSupervisores() {
     for (let i = 0; i < listaSupervisores.length; i++) {
         let option = document.createElement("option"); // Creamos la opción
         option.value = listaSupervisores[i]['id']; // Indicamos su valor
-        option.innerHTML = listaSupervisores[i]['id'] + " - " + listaSupervisores[i]['name']; // Indicamos su texto
+        option.innerHTML = listaSupervisores[i]['name']; // Indicamos su texto
         select.appendChild(option); // Insertamos la opción en el select
     }
 }
