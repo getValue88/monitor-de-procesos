@@ -74,7 +74,8 @@ async function mostrarTablaTareas() {
     const now = new Date();
     for (let r of tareas) {
         estadoDisabled = "disabled";
-        if ((r.initialDate != null) && (r.status < 100) && (now >= new Date(r.initialdate))) {
+        let iDate = new Date(r.initialDate);
+        if ((r.initialDate != null) && (r.status < 100) && (now > iDate)) {
             estadoDisabled = "";
         }
         html += `
