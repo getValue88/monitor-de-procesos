@@ -44,7 +44,8 @@ async function load(ncId) {
 async function siguiente() {
 
     // Obtengo los datos del DOM
-    let date = document.querySelector('#date').value;
+    let date = new Date(document.querySelector('#date').value);
+    date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
     let plan = document.querySelector('#plan').value;
     let image = document.querySelector('#image').value;
 

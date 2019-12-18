@@ -36,7 +36,8 @@ async function guardar() {
     // Obtengo los datos del DOM
     let article = document.querySelector('#article').value;
     let quantity = document.querySelector('#quantity').value;
-    let deliveryDate = document.querySelector('#deliveryDate').value;
+    let deliveryDate = new Date(document.querySelector('#deliveryDate').value);
+    //deliveryDate.setMinutes(deliveryDate.getMinutes() + deliveryDate.getTimezoneOffset());
 
     // Supongo que el dato quantity que va a venir es inválido
     document.querySelector('#quantity').classList.add('is-invalid');
@@ -84,10 +85,12 @@ async function mostrarTablaOrdenes() {
     try {
         let response = await fetch(`../order/purchase/client/${userId}`);
         ordenesCompra = await response.json();
+        ordenesCompra.sort((a,b) => a.initialDate > b.initialDate);
     }
     catch (err) {
         alert(err.message);
     }
+
 
     // Se genera contenido html
     let table = document.getElementById("tbl");
@@ -130,6 +133,7 @@ function inicializarInputs() {
 // Función que dada una fecha completa de sistema (de tipo string) la formatea a 'dd-mm-aaaa'
 function formatearFecha(fecha) {
     let d = new Date(fecha);
+    d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
     const anio = d.getFullYear();
     let mes = d.getMonth() + 1; // Enero es 0!
     let dia = d.getDate();
