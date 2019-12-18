@@ -1,0 +1,21 @@
+/* Estilo de la tabla */
+
+table {
+  border-collapse: collapse;
+  width: 98%;
+  margin-left:1%; 
+  margin-right:1%;
+}
+
+th {
+  background-color: #4CAF50;
+  color: white;
+}
+
+td {
+  padding: 5px;
+}
+
+tr:nth-child(even) {
+  background-color: lightgrey;
+}
