@@ -10,19 +10,19 @@ for (let i = 0; i < paramarr.length; i++) {
     params[tmparr[0]] = tmparr[1];
 }
 
+// Declaro variables
 let userId = params['userId'];
 let companyId;
-let ncId;
+let ncId; // Nivel de cambio
 
-// Botón Siguiente
+// Asigno su listener al botón Siguiente
 let btnSiguiente = document.querySelector("#btnSiguiente");
 btnSiguiente.addEventListener("click", siguiente);
 
-// Se llama a la función que actualiza el formulario
+// Llamo a la función que actualiza el formulario
 load(userId);
 
-
-// Función que solicita al servidor los datos de la empresa
+// Función que actualiza el formulario
 async function load(userId) {
     try {
         let response = await fetch(`../user/company/${userId}`);
@@ -31,7 +31,7 @@ async function load(userId) {
     } catch (err) {
         alert(err.message);
     }
-    // Asigno valor automático al campo number
+    // Asigno valor automático al input number
     try {
         let response = await fetch(`../article/last/${companyId}`);
         respuesta = await response.json();
@@ -44,12 +44,10 @@ async function load(userId) {
 
 // Función que guarda los datos del artículo y avanza al paso siguiente
 async function siguiente() {
-
     // Obtengo los datos del DOM
     let number = document.querySelector('#number').value;
     let name = document.querySelector('#name').value;
     let description = document.querySelector('#description').value;
-
     // Armo un registro con los datos obtenidos
     let registro = {
         "number": number,
@@ -57,7 +55,6 @@ async function siguiente() {
         "description": description,
         "company": companyId
     }
-
     // Solicito el POST al servidor
     let response = await fetch(`../article/`, {
         "method": "POST",
@@ -66,11 +63,9 @@ async function siguiente() {
         },
         "body": JSON.stringify(registro)
     })
-
     // Obtengo el Id de nivel de cambio
     let respuesta = await response.json();
     ncId = respuesta['ncID'];
-
-    // Avanza hacia el paso siguiente
+    // Avanzo hacia el paso siguiente
     location.href = `/html/monitor.admin.principal.nivelcambio.html?userId=${userId}&ncId=${ncId}`;
 }

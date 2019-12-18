@@ -67,7 +67,7 @@ async function guardar() {
         "body": JSON.stringify(registro)
     })
     // Vuelvo a la página anterior
-    location.href = `/html/monitor.admin.principal.html?userId=${userId}`;
+    volver();
 }
 
 // Función que vuelve a la página anterior
