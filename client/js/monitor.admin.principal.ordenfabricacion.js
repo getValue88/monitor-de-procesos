@@ -33,6 +33,8 @@ async function inicializarFormulario(userId, purchaseOrderId) {
     let fecha = formatearFechaForInput(hoy);
     // Finalmente le asigno el valor al input
     document.querySelector('#initialDate').value = fecha;
+    document.querySelector('#initialDate').min = formatearFechaForInput(new Date());
+
     // Indico la orden de compra asociada a la orden de fabricación
     document.querySelector('#purchaseOrderId').value = purchaseOrderId;
     cargarSupervisores();

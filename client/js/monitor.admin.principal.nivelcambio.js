@@ -31,6 +31,7 @@ async function load(ncId) {
         // Obtengo la fecha de hoy y le doy el formato esperado por el input
         let hoy = new Date();
         document.querySelector('#date').value = formatearFechaForInput(hoy);
+        document.querySelector('#date').min = formatearFechaForInput(new Date());
         document.querySelector('#plan').value = respuesta['plan'];
         document.querySelector('#image').value = respuesta['image'];
         processId = respuesta['process']['id'];
