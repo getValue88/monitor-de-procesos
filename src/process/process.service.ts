@@ -7,6 +7,7 @@ import { StandardProcess } from './entities/standardProcess.entity';
 import { ManufactureOrder } from '../order/entities/manufactureOrder.entity';
 import { ConcreteProcess } from './entities/concreteProcess.entity';
 import { ConcreteTask } from './entities/concreteTask.entity';
+import { PurchaseOrder } from '../order/entities/purchaseOrder.entity';
 
 @Injectable()
 export class ProcessService {
@@ -15,7 +16,8 @@ export class ProcessService {
         @InjectRepository(StandardProcess) private readonly stdProcessRepository: Repository<StandardProcess>,
         @InjectRepository(ConcreteProcess) private readonly concreteProcessRepository: Repository<ConcreteProcess>,
         @InjectRepository(ConcreteTask) private readonly concreteTaskRepository: Repository<ConcreteTask>,
-        @InjectRepository(ManufactureOrder) private readonly manufactureOrderRepository: Repository<ManufactureOrder>) { }
+        @InjectRepository(ManufactureOrder) private readonly manufactureOrderRepository: Repository<ManufactureOrder>,
+        @InjectRepository(PurchaseOrder) private readonly purchaseOrderRepository: Repository<PurchaseOrder>) { }
 
     public async createStdTask(stdTask): Promise<boolean> {
         try {
@@ -41,23 +43,7 @@ export class ProcessService {
             return false;
         }
     }
-/* 
-    public async createStandardProcess(standardProcessDto: StandardProcessDTO): Promise<any> {
-        try {
-            await this.stdProcessRepository.save(new StandardProcess(
-                standardProcessDto['name'],
-                standardProcessDto['description']
-            ));
-
-            return await this.stdProcessRepository.createQueryBuilder('process')
-                .select("max(id)", "id")
-                .getRawOne();
-
-        } catch {
-            return null;
-        }
-    }
- */
+    
     public async getProcessById(processId: number): Promise<StandardProcess> {
         try {
             return await this.stdProcessRepository.findOne({ where: { id: processId } });
@@ -73,8 +59,8 @@ export class ProcessService {
 
             toUpdateProcess.setName(standardProcessDto['name']);
             toUpdateProcess.setDescription(standardProcessDto['description']);
+            
             await this.stdProcessRepository.save(toUpdateProcess);
-
             return true;
 
         } catch {
@@ -96,8 +82,7 @@ export class ProcessService {
                     'stdPrcs.name',
                     'article.number',
                     'article.name',
-                    'po.quantity'
-                ])
+                    'po.quantity'])
                 .where('mfOrder.id= :mfId', { mfId: manufactureId })
                 .getRawOne();
 
@@ -117,8 +102,8 @@ export class ProcessService {
             manufactureOrder,
             null
         );
-        await this.concreteProcessRepository.save(newConcreteProcess);
 
+        await this.concreteProcessRepository.save(newConcreteProcess);
         this.createConcreteTasks(newConcreteProcess);
     }
 
@@ -181,7 +166,9 @@ export class ProcessService {
                 ], where: { id: id }
             });
 
-            const quantity = concreteTask.getConcreteProcess().getManufactureOrder().getPurchaseOrder().getQuantity();
+            let purchaseOrder = concreteTask.getConcreteProcess().getManufactureOrder().getPurchaseOrder();
+            const quantity = purchaseOrder.getQuantity();
+            
             const previousStatus = concreteTask.getStatus();
             concreteTask.setStatus(status['status']);
 
@@ -213,6 +200,9 @@ export class ProcessService {
                     await this.concreteTaskRepository.save(nextTask);
                 }
             }
+
+            purchaseOrder.setStatus(2);
+            await this.purchaseOrderRepository.save(purchaseOrder);
             await this.concreteTaskRepository.save(concreteTask);
             return true;
 
@@ -239,19 +229,16 @@ export class ProcessService {
 
             currentProcessStatus -= previousStatus * taskWeight / 100;
             currentProcessStatus += status * taskWeight / 100;
-
-            /* 
-                        console.log("processtime:" + totalProcessTime +
-                            "\ncurrentprocessstatus:" + currentProcessStatus +
-                            "\nquantity:" + quantity +
-                            "\ntaskweight:" + taskWeight +
-                            "\nrest previous status:" + previousStatus * taskWeight / 100 +
-                            "\nSum currentstatus:" + status * taskWeight / 100)
-             */
             concreteProcess.setStatus(currentProcessStatus);
 
-            if (currentProcessStatus >= 100)
+            if (currentProcessStatus >= 100){
+                const purchaseOrder = manufactureOrder.getPurchaseOrder();
                 concreteProcess.setEndDate(new Date());
+
+                purchaseOrder.setStatus(3);
+                await this.purchaseOrderRepository.save(purchaseOrder);
+            }
+
 
             await this.concreteProcessRepository.save(concreteProcess);
             return true;

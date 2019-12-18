@@ -47,7 +47,8 @@ async function inicializarFormulario(userId, purchaceOrderId) {
 async function guardar() {
 
     // Obtengo los datos del DOM
-    let initialDate = document.querySelector('#initialDate').value;
+    let initialDate = new Date(document.querySelector('#initialDate').value);
+    initialDate.setMinutes(initialDate.getMinutes() + initialDate.getTimezoneOffset());
     let purchaceOrderId = document.querySelector('#purchaceOrderId').value;
     let supervisorId = document.querySelector('#supervisorId').value;
 
