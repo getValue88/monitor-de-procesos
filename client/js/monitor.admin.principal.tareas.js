@@ -19,44 +19,29 @@ let tareas = [];
 // Preseteo el nombre de la tarea como Op. 10, Op. 20, Op. 30, etc.
 document.querySelector('#name').value = "Op. " + (tareas.length + 1) * 10;
 
-// Debug
-console.log(" userId: " + userId + " processId: " + processId);
-
-// Botón Guardar
+// Asigno su listener al botón Guardar
 let btnGuardar = document.querySelector("#btnGuardar");
 btnGuardar.addEventListener("click", guardar);
 
-// Botón Terminar
+// Asigno su listener al botón Terminar
 let btnTerminar = document.querySelector("#btnTerminar");
 btnTerminar.addEventListener("click", terminar);
 
-// Se llama a la función que actualiza el formulario
-load(processId);
-
-// Función que solicita al servidor los datos de las tareas existentes
-async function load(processId) {
-    // En esta instancia no hay tareas en la base. Están en un arreglo de memoria.
-    // Así que no se hace un fetch.
-    mostrarTablaTareas(tareas);
-}
+// Refresco la vista de la tabla de tareas
+mostrarTablaTareas(tareas);
 
 // Función que guarda los datos del nivel de cambio y avanza al paso siguiente
 async function guardar() {
-
     // Obtengo los datos del DOM
     let name = document.querySelector('#name').value;
     let description = document.querySelector('#description').value;
     let requiredTime = document.querySelector('#requiredTime').value;
-
     // Asumo que el dato requiredTime que venga va a ser incorrecto
     document.querySelector('#requiredTime').classList.add('is-invalid');
-
     // Valido que requiredTime sea un número y mayor a cero
     if (!isNaN(requiredTime) && (requiredTime > 0)) {
-
         // Como requiredTime es correcto le elimino la clase de dato inválido
         document.querySelector('#requiredTime').classList.remove('is-invalid');
-
         // Armo un registro con los datos obtenidos
         let registro = {
             "name": name,
@@ -64,13 +49,10 @@ async function guardar() {
             "requiredTime": requiredTime,
             "process": processId
         }
-
         // Guardo la tarea en el arreglo de tareas
         tareas.push(registro);
-
         // Actualizo la tabla
         mostrarTablaTareas(tareas);
-
         // Vacio los datos de los inputs
         document.querySelector('#name').value = "";
         document.querySelector('#description').value = "";

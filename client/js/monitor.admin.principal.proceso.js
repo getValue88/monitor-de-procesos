@@ -2,7 +2,6 @@
 // para obtener el userId del admin y el processId del proceso.
 // Se accede a los mismos con la sentencias: 
 // params['userId'] y params['processId']
-
 let paramstr = window.location.search.substr(1);
 let paramarr = paramstr.split("&");
 let params = [];
@@ -13,10 +12,7 @@ for (let i = 0; i < paramarr.length; i++) {
 let userId = params['userId'];
 let processId = params['processId'];
 
-// Debug
-console.log(" userId: " + userId + " processId: " + processId);
-
-// Botón Siguiente
+// Agrego su listener al botón Siguiente
 let btnSiguiente = document.querySelector("#btnSiguiente");
 btnSiguiente.addEventListener("click", siguiente);
 
@@ -37,17 +33,14 @@ async function load(processId) {
 
 // Función que guarda los datos del nivel de cambio y avanza al paso siguiente
 async function siguiente() {
-
     // Obtengo los datos del DOM
     let name = document.querySelector('#name').value;
     let description = document.querySelector('#description').value;
-
     // Armo un registro con los datos obtenidos
     let registro = {
         "name": name,
         "description": description
     }
-
     // Solicito el PUT al servidor
     let response = await fetch(`../process/stdPrcs/${processId}`, {
         "method": "PUT",
@@ -56,7 +49,6 @@ async function siguiente() {
         },
         "body": JSON.stringify(registro)
     })
-    
-    // Avanza hacia el paso siguiente
+    // Avanzo hacia el paso siguiente
     location.href = `/html/monitor.admin.principal.tareas.html?userId=${userId}&processId=${processId}`;
 }

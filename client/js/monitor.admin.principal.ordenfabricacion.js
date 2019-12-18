@@ -12,46 +12,39 @@ for (let i = 0; i < paramarr.length; i++) {
 let userId = params['userId'];
 let purchaceOrderId = params['purchaceOrderId'];
 
-// Botón Guardar
+// Asigno su listener al botón Guardar
 let btnGuardar = document.querySelector("#btnGuardar");
 btnGuardar.addEventListener("click", guardar);
 
-// Botón Volver
+// Asigno su listener al botón Volver
 let btnVolver = document.querySelector("#btnVolver");
 btnVolver.addEventListener("click", volver);
 
-// Se llama a la función que inicializa el formulario
+// Llamo a la función que inicializa el formulario
 inicializarFormulario(userId, purchaceOrderId);
 
 // Función que inicializa el formulario
 async function inicializarFormulario(userId, purchaceOrderId) {
-    
     // Obtengo la fecha de hoy y le sumo un plazo de 7 dias
     let hoy = new Date();
     const plazoInicio = 7;
     hoy.setDate(hoy.getDate() + plazoInicio);
-
     // Formateo dicha fecha a lo esperado por el input #deliveryDate
     let fecha = formatearFechaForInput(hoy);
-
     // Finalmente le asigno el valor al input
     document.querySelector('#initialDate').value = fecha;
-    
     // Indico la orden de compra asociada a la orden de fabricación
     document.querySelector('#purchaceOrderId').value = purchaceOrderId;
-
     cargarSupervisores();
 }
 
 // Función que guarda los datos de la orden de fabricación
 async function guardar() {
-
     // Obtengo los datos del DOM
     let initialDate = new Date(document.querySelector('#initialDate').value);
     initialDate.setMinutes(initialDate.getMinutes() + initialDate.getTimezoneOffset());
     let purchaceOrderId = document.querySelector('#purchaceOrderId').value;
     let supervisorId = document.querySelector('#supervisorId').value;
-
     // Obtengo el id de la compañia
     let respuesta = [];
     try {
@@ -61,7 +54,6 @@ async function guardar() {
         alert(err.message);
     }
     let companyId = respuesta['id'];
-
     // Armo un registro con los datos obtenidos
     let registro = {
         "initialDate": initialDate,
@@ -69,7 +61,6 @@ async function guardar() {
         "company": companyId,
         "supervisor": supervisorId
     }
-
     // Solicito el POST al servidor
     let response = await fetch(`../order/manufacture/`, {
         "method": "POST",
@@ -78,17 +69,14 @@ async function guardar() {
         },
         "body": JSON.stringify(registro)
     });
-
-    // Vuelve a la página anterior
+    // Vuelvo a la página anterior
     location.href = `/html/monitor.admin.principal.ordenescompra.html?userId=${userId}`;
 }
 
-// Carga el select del formulario con los supervisores de la empresa
+// Función que carga el select del formulario con los supervisores de la empresa
 async function cargarSupervisores() {
-
     // Solicito la lista de supervisores
     let listaSupervisores = [];
-    
     // Obtengo el id de la compañia
     let respuesta = [];
     try {
@@ -97,17 +85,18 @@ async function cargarSupervisores() {
     } catch (err) {
         alert(err.message);
     }
+    // Obtengo el companyId de la empresa
     let companyId = respuesta['id'];
-
+    // Obtengo la lista de supervisores según el companyId
     try {
         let response = await fetch(`../user/supervisores/company/${companyId}`);
         listaSupervisores = await response.json();
     } catch (err) {
         alert(err.message);
     }
-
-    let select = document.getElementById("supervisorId"); // Seleccionamos el select
-
+    // Identifico el input de tipo select
+    let select = document.getElementById("supervisorId"); 
+    // Lo cargo con los supervisores
     for (let i = 0; i < listaSupervisores.length; i++) {
         let option = document.createElement("option"); // Creamos la opción
         option.value = listaSupervisores[i]['id']; // Indicamos su valor
@@ -116,6 +105,7 @@ async function cargarSupervisores() {
     }
 }
 
+// Función que vuelve a la página anterior
 function volver() {
     location.href = `/html/monitor.admin.principal.ordenescompra.html?userId=${userId}`;
 }
