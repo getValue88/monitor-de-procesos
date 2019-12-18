@@ -89,7 +89,7 @@ async function mostrarTablaOrdenes() {
                 <td>${formatearFecha(r.deliveryDate)}</td>
                 <td>${statusOC(r.status)}</td>
                 <td><div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: ${r.status*100/4}%" aria-valuenow="${r.status*100/4}" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar" role="progressbar" style="width: ${r.status*100/3}%" aria-valuenow="${r.status*100/3}" aria-valuemin="0" aria-valuemax="100"></div>
               </div></td>
             </tr>    
         `;
