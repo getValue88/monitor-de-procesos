@@ -10,36 +10,20 @@ for (let i = 0; i < paramarr.length; i++) {
 }
 let userId = params['userId'];
 
-// Debug
-console.log(" userId: " + userId);
+// Agrego su listener al botón Volver
+let btnVolver = document.querySelector("#btnVolver");
+btnVolver.addEventListener("click", volver);
 
 // Inicializo el arreglo de ordenes de fabricación
 let ordenesfabricacion = [];
 
-// Se llama a la función que actualiza el formulario
+// Llamo a la función que actualiza el formulario
 mostrarTablaOrdenes();
 
-// Botón Volver
-let btnVolver = document.querySelector("#btnVolver");
-btnVolver.addEventListener("click", volver);
-
-// Función que muestra por pantalla la tabla de ordenes de compra
+// Función que muestra por pantalla la tabla de ordenes de fabricación
 async function mostrarTablaOrdenes() {
-
     let respuesta = [];
-    // Obtengo el id de la compañia a la que le compra el cliente
-    try {
-        let response = await fetch(`../user/company/${userId}`);
-        respuesta = await response.json();
-    } catch (err) {
-        alert(err.message);
-    }
-
-    let companyId = respuesta['id'];
-    console.log("Id de la compania = " + companyId);
-
-
-    // Consulto las ordenes de compra existentes
+    // Consulto las ordenes de fabricación que se le han asignado al supervisor
     try {
         let response = await fetch(`../order/manufacture/supervisor/${userId}`);
         ordenesFabricacion = await response.json();
@@ -48,12 +32,9 @@ async function mostrarTablaOrdenes() {
     catch (err) {
         alert(err.message);
     }
-
-    // Se genera contenido html
-    let table = document.getElementById("tbl");
+    // Genero contenido html
     let html = "";
     let estadoDisabled;
-    
     for (let r of ordenesFabricacion) {
         estadoDisabled = "";
         let endDateHTML = "<td>-</td>";
@@ -70,11 +51,9 @@ async function mostrarTablaOrdenes() {
             </tr>    
         `;
     }
-
-    // Se asigna el contenido generado al body de la tabla
+    // Asigno el contenido html generado al body de la tabla
     document.querySelector("#tblOrdenesFabricacion").innerHTML = html;
-
-    // Asigno un listener a cada botón
+    // Asigno un listener a cada botón generado
     let botonesInformarDesempenio = document.querySelectorAll(".btn-informarDesempenio");
     botonesInformarDesempenio.forEach(e => {
         console.log(e.id);
@@ -82,12 +61,11 @@ async function mostrarTablaOrdenes() {
             informarDesempenio(e.id)
         });
     });
-
 }
 
-// Función que informa el desempenio del proceso asociado a la orden de fabricación
+// Función que llama a la vista de informar desempenio
 async function informarDesempenio(manufactureOrderId) {
-    location.href = `/html/monitor.supervisor.principal.informarDesempenio.html?userId=${userId}&manufactureOrderId=${manufactureOrderId}`;
+    location.href = `/html/monitor.supervisor.principal.informardesempenio.html?userId=${userId}&manufactureOrderId=${manufactureOrderId}`;
 }
 
 // Función que dada una fecha completa de sistema (de tipo string) la formatea a 'dd-mm-aaaa'

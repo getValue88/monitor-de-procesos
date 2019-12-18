@@ -5,12 +5,10 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <title>Monitor de Procesos - Supervisor - Principal - Ordenes Asignadas</title>
-
+    <title>Supervisor - Principal - Ordenes Asignadas</title>
     <!-- CSS References -->
     <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/monitor.admin.principal.ordenescompra.css">
+    <link rel="stylesheet" href="../css/monitor.tablas.css">
 </head>
 
 <body>
@@ -18,7 +16,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <!-- <a class="navbar-brand">Monitor de Procesos - Inicio</a> -->
         <span class="navbar-text">
-            Monitor de Procesos -> Supervisor -> Ordenes Asignadas
+            Supervisor -> Ordenes Asignadas
         </span>
         <button class="navbar-toggler" type="button btn-lg" data-toggle="collapse" data-target="#navbarText"
             aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,18 +32,20 @@
         </div>
     </nav>
 
+    <!-- Contenedor para la tabla de las ordenes de compra -->
     <div class="row">
-        <!-- Contenedor para la tabla de las ordenes de compra -->
         <div class="col-12">
             <table id="tbl" class="border">
+                <!-- Encabezado -->
                 <tr>
                     <th>Fecha de Inicio</th>
                     <th>Fecha de fin prevista</th>
                     <th>Fecha de fin real</th>
                     <th></th>
                 </tr>
+                <!-- Cuerpo -->
                 <tbody id="tblOrdenesFabricacion">
-                    <!-- El cuerpo de la tabla se redefine por javascript -->
+                    <!-- Se genera por javascript -->
                 </tbody>
             </table>
         </div>
