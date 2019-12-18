@@ -1,8 +1,19 @@
 body {
-    font-family: sans-serif;
-    background: #edebe9 linear-gradient(to bottom, #afa698, #edebe9 130px) no-repeat;
-    color: #4d4d4d;
-    /* background-color: #cccccc; /* Used if the image is unavailable */
+	height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+html{
+	height: 100%;
+}
+
+.contenedor{
+    /* background: url(../img/grafico-de-barras-1366x768.png) no-repeat center ; */
+    height: 80%;
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 
 .modal-login {
