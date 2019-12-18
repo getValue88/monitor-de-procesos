@@ -99,7 +99,7 @@ async function mostrarTablaOrdenes() {
         html += `
             <tr>
                 <td>${formatearFecha(r.initialDate)}</td>
-                <td>${r.article['id']+" - "+r.article['name']}</td>
+                <td>${r.article['name']}</td>
                 <td>${r.quantity}</td>
                 <td>${formatearFecha(r.deliveryDate)}</td>
                 <td>${statusOC(r.status)}</td>
@@ -209,7 +209,7 @@ async function cargarArticulos() {
     for(let i=0; i < listaArticulos.length; i++){ 
         let option = document.createElement("option"); // Creamos la opción
         option.value = listaArticulos[i]['id']; // Indicamos su valor
-        option.innerHTML = listaArticulos[i]['id'] + " - " + listaArticulos[i]['name']; // Indicamos su texto
+        option.innerHTML = listaArticulos[i]['name']; // Indicamos su texto
         select.appendChild(option); // Insertamos la opción en el select
     }
 }
