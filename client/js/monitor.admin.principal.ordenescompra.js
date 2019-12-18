@@ -1,6 +1,5 @@
 // Leo el parámetro que viene del llamado de la página anterior para obtener el userId del cliente.
 // Se accede al mismo con la sentencia: params['userId']
-
 let paramstr = window.location.search.substr(1);
 let paramarr = paramstr.split("&");
 let params = [];
@@ -10,22 +9,18 @@ for (let i = 0; i < paramarr.length; i++) {
 }
 let userId = params['userId'];
 
-// Debug
-console.log(" userId: " + userId);
-
 // Inicializo el arreglo de ordenes de compra
 let ordenesCompra = [];
 
-// Se llama a la función que actualiza el formulario
+// Llamo a la función que actualiza el formulario
 mostrarTablaOrdenes();
 
-// Botón Volver
+// Agrego su listener al botón Volver
 let btnVolver = document.querySelector("#btnVolver");
 btnVolver.addEventListener("click", volver);
 
 // Función que muestra por pantalla la tabla de ordenes de compra
 async function mostrarTablaOrdenes() {
-
     let respuesta = [];
     // Obtengo el id de la compañia a la que le compra el cliente
     try {
@@ -34,12 +29,9 @@ async function mostrarTablaOrdenes() {
     } catch (err) {
         alert(err.message);
     }
-
+    // Obtengo el companyId de la empresa
     let companyId = respuesta['id'];
-    console.log("Id de la compania = " + companyId);
-
-
-    // Consulto las ordenes de compra existentes
+    // Consulto las ordenes de compra existentes según el companyId
     try {
         let response = await fetch(`../order/purchase/company/${companyId}`);
         ordenesCompra = await response.json();
@@ -47,12 +39,9 @@ async function mostrarTablaOrdenes() {
     catch (err) {
         alert(err.message);
     }
-
-    // Se genera contenido html
-    let table = document.getElementById("tbl");
+    // Genero contenido html
     let html = "";
     let estadoDisabled;
-    
     for (let r of ordenesCompra) {
         estadoDisabled = "";
         if (r.status != 0) {
@@ -65,6 +54,9 @@ async function mostrarTablaOrdenes() {
                 <td>${r.quantity}</td>
                 <td>${formatearFecha(r.deliveryDate)}</td>
                 <td>${statusOC(r.status)}</td>
+                <td><div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: ${r.status*100/3}%" aria-valuenow="${r.status*100/3}" aria-valuemin="0" aria-valuemax="100"></div>
+              </div></td>
                 <td><button type="button" id="${r.id}" class="btn-asignarOF btn btn-secondary btn-block" ${estadoDisabled}>Asignar OF</button></td>
             </tr>    
         `;
@@ -126,7 +118,7 @@ function statusOC(status) {
         case 0:
             return "En análisis";
         case 1:
-            return "Con OF asignada";
+            return "OF asignada";
         case 2:
             return "En Proceso";
         case 3:
