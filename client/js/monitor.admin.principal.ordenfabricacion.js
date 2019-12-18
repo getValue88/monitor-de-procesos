@@ -42,7 +42,15 @@ async function inicializarFormulario(userId, purchaseOrderId) {
 async function guardar() {
     // Obtengo los datos del DOM
     let initialDate = new Date(document.querySelector('#initialDate').value);
+    // Ajusta la diferencia horaria entre el navegador y UTC
     initialDate.setMinutes(initialDate.getMinutes() + initialDate.getTimezoneOffset());
+    // Obtengo la hora inicial
+    let time = document.querySelector('#initialTime').value;
+    // Armo un arreglo dividiendo por ":"
+    let horaMinutos = time.split(":");
+    initialDate.setHours(horaMinutos[0]);
+    initialDate.setMinutes(horaMinutos[1]);
+    alert(initialDate);
     let purchaseOrderId = document.querySelector('#purchaseOrderId').value;
     let supervisorId = document.querySelector('#supervisorId').value;
     // Obtengo el id de la compañia
