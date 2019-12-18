@@ -233,12 +233,13 @@ export class ProcessService {
 
             if (currentProcessStatus >= 100){
                 const purchaseOrder = manufactureOrder.getPurchaseOrder();
-                concreteProcess.setEndDate(new Date());
-
                 purchaseOrder.setStatus(3);
-                await this.purchaseOrderRepository.save(purchaseOrder);
-            }
+                concreteProcess.setEndDate(new Date());
+                manufactureOrder.setEndDate(new Date());
 
+                await this.purchaseOrderRepository.save(purchaseOrder);
+                await this.manufactureOrderRepository.save(manufactureOrder);
+            }
 
             await this.concreteProcessRepository.save(concreteProcess);
             return true;
