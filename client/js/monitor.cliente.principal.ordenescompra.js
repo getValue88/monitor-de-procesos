@@ -36,7 +36,8 @@ async function guardar() {
     // Obtengo los datos del DOM
     let article = document.querySelector('#article').value;
     let quantity = document.querySelector('#quantity').value;
-    let deliveryDate = document.querySelector('#deliveryDate').value;
+    let deliveryDate = new Date(document.querySelector('#deliveryDate').value);
+    deliveryDate.setMinutes(deliveryDate.getMinutes() + deliveryDate.getTimezoneOffset());
 
     // Supongo que el dato quantity que va a venir es inválido
     document.querySelector('#quantity').classList.add('is-invalid');
