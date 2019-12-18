@@ -1,6 +1,6 @@
 // Leo el parámetro que viene del llamado de la página anterior para obtener el userId del admin.
 // Se accede al mismo con las sentencia params['userId']
-// Idem para purchaceOrderId con params['purchaceOrderId]
+// Idem para purchaseOrderId con params['purchaseOrderId]
 
 let paramstr = window.location.search.substr(1);
 let paramarr = paramstr.split("&");
@@ -10,7 +10,7 @@ for (let i = 0; i < paramarr.length; i++) {
     params[tmparr[0]] = tmparr[1];
 }
 let userId = params['userId'];
-let purchaceOrderId = params['purchaceOrderId'];
+let purchaseOrderId = params['purchaseOrderId'];
 
 // Asigno su listener al botón Guardar
 let btnGuardar = document.querySelector("#btnGuardar");
@@ -21,10 +21,10 @@ let btnVolver = document.querySelector("#btnVolver");
 btnVolver.addEventListener("click", volver);
 
 // Llamo a la función que inicializa el formulario
-inicializarFormulario(userId, purchaceOrderId);
+inicializarFormulario(userId, purchaseOrderId);
 
 // Función que inicializa el formulario
-async function inicializarFormulario(userId, purchaceOrderId) {
+async function inicializarFormulario(userId, purchaseOrderId) {
     // Obtengo la fecha de hoy y le sumo un plazo de 7 dias
     let hoy = new Date();
     const plazoInicio = 7;
@@ -34,7 +34,7 @@ async function inicializarFormulario(userId, purchaceOrderId) {
     // Finalmente le asigno el valor al input
     document.querySelector('#initialDate').value = fecha;
     // Indico la orden de compra asociada a la orden de fabricación
-    document.querySelector('#purchaceOrderId').value = purchaceOrderId;
+    document.querySelector('#purchaseOrderId').value = purchaseOrderId;
     cargarSupervisores();
 }
 
@@ -43,7 +43,7 @@ async function guardar() {
     // Obtengo los datos del DOM
     let initialDate = new Date(document.querySelector('#initialDate').value);
     initialDate.setMinutes(initialDate.getMinutes() + initialDate.getTimezoneOffset());
-    let purchaceOrderId = document.querySelector('#purchaceOrderId').value;
+    let purchaseOrderId = document.querySelector('#purchaseOrderId').value;
     let supervisorId = document.querySelector('#supervisorId').value;
     // Obtengo el id de la compañia
     let respuesta = [];
@@ -57,7 +57,7 @@ async function guardar() {
     // Armo un registro con los datos obtenidos
     let registro = {
         "initialDate": initialDate,
-        "purchaseOrder": purchaceOrderId,
+        "purchaseOrder": purchaseOrderId,
         "company": companyId,
         "supervisor": supervisorId
     }

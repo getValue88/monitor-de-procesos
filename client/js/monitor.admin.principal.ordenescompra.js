@@ -77,9 +77,9 @@ async function mostrarTablaOrdenes() {
 }
 
 // Función que asigna una orden de fabricación segun el número de orden de compra
-// (purchaceOrderId) indicado como parámetro
-async function asignarOF(purchaceOrderId) {
-    location.href = `/html/monitor.admin.principal.ordenfabricacion.html?userId=${userId}&purchaceOrderId=${purchaceOrderId}`;
+// (purchaseOrderId) indicado como parámetro
+async function asignarOF(purchaseOrderId) {
+    location.href = `/html/monitor.admin.principal.ordenfabricacion.html?userId=${userId}&purchaseOrderId=${purchaseOrderId}`;
 }
 
 // Función que dada una fecha completa de sistema (de tipo string) la formatea a 'dd-mm-aaaa'
