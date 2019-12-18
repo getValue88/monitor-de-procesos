@@ -11,6 +11,8 @@ for (let i = 0; i < paramarr.length; i++) {
 }
 let userId = params['userId'];
 let manufactureOrderId = params['manufactureOrderId'];
+
+// Inicializo variables
 let concreteProcessId;
 let procesoConcreto;
 let tareas = [];
@@ -31,12 +33,10 @@ async function mostrarEncabezado() {
     catch (err) {
         alert(err.message);
     }
-
     // Asigno valores a los campos mostrados
     document.querySelector('#proceso').innerHTML = procesoConcreto['stdPrcs_name'];
     document.querySelector('#articulo').innerHTML = procesoConcreto['article_name'];
     document.querySelector('#cantidad').innerHTML = procesoConcreto['po_quantity'];
-
     // Guardo el id del proceso concreto
     concreteProcessId = procesoConcreto['cctProcess_id'];
 }
@@ -51,10 +51,8 @@ async function mostrarTablaTareas() {
     catch (err) {
         alert(err.message);
     }
-
     // Guardo el id del proceso concreto
     concreteProcessId = procesoConcreto['cctProcess_id'];
-
     // Consulto las datos de las tareas según el id del proceso concreto
     try {
         let response = await fetch(`../process/concreteTask/${concreteProcessId}`);
@@ -64,7 +62,6 @@ async function mostrarTablaTareas() {
     catch (err) {
         alert(err.message);
     }
-
     // Genero los rows de la tabla
     html = "";
     let estadoDisabled;
@@ -84,10 +81,8 @@ async function mostrarTablaTareas() {
             </tr>    
         `;
     }
-
     // Asigno el contenido generado al body de la tabla correspondiente
     document.querySelector("#tbltareas").innerHTML = html;
-
     // Creo un listener a cada botón de guardar
     let botonesGuardar = document.querySelectorAll(".btn-guardar");
     botonesGuardar.forEach(e => {
@@ -95,21 +90,16 @@ async function mostrarTablaTareas() {
             guardar(e.getAttribute('task_id'))
         });
     });
-
 }
 
 // Función que guarda los datos de la tarea modificada
 async function guardar(task_id) {
-
     // Obtengo los datos del DOM
     let status = document.querySelector(`.slider${task_id}`).value;
-
     // Armo un registro con los datos obtenidos
     let registro = {
         "status": status
     }
-
-    alert("task_id: " + task_id + " status: " + status);
     // Solicito el PUT al servidor
     let response = await fetch(`../process/concreteTask/${task_id}`, {
         "method": "PUT",
@@ -118,43 +108,15 @@ async function guardar(task_id) {
         },
         "body": JSON.stringify(registro)
     })
-
     // Hago un refresh de la tabla
     mostrarTablaTareas();
 }
 
-// Botón Volver
+// Agrego un listener al botón Volver
 let btnVolver = document.querySelector("#btnVolver");
 btnVolver.addEventListener("click", volver);
 
-// Función que dada una fecha completa de sistema (de tipo string) la formatea a 'dd-mm-aaaa'
-function formatearFecha(fecha) {
-    let d = new Date(fecha);
-    const anio = d.getFullYear();
-    let mes = d.getMonth() + 1; // Enero es 0!
-    let dia = d.getDate();
-    if (mes < 10)
-        mes = "0" + mes;
-    if (dia < 10)
-        dia = "0" + dia;
-    let fechaFormateada = "" + dia + "-" + mes + "-" + anio;
-    return fechaFormateada;
-}
-
-// Función que dada una fecha completa de sistema (de tipo object) la formatea a lo esperado en 
-// un input de tipo 'date'
-function formatearFechaForInput(fecha) {
-    const anio = fecha.getFullYear();
-    let mes = fecha.getMonth() + 1; // Enero es 0!
-    let dia = fecha.getDate();
-    if (mes < 10)
-        mes = "0" + mes;
-    if (dia < 10)
-        dia = "0" + dia;
-    let fechaFormateada = "" + anio + "-" + mes + "-" + dia;
-    return fechaFormateada;
-}
-
+// Función que vuelve a la vista anterior
 function volver() {
     location.href = `/html/monitor.supervisor.principal.ordenesfabricacion.html?userId=${userId}`;
 }
