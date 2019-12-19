@@ -1,6 +1,5 @@
 // Leo el parámetro que viene del llamado de la página anterior para obtener el userId del supervisor.
 // Se accede al mismo con la sentencia: params['userId']
-
 let paramstr = window.location.search.substr(1);
 let paramarr = paramstr.split("&");
 let params = [];
@@ -8,7 +7,6 @@ for (let i = 0; i < paramarr.length; i++) {
     let tmparr = paramarr[i].split("=");
     params[tmparr[0]] = tmparr[1];
 }
-
 let userId = params['userId'];
 
 // Agrego su listener al botón Volver
@@ -80,9 +78,9 @@ async function mostrarTablaProcesos() {
     });
 }
 
-// Función que llama a la vista de informar desempenio
-async function verDesempenio(manufactureOrderId) {
-    location.href = `/html/monitor.supervisor.principal.verDesempenio.html?userId=${userId}&manufactureOrderId=${manufactureOrderId}`;
+// Función que llama a la vista de ver desempenio
+async function verDesempenio(concreteProcessId) {
+    location.href = `/html/monitor.admin.principal.verdesempenio.html?userId=${userId}&manufactureOrderId=${concreteProcessId}`;
 }
 
 // Función que dada una fecha completa de sistema (de tipo string) la formatea a 'dd-mm-aaaa'
