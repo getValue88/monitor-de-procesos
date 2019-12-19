@@ -80,7 +80,7 @@ async function mostrarTablaProcesos() {
 
 // Función que llama a la vista de ver desempenio
 async function verDesempenio(concreteProcessId) {
-    location.href = `/html/monitor.admin.principal.verdesempenio.html?userId=${userId}&manufactureOrderId=${concreteProcessId}`;
+    location.href = `/html/monitor.admin.principal.verdesempenio.html?userId=${userId}&concreteProcessId=${concreteProcessId}`;
 }
 
 // Función que dada una fecha completa de sistema (de tipo string) la formatea a 'dd-mm-aaaa'

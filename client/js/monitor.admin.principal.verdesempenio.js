@@ -58,8 +58,9 @@ async function mostrarTablaTareas() {
             <tr>
                 <td>${r.standardTask.name}</td>
                 <td>${r.standardTask.description}</td>
-                <td>${r.status}></td>
-                <td>${r.status}></td>
+                <td><div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: ${r.status}%;" aria-valuenow="${r.status}" aria-valuemin="0" aria-valuemax="100">${r.status}%</div>
+                    </div></td>
             </tr>    
         `;
     }
