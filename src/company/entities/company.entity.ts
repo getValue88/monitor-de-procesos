@@ -2,8 +2,6 @@ import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity()
 export class Company {
-    private static instance: Company;
-
     @PrimaryGeneratedColumn()
     private id: number;
 

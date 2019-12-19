@@ -73,4 +73,12 @@ export class ManufactureOrder {
     public setPurchaseOrder(purchaseOrder: PurchaseOrder): void {
         this.purchaseOrder = purchaseOrder;
     }
+
+    public getCompany(): Company {
+        return this.company;
+    }
+
+    public setCompany(company: Company): void {
+        this.company = company;
+    }
 }

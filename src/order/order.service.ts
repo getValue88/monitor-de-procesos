@@ -23,8 +23,8 @@ export class OrderService {
 
     public async createPurchaseOrder(purchaseOrderDto: PurchaseOrderDTO): Promise<PurchaseOrder[]> {
         try {
-            let client = await this.userRepository.findOne({ where: { id: purchaseOrderDto['client'] } });
-            let article = await this.articleRepository.findOne({ relations: ['company'], where: { id: purchaseOrderDto['article'] } });
+            const client = await this.userRepository.findOne({ where: { id: purchaseOrderDto['client'] } });
+            const article = await this.articleRepository.findOne({ relations: ['company'], where: { id: purchaseOrderDto['article'] } });
 
             await this.purchaseOrderRepository.save(new PurchaseOrder(
                 purchaseOrderDto['deliveryDate'],
@@ -36,7 +36,8 @@ export class OrderService {
 
             return this.getPurchaseOrdersByClientId(purchaseOrderDto['client']);
 
-        } catch {
+        } catch (error){
+            console.log(error);
             return null;
         }
     }
@@ -58,7 +59,8 @@ export class OrderService {
                 .where('comp.id= :coId', { coId: companyId })
                 .getMany();
 
-        } catch {
+        } catch(error){
+            console.log(error);
             return null;
         }
     }
@@ -71,7 +73,8 @@ export class OrderService {
                 .where('cli.id= :cId', { cId: clientId })
                 .getMany();
 
-        } catch {
+        } catch(error){
+            console.log(error);
             return null;
         }
     }
@@ -95,7 +98,7 @@ export class OrderService {
 
             purchaseOrder.setStatus(1);
 
-            let manufatureOrder = new ManufactureOrder(
+            const manufatureOrder = new ManufactureOrder(
                 manufactureOrderDto['initialDate'],
                 deliveryDate,
                 purchaseOrder,
@@ -108,7 +111,8 @@ export class OrderService {
             this.processService.createConcreteProcess(manufatureOrder);
             return true
 
-        } catch (error) {
+        } catch(error){
+            console.log(error);
             return false;
         }
     }
@@ -122,7 +126,8 @@ export class OrderService {
                 .where('comp.id= :coId', { coId: companyId })
                 .getMany();
 
-        } catch (error) {
+        } catch(error){
+            console.log(error);
             return null;
         }
     }
@@ -130,13 +135,12 @@ export class OrderService {
     public async getManufactureOrderBySupervisorId(supervisorId: number): Promise<ManufactureOrder[]> {
         try {
             return await this.manufactureOrderRepository.createQueryBuilder('order')
-                /* .innerJoinAndSelect('order.company', 'comp')
-                .innerJoinAndSelect('order.purchaseOrder', 'po') */
                 .innerJoin('order.supervisor', 'sup')
                 .where('sup.id = :supId', { supId: supervisorId })
                 .getMany();
 
-        } catch (error) {
+        } catch(error){
+            console.log(error);
             return null;
         }
     }

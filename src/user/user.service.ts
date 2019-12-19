@@ -32,17 +32,19 @@ export class UserService {
                 };
             }
         }
-        catch {
+        catch (error) {
+            console.log(error);
             return null;
         }
     }
 
     public async getCompany(userID): Promise<Company> {
         try {
-            let user: User = await this.userRepository.findOne({ relations: ['company'], where: { id: userID } });
+            const user = await this.userRepository.findOne({ relations: ['company'], where: { id: userID } });
             return user.getCompany();
         }
-        catch {
+        catch (error) {
+            console.log(error);
             return null;
         }
     }
@@ -56,6 +58,7 @@ export class UserService {
                 .andWhere('co.id= :coId', { coId: companyId })
                 .getMany();
         } catch (error) {
+            console.log(error);
             return null;
         }
     }
