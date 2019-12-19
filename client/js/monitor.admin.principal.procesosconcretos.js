@@ -42,15 +42,12 @@ async function mostrarTablaProcesos() {
     }
     // Genero contenido html
     let html = "";
-    let estadoDisabled;
     for (let r of procesosConcretos) {
-        estadoDisabled = "";
         let endDateHTML = "<td>-</td>";
         let endTimeHTML = "<td>-</td>";
         if (r.endDate != null) {
             endDateHTML = `<td>${formatearFecha(r.endDate)}</td>`;
             endTimeHTML = `<td>${extraerHora(r.endDate)}</td>`
-            estadoDisabled = ` disabled `;
         }
         html += `
             <tr>
@@ -63,7 +60,7 @@ async function mostrarTablaProcesos() {
                 <td><div class="progress">
                     <div class="progress-bar" role="progressbar" style="width: ${r.status}%;" aria-valuenow="${r.status}" aria-valuemin="0" aria-valuemax="100">${r.status}%</div>
                     </div></td>
-                <td><button type="button" id="${r.id}" class="btn-verDesempenio btn btn-secondary btn-block" ${estadoDisabled}>Ver Desempeño</button></td>
+                <td><button type="button" id="${r.id}" class="btn-verDesempenio btn btn-secondary btn-block">Ver Desempeño</button></td>
             </tr>    
         `;
     }
