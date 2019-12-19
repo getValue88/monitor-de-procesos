@@ -8,6 +8,7 @@ for (let i = 0; i < paramarr.length; i++) {
     let tmparr = paramarr[i].split("=");
     params[tmparr[0]] = tmparr[1];
 }
+
 let userId = params['userId'];
 
 // Agrego su listener al botón Volver
@@ -15,20 +16,28 @@ let btnVolver = document.querySelector("#btnVolver");
 btnVolver.addEventListener("click", volver);
 
 // Inicializo el arreglo de ordenes de fabricación
-let ordenesfabricacion = [];
+let procesosConcretos = [];
 
 // Llamo a la función que actualiza el formulario
-mostrarTablaOrdenes();
+mostrarTablaProcesos();
 
-// Función que muestra por pantalla la tabla de ordenes de fabricación
-async function mostrarTablaOrdenes() {
+// Función que muestra por pantalla la tabla de procesos asociados a las distintas ordenes de fabricación
+async function mostrarTablaProcesos() {
     let respuesta = [];
-    // Consulto las ordenes de fabricación que se le han asignado al supervisor
+    // Obtengo el id de la compañia según el id de admin
     try {
-        let response = await fetch(`../order/manufacture/supervisor/${userId}`);
-        ordenesFabricacion = await response.json();
-        ordenesFabricacion.sort((a, b) => new Date(a.initialDate) - new Date(b.initialDate));
-        console.log(ordenesFabricacion);
+        let response = await fetch(`../user/company/${userId}`);
+        respuesta = await response.json();
+    } catch (err) {
+        alert(err.message);
+    }
+    let companyId = respuesta['id'];
+    // Consulto los procesos concretos de la empresa
+    try {
+        let response = await fetch(`../process/concreteProcess/company/${companyId}`);
+        procesosConcretos = await response.json();
+        procesosConcretos.sort((a, b) => new Date(a.initialDate) - new Date(b.initialDate));
+        console.log(procesosConcretos);
     }
     catch (err) {
         alert(err.message);
@@ -36,7 +45,7 @@ async function mostrarTablaOrdenes() {
     // Genero contenido html
     let html = "";
     let estadoDisabled;
-    for (let r of ordenesFabricacion) {
+    for (let r of procesosConcretos) {
         estadoDisabled = "";
         let endDateHTML = "<td>-</td>";
         let endTimeHTML = "<td>-</td>";
@@ -53,25 +62,27 @@ async function mostrarTablaOrdenes() {
                 <td>${extraerHora(r.deliveryDate)}</td>
                 ${endDateHTML}
                 ${endTimeHTML}
-                <td><button type="button" id="${r.id}" class="btn-informarDesempenio btn btn-secondary btn-block" ${estadoDisabled}>Informar Desempeño</button></td>
+                <td><div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: ${r.status}%;" aria-valuenow="${r.status}" aria-valuemin="0" aria-valuemax="100">${r.status}%</div>
+                    </div></td>
+                <td><button type="button" id="${r.id}" class="btn-verDesempenio btn btn-secondary btn-block" ${estadoDisabled}>Ver Desempeño</button></td>
             </tr>    
         `;
     }
     // Asigno el contenido html generado al body de la tabla
-    document.querySelector("#tblOrdenesFabricacion").innerHTML = html;
+    document.querySelector("#tblprocesosConcretos").innerHTML = html;
     // Asigno un listener a cada botón generado
-    let botonesInformarDesempenio = document.querySelectorAll(".btn-informarDesempenio");
-    botonesInformarDesempenio.forEach(e => {
-        console.log(e.id);
+    let botonesVerDesempenio = document.querySelectorAll(".btn-verDesempenio");
+    botonesVerDesempenio.forEach(e => {
         e.addEventListener("click", () => {
-            informarDesempenio(e.id)
+            verDesempenio(e.id)
         });
     });
 }
 
 // Función que llama a la vista de informar desempenio
-async function informarDesempenio(manufactureOrderId) {
-    location.href = `/html/monitor.supervisor.principal.informardesempenio.html?userId=${userId}&manufactureOrderId=${manufactureOrderId}`;
+async function verDesempenio(manufactureOrderId) {
+    location.href = `/html/monitor.supervisor.principal.verDesempenio.html?userId=${userId}&manufactureOrderId=${manufactureOrderId}`;
 }
 
 // Función que dada una fecha completa de sistema (de tipo string) la formatea a 'dd-mm-aaaa'
@@ -121,7 +132,7 @@ function statusOC(status) {
 }
 
 function volver() {
-    location.href = `/html/monitor.supervisor.principal.html?userId=${userId}`;
+    location.href = `/html/monitor.admin.principal.html?userId=${userId}`;
 }
 
 // Función que extrae la hora a partir de una fecha

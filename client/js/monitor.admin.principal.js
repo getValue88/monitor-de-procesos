@@ -21,9 +21,9 @@ btnArticulos.addEventListener("click", articulos);
 let btnOrdenesCompra = document.querySelector("#btnOrdenesCompra");
 btnOrdenesCompra.addEventListener("click", ordenesCompra);
 
-// Asigno su listener al botón Ordenes de Fabricación
-let btnOrdenesFabricacion = document.querySelector("#btnOrdenesFabricacion");
-btnOrdenesFabricacion.addEventListener("click", ordenesFabricacion);
+// Asigno su listener al botón Monitorear Procesos
+let btnprocesosconcretos = document.querySelector("#btnprocesosconcretos");
+btnprocesosconcretos.addEventListener("click", procesosconcretos);
 
 // Asigno su listener al botón Cerrar Sesión
 let btnCerrarSesion = document.querySelector("#btnCerrarSesion");
@@ -41,8 +41,8 @@ async function ordenesCompra(){
     location.href = `/html/monitor.admin.principal.ordenescompra.html?userId=${userId}`; 
 }
 
-async function ordenesFabricacion(){
-    alert("Aquí la funcionalidad del boton #btnOrdenesfabricacion");
+async function procesosconcretos(){
+    location.href = `/html/monitor.admin.principal.procesosconcretos.html?userId=${userId}`; 
 }
 
 async function cerrarSesion(){

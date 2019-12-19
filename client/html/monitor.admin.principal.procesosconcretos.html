@@ -5,9 +5,10 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Principal - Monitor</title>
-    <!-- CSS References-->
+    <title>Procesos - Monitor</title>
+    <!-- CSS References -->
     <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/monitor.tablas.css">
 </head>
 
 <body>
@@ -15,7 +16,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <!-- <a class="navbar-brand">Monitor de Procesos - Inicio</a> -->
         <span class="navbar-text">
-            Admin -> Principal
+            Admin -> Monitorear Procesos 
         </span>
         <button class="navbar-toggler" type="button btn-lg" data-toggle="collapse" data-target="#navbarText"
             aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,26 +32,36 @@
         </div>
     </nav>
 
-    <!-- Contenedor de una fila x tres columnas con capacidad responsive -->
-    <div class="container">
+    <!-- Contenedor para la tabla de las ordenes de compra -->
+    <div class="row">
+        <div class="col-12">
+            <table id="tbl" class="border">
+                <!-- Encabezado -->
+                <tr>
+                    <th>Fecha Inicio</th>
+                    <th>Hora Inicio</th>
+                    <th>Fecha Fin Prevista</th>
+                    <th>Hora Fin Prevista</th>
+                    <th>Fecha Fin Real</th>
+                    <th>Hora Fin Real</th>
+                    <th>Grado de Avance</th>
+                    <th></th>
+                </tr>
+                <!-- Cuerpo -->
+                <tbody id="tblprocesosConcretos">
+                    <!-- Se genera por javascript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Contenedor para el botón volver -->
+    <div class="container mt-4">
         <div class="row">
-            <div class="col-xs-12 col-md-6 col-lg-4 mt-3">
-                <button type="button" class="btn btn-success btn-block btn-lg" id="btnEmpresa">Empresa</button>
+            <div class="col-4">
             </div>
-            <div class="col-xs-12 col-md-6 col-lg-4 mt-3">
-                <button type="button" class="btn btn-success btn-block btn-lg" id="btnArticulos">Artículo / Cambio /
-                    Proceso</button>
-            </div>
-            <div class="col-xs-12 col-md-6 col-lg-4 mt-3">
-                <button type="button" class="btn btn-success btn-block btn-lg" id="btnOrdenesCompra">Ordenes de
-                    Compra</button>
-            </div>
-            <div class="col-xs-12 col-md-6 col-lg-4 mt-3">
-                <button type="button" class="btn btn-success btn-block btn-lg" id="btnprocesosconcretos">Monitorear Procesos</button>
-            </div>
-            <div class="col-xs-12 col-md-6 col-lg-4 mt-3">
-                <button type="button" class="btn btn-success btn-block btn-lg" id="btnCerrarSesion">Cerrar
-                    Sesión</button>
+            <div class="col-4">
+                <br><button type="button" class="btn btn-success btn-block btn-lg" id="btnVolver">Volver</button>
             </div>
         </div>
     </div>
@@ -59,7 +70,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
-    <script src="../js/monitor.admin.principal.js"></script>
+    <script src="../js/monitor.admin.principal.procesosConcretos.js"></script>
 
 </body>
 
