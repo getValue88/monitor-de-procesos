@@ -41,4 +41,9 @@ export class ProcessController {
     getConcreteProcessByCompanyId(@Param('companyId') companyId: number) {
         return this.processService.getConcreteProcessByCompanyId(companyId);
     }
+
+    @Get('concreteProcess/:id/header')
+    getHeaderData(@Param('id') id: number) {
+        return this.processService.getHeaderData(id);
+    }
 }

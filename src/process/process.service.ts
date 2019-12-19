@@ -71,6 +71,15 @@ export class ProcessService {
         }
     }
 
+    public async getConcreteProcessById(id: number): Promise<ConcreteProcess> {
+        try {
+            return await this.concreteProcessRepository.findOne(id);
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
+
     public async getConcreteProcessByManufactureId(manufactureId: number): Promise<ConcreteProcess> {
         try {
             return await this.concreteProcessRepository.createQueryBuilder('cctProcess')
@@ -103,6 +112,25 @@ export class ProcessService {
                 .getMany();
         } catch (error) {
             console.log(error)
+            return null;
+        }
+    }
+
+    public async getHeaderData(id: number): Promise<any> {
+        try {
+            return await this.concreteProcessRepository.createQueryBuilder('cctProcess')
+                .innerJoinAndSelect('cctProcess.standardProcess', 'stdPrcs')
+                .innerJoinAndSelect('cctProcess.manufactureOrder', 'mfOrder')
+                .innerJoinAndSelect('mfOrder.purchaseOrder', 'po')
+                .innerJoinAndSelect('po.article', 'article')
+                .select([
+                    'stdPrcs.name',
+                    'article.name',
+                    'po.quantity'])
+                .where('cctProcess.id= :cctId', { cctId: id })
+                .getRawOne();
+        } catch (error) {
+            console.log(error);
             return null;
         }
     }
@@ -245,12 +273,12 @@ export class ProcessService {
 
             const quantity = manufactureOrder.getPurchaseOrder().getQuantity();
             const taskWeight = (taskTime * quantity * 100) / totalProcessTime;
-            
+
             let currentProcessStatus = concreteProcess.getStatus();
             currentProcessStatus -= previousStatus * taskWeight / 100;
             currentProcessStatus += status * taskWeight / 100;
             concreteProcess.setStatus(currentProcessStatus);
-            
+
             if (currentProcessStatus >= 100) {
                 const purchaseOrder = manufactureOrder.getPurchaseOrder();
                 purchaseOrder.setStatus(3);
