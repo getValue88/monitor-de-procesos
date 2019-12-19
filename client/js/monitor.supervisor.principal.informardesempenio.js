@@ -27,7 +27,7 @@ mostrarTablaTareas();
 async function mostrarEncabezado() {
     // Consulto los datos del proceso concreto según el id de orden de fabricación
     try {
-        let response = await fetch(`../process/concreteProcess/${manufactureOrderId}`);
+        let response = await fetch(`../process/concreteProcess/manufacture/${manufactureOrderId}`);
         procesoConcreto = await response.json();
     }
     catch (err) {
@@ -44,7 +44,7 @@ async function mostrarEncabezado() {
 async function mostrarTablaTareas() {
     // Consulto los datos del proceso concreto según el id de orden de fabricación
     try {
-        let response = await fetch(`../process/concreteProcess/${manufactureOrderId}`);
+        let response = await fetch(`../process/concreteProcess/manufacture/${manufactureOrderId}`);
         procesoConcreto = await response.json();
         console.log(procesoConcreto);
     }

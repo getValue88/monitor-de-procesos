@@ -6,12 +6,7 @@ import { StandardProcessDTO } from './dto/standardProcess.dto';
 @Controller('process')
 export class ProcessController {
     public constructor(private readonly processService: ProcessService) { }
-/* 
-    @Post('stdPrcs')
-    createStandardProcess(@Body() standardProcess: StandardProcessDTO) {
-        return this.processService.createStandardProcess(standardProcess);
-    }
- */
+
     @Post('stdTask')
     createStdTask(@Body() stdTaskDto: StandardTaskDTO[]) {
         return this.processService.createStdTask(stdTaskDto);
@@ -37,8 +32,13 @@ export class ProcessController {
         return this.processService.getConcreteTasksByConcreteProcessId(concreteProcessId);
     }
 
-    @Get('concreteProcess/:manufactureId')
+    @Get('concreteProcess/manufacture/:manufactureId')
     getConcreteProcessByManufactureId(@Param('manufactureId') manufactureId: number) {
         return this.processService.getConcreteProcessByManufactureId(manufactureId);
+    }
+
+    @Get('concreteProcess/company/:companyId')
+    getConcreteProcessByCompanyId(@Param('companyId') companyId: number) {
+        return this.processService.getConcreteProcessByCompanyId(companyId);
     }
 }

@@ -116,7 +116,7 @@ export class OrderService {
     public async getManufactureOrderByCompanyId(companyId: number): Promise<ManufactureOrder[]> {
         try {
             return await this.manufactureOrderRepository.createQueryBuilder('order')
-                .innerJoinAndSelect('order.company', 'comp')
+                .innerJoin('order.company', 'comp')
                 .innerJoinAndSelect('order.purchaseOrder', 'po')
                 .innerJoin('order.supervisor', 'sup')
                 .where('comp.id= :coId', { coId: companyId })

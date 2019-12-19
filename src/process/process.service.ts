@@ -43,7 +43,7 @@ export class ProcessService {
             return false;
         }
     }
-    
+
     public async getProcessById(processId: number): Promise<StandardProcess> {
         try {
             return await this.stdProcessRepository.findOne({ where: { id: processId } });
@@ -59,7 +59,7 @@ export class ProcessService {
 
             toUpdateProcess.setName(standardProcessDto['name']);
             toUpdateProcess.setDescription(standardProcessDto['description']);
-            
+
             await this.stdProcessRepository.save(toUpdateProcess);
             return true;
 
@@ -88,6 +88,18 @@ export class ProcessService {
 
         } catch (error) {
             console.log(error);
+            return null;
+        }
+    }
+
+    public async getConcreteProcessByCompanyId(companyId: number): Promise<ConcreteProcess[]> {
+        try {
+            return await this.concreteProcessRepository.createQueryBuilder('cctPrcs')
+                .innerJoin('cctPrcs.manufactureOrder', 'mf')
+                .where('mf.company= :cId', { cId: companyId })
+                .getMany();
+        } catch (error) {
+            console.log(error)
             return null;
         }
     }
@@ -168,7 +180,7 @@ export class ProcessService {
 
             let purchaseOrder = concreteTask.getConcreteProcess().getManufactureOrder().getPurchaseOrder();
             const quantity = purchaseOrder.getQuantity();
-            
+
             const previousStatus = concreteTask.getStatus();
             concreteTask.setStatus(status['status']);
 
@@ -231,7 +243,7 @@ export class ProcessService {
             currentProcessStatus += status * taskWeight / 100;
             concreteProcess.setStatus(currentProcessStatus);
 
-            if (currentProcessStatus >= 100){
+            if (currentProcessStatus >= 100) {
                 const purchaseOrder = manufactureOrder.getPurchaseOrder();
                 purchaseOrder.setStatus(3);
                 concreteProcess.setEndDate(new Date());
