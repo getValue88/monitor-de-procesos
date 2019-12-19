@@ -113,6 +113,7 @@ function inicializarInputs() {
     let fecha = formatearFechaForInput(hoy);
     // Finalmente le asigno el valor al input
     document.querySelector('#deliveryDate').value = fecha;
+    document.querySelector('#deliveryDate').min = formatearFechaForInput(new Date());
 }
 
 // Función que dada una fecha completa de sistema (de tipo string) la formatea a 'dd-mm-aaaa'
