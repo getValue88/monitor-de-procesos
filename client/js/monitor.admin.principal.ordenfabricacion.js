@@ -50,7 +50,6 @@ async function guardar() {
     let horaMinutos = time.split(":");
     initialDate.setHours(horaMinutos[0]);
     initialDate.setMinutes(horaMinutos[1]);
-    alert(initialDate);
     let purchaseOrderId = document.querySelector('#purchaseOrderId').value;
     let supervisorId = document.querySelector('#supervisorId').value;
     // Obtengo el id de la compañia

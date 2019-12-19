@@ -38,15 +38,20 @@ async function mostrarTablaOrdenes() {
     for (let r of ordenesFabricacion) {
         estadoDisabled = "";
         let endDateHTML = "<td>-</td>";
+        let endTimeHTML = "<td>-</td>";
         if (r.endDate != null) {
             endDateHTML = `<td>${formatearFecha(r.endDate)}</td>`;
+            endTimeHTML = `<td>${extraerHora(r.endDate)}</td>`
             estadoDisabled = ` disabled `;
         }
         html += `
             <tr>
                 <td>${formatearFecha(r.initialDate)}</td>
+                <td>${extraerHora(r.initialDate)}</td>
                 <td>${formatearFecha(r.deliveryDate)}</td>
+                <td>${extraerHora(r.deliveryDate)}</td>
                 ${endDateHTML}
+                ${endTimeHTML}
                 <td><button type="button" id="${r.id}" class="btn-informarDesempenio btn btn-secondary btn-block" ${estadoDisabled}>Informar Desempeño</button></td>
             </tr>    
         `;
@@ -116,4 +121,18 @@ function statusOC(status) {
 
 function volver() {
     location.href = `/html/monitor.supervisor.principal.html?userId=${userId}`;
+}
+
+// Función que extrae la hora a partir de una fecha
+function extraerHora(fecha) {
+    let date = new Date(fecha);
+    let hora = date.getHours();
+    if (hora < 10) {
+        hora = "0" + hora;
+    }
+    let minutes = date.getMinutes();
+    if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+    return horaInicio = "" + hora + ":" + minutes;
 }
