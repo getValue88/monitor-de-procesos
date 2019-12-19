@@ -1,4 +1,3 @@
-
 import { NivelCambio } from './nivelCambio.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
 import { Company } from '../../company/entities/company.entity';

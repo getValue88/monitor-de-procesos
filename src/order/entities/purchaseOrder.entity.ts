@@ -2,7 +2,6 @@ import { PrimaryGeneratedColumn, Column, Entity, UpdateDateColumn, JoinColumn, O
 import { Article } from "../../article/entities/article.entity";
 import { User } from '../../user/entities/user.entity'
 import { Company } from "../../company/entities/company.entity";
-import { ManufactureOrder } from "./manufactureOrder.entity";
 
 @Entity()
 export class PurchaseOrder {

@@ -50,27 +50,36 @@ async function guardar() {
     let impositiveCategory = document.querySelector('#impositiveCategory').value;
     let cuit = document.querySelector('#cuit').value;
     let logo = document.querySelector('#logo').value;
-    // Armo un registro con los datos obtenidos
-    let registro = {
-        "rs": rs,
-        "address": address,
-        "impositiveCategory": impositiveCategory,
-        "cuit": cuit,
-        "logo": logo
+
+    if(validarCuit(cuit)){
+        // Armo un registro con los datos obtenidos
+        let registro = {
+            "rs": rs,
+            "address": address,
+            "impositiveCategory": impositiveCategory,
+            "cuit": cuit,
+            "logo": logo
+        }
+        // Solicito el PUT al servidor
+        let response = await fetch(`../company/${companyID}`, {
+            "method": "PUT",
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "body": JSON.stringify(registro)
+        })
+        // Vuelvo a la página anterior
+        volver();
+    } else{
+        document.querySelector('#cuit').classList.add('is-invalid');
     }
-    // Solicito el PUT al servidor
-    let response = await fetch(`../company/${companyID}`, {
-        "method": "PUT",
-        "headers": {
-            "Content-Type": "application/json"
-        },
-        "body": JSON.stringify(registro)
-    })
-    // Vuelvo a la página anterior
-    volver();
 }
 
 // Función que vuelve a la página anterior
 function volver() {
     location.href = `/html/monitor.admin.principal.html?userId=${userId}`;
+}
+
+function validarCuit(cuit) {
+    return /\b(20|23|24|27|30|33|34)(\D)?[0-9]{8}(\D)?[0-9]/.test(cuit);
 }

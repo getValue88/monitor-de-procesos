@@ -5,7 +5,6 @@ import { ArticleDTO } from './dto/article.dto';
 
 @Controller('article')
 export class ArticleController {
-
     public constructor(private readonly articleService: ArticleService) { }
 
     @Get('company/:companyId')

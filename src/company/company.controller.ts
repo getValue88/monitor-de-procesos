@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Put, Body } from '@nestjs/common';
+import { Controller, Param, Put, Body } from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { CompanyDTO } from './dto/company.dto';
 
