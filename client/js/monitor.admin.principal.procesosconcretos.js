@@ -45,18 +45,18 @@ async function mostrarTablaProcesos() {
     for (let r of procesosConcretos) {
         let endDateHTML = "<td>-</td>";
         let endTimeHTML = "<td>-</td>";
-        if (r.endDate != null) {
-            endDateHTML = `<td>${formatearFecha(r.endDate)}</td>`;
-            endTimeHTML = `<td>${extraerHora(r.endDate)}</td>`
+        if (r.cctPrcs_endDate != null) {
+            endDateHTML = `<td>${formatearFecha(r.cctPrcs_endDate)}</td>`;
+            endTimeHTML = `<td>${extraerHora(r.cctPrcs_endDate)}</td>`
         }
         // Calculo el desempeño del proceso
-        const tiempoTardado = new Date(r.endDate) - new Date(r.initialDate);
-        const tiempoEstimado = new Date(r.deliveryDate) - new Date(r.initialDate);
+        const tiempoTardado = new Date(r.cctPrcs_endDate) - new Date(r.cctPrcs_initialDate);
+        const tiempoEstimado = new Date(r.cctPrcs_deliveryDate) - new Date(r.cctPrcs_initialDate);
         let desempeño = 0;
         let clase = "";
-        if ((new Date(r.initialDate) <= new Date()) && (r.status >= 0) && (r.status < 100))
-            desempeño = (r.status - ((new Date() - new Date(r.initialDate)) * 100) / tiempoEstimado);
-        if (r.status == 100) {
+        if ((new Date(r.cctPrcs_initialDate) <= new Date()) && (r.cctPrcs_status >= 0) && (r.cctPrcs_status < 100))
+            desempeño = (r.cctPrcs_status - ((new Date() - new Date(r.cctPrcs_initialDate)) * 100) / tiempoEstimado);
+        if (r.cctPrcs_status == 100) {
             if (tiempoTardado > tiempoEstimado) {
                 desempeño = 100 - (tiempoTardado / tiempoEstimado) * 100;
             }
@@ -74,18 +74,19 @@ async function mostrarTablaProcesos() {
         // Genero una row de la tabla
         html += `
             <tr>
-                <td>${formatearFecha(r.initialDate)}</td>
-                <td>${extraerHora(r.initialDate)}</td>
-                <td>${formatearFecha(r.deliveryDate)}</td>
-                <td>${extraerHora(r.deliveryDate)}</td>
+                <td>${r.article_name}</td>
+                <td>${formatearFecha(r.cctPrcs_initialDate)}</td>
+                <td>${extraerHora(r.cctPrcs_initialDate)}</td>
+                <td>${formatearFecha(r.cctPrcs_deliveryDate)}</td>
+                <td>${extraerHora(r.cctPrcs_deliveryDate)}</td>
                 ${endDateHTML}
                 ${endTimeHTML}
                 <td><div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: ${r.status}%;" aria-valuenow="${r.status}" aria-valuemin="0" aria-valuemax="100">${r.status}%</div>
+                    <div class="progress-bar" role="progressbar" style="width: ${r.cctPrcs_status}%;" aria-valuenow="${r.cctPrcs_status}" aria-valuemin="0" aria-valuemax="100">${r.cctPrcs_status}%</div>
                     </div>
                 </td>
                 <td class="text-center"><span class="${clase} p-1 m-auto">${(desempeño).toFixed(2)}%</span></td>
-                <td><button type="button" id="${r.id}" class="btn-verDesempenio btn btn-secondary btn-block btn-sm">Detalle</button></td>
+                <td><button type="button" id="${r.cctPrcs_id}" class="btn-verDesempenio btn btn-secondary btn-block btn-sm">Detalle</button></td>
             </tr>    
         `;
     }
