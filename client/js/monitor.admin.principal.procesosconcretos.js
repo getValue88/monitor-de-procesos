@@ -42,17 +42,12 @@ async function mostrarTablaProcesos() {
     }
     // Genero contenido html
     let html = "";
-    let estadoDisabled;
     for (let r of procesosConcretos) {
-        console.log(r)
-        estadoDisabled = "";
-        // Le doy formato a la fecha y tiempo de fin real 
         let endDateHTML = "<td>-</td>";
         let endTimeHTML = "<td>-</td>";
         if (r.endDate != null) {
             endDateHTML = `<td>${formatearFecha(r.endDate)}</td>`;
             endTimeHTML = `<td>${extraerHora(r.endDate)}</td>`
-            estadoDisabled = ` disabled `;
         }
         // Calculo el desempeño del proceso
         const tiempoTardado = new Date(r.endDate) - new Date(r.initialDate);
@@ -90,7 +85,7 @@ async function mostrarTablaProcesos() {
                     </div>
                 </td>
                 <td class="text-center"><span class="${clase} p-1 m-auto">${(desempeño).toFixed(2)}%</span></td>
-                <td><button type="button" id="${r.id}" class="btn-verDesempenio btn btn-secondary btn-block btn-sm" ${estadoDisabled}>Detalle</button></td>
+                <td><button type="button" id="${r.id}" class="btn-verDesempenio btn btn-secondary btn-block">Ver Desempeño</button></td>
             </tr>    
         `;
     }
