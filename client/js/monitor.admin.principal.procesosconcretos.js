@@ -44,7 +44,9 @@ async function mostrarTablaProcesos() {
     let html = "";
     let estadoDisabled;
     for (let r of procesosConcretos) {
+        console.log(r)
         estadoDisabled = "";
+        // Le doy formato a la fecha y tiempo de fin real 
         let endDateHTML = "<td>-</td>";
         let endTimeHTML = "<td>-</td>";
         if (r.endDate != null) {
@@ -52,6 +54,29 @@ async function mostrarTablaProcesos() {
             endTimeHTML = `<td>${extraerHora(r.endDate)}</td>`
             estadoDisabled = ` disabled `;
         }
+        // Calculo el desempeño del proceso
+        const tiempoTardado = new Date(r.endDate) - new Date(r.initialDate);
+        const tiempoEstimado = new Date(r.deliveryDate) - new Date(r.initialDate);
+        let desempeño = 0;
+        let clase = "";
+        if ((new Date(r.initialDate) <= new Date()) && (r.status >= 0) && (r.status < 100))
+            desempeño = (r.status - ((new Date() - new Date(r.initialDate)) * 100) / tiempoEstimado);
+        if (r.status == 100) {
+            if (tiempoTardado > tiempoEstimado) {
+                desempeño = 100 - (tiempoTardado / tiempoEstimado) * 100;
+            }
+            if (tiempoTardado < tiempoEstimado) {
+                desempeño = ((tiempoEstimado / tiempoTardado) * 100) - 100;
+            }
+        }
+        // Seg{un el desempeño obtenido seteo el color de la etiqueta a mostrar}
+        if (desempeño > 0) {
+            clase = 'badge badge-success';
+        }
+        if (desempeño < 0) {
+            clase = 'badge badge-danger';
+        }
+        // Genero una row de la tabla
         html += `
             <tr>
                 <td>${formatearFecha(r.initialDate)}</td>
@@ -62,8 +87,10 @@ async function mostrarTablaProcesos() {
                 ${endTimeHTML}
                 <td><div class="progress">
                     <div class="progress-bar" role="progressbar" style="width: ${r.status}%;" aria-valuenow="${r.status}" aria-valuemin="0" aria-valuemax="100">${r.status}%</div>
-                    </div></td>
-                <td><button type="button" id="${r.id}" class="btn-verDesempenio btn btn-secondary btn-block" ${estadoDisabled}>Ver Desempeño</button></td>
+                    </div>
+                </td>
+                <td class="text-center"><span class="${clase} p-1 m-auto">${(desempeño).toFixed(2)}%</span></td>
+                <td><button type="button" id="${r.id}" class="btn-verDesempenio btn btn-secondary btn-block btn-sm" ${estadoDisabled}>Detalle</button></td>
             </tr>    
         `;
     }
