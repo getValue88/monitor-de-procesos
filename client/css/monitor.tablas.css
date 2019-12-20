@@ -3,14 +3,16 @@
 table {
   border-collapse: collapse;
   width: 98%;
-  margin-left:1%; 
-  margin-right:1%;
-  margin-top:1%;
+  margin-left: 1%;
+  margin-right: 1%;
+  margin-top: 1%;
 }
 
 th {
   background-color: rgb(102, 172, 104);
   color: white;
+  position: sticky;
+  top:0;
 }
 
 td {
@@ -19,4 +21,19 @@ td {
 
 tr:nth-child(even) {
   background-color: lightgrey;
+}
+
+.wraper {
+  height: 73vh;
+  overflow: auto;
+}
+
+.wraper-no-btn{
+  height: 84vh;
+  overflow: auto;
+}
+
+.wraper-with-header{
+  height: 65vh;
+  overflow: auto;
 }

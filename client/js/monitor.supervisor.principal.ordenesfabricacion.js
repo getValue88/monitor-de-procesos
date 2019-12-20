@@ -53,7 +53,7 @@ async function mostrarTablaOrdenes() {
                 <td>${extraerHora(r.deliveryDate)}</td>
                 ${endDateHTML}
                 ${endTimeHTML}
-                <td><button type="button" id="${r.id}" class="btn-informarDesempenio btn btn-secondary btn-block" ${estadoDisabled}>Informar Desempeño</button></td>
+                <td><button type="button" id="${r.id}" class="btn-informarDesempenio btn btn-secondary btn-block btn-sm" ${estadoDisabled}>Informar Desempeño</button></td>
             </tr>    
         `;
     }
