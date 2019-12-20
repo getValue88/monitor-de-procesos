@@ -9,8 +9,8 @@ html{
 }
 
 .contenedor{
-    /* background: url(../img/grafico-de-barras-1366x768.png) no-repeat center ; */
-    height: 80%;
+    background: url(../img/engranaje-800x637-green-lienzo.png) no-repeat center;
+    height: 100%;
     background-size: cover; 
     background-repeat: no-repeat;
     background-position: center center;
