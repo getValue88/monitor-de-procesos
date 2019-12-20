@@ -85,7 +85,7 @@ async function mostrarTablaProcesos() {
                     </div>
                 </td>
                 <td class="text-center"><span class="${clase} p-1 m-auto">${(desempeño).toFixed(2)}%</span></td>
-                <td><button type="button" id="${r.id}" class="btn-verDesempenio btn btn-secondary btn-block">Ver Desempeño</button></td>
+                <td><button type="button" id="${r.id}" class="btn-verDesempenio btn btn-secondary btn-block btn-sm">Detalle</button></td>
             </tr>    
         `;
     }
