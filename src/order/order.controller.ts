@@ -12,11 +12,6 @@ export class OrderController {
         return this.orderService.createPurchaseOrder(purchaseOrderDto);
     }
 
-    @Get('purchase/:id')
-    getPurchaseOrderById(@Param('id') id: number) {
-        return this.orderService.getPurchaseOrderById(id);
-    }
-
     @Get('purchase/company/:companyId')
     getPurchaseOrdersByCompanyId(@Param('companyId') companyId: number) {
         return this.orderService.getPurchaseOrdersByCompanyId(companyId);
