@@ -107,9 +107,12 @@ export class ProcessService {
     public async getConcreteProcessByCompanyId(companyId: number): Promise<ConcreteProcess[]> {
         try {
             return await this.concreteProcessRepository.createQueryBuilder('cctPrcs')
-                .innerJoin('cctPrcs.manufactureOrder', 'mf')
+                .innerJoinAndSelect('cctPrcs.manufactureOrder', 'mf')
+                .innerJoinAndSelect('mf.purchaseOrder','po')
+                .innerJoinAndSelect('po.article','article')
                 .where('mf.company= :cId', { cId: companyId })
-                .getMany();
+                .select(['cctPrcs.id','cctPrcs.initialDate','cctPrcs.deliveryDate','cctPrcs.endDate','cctPrcs.status','article.name'])
+                .getRawMany();
         } catch (error) {
             console.log(error)
             return null;
