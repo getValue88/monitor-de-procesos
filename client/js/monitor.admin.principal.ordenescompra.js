@@ -57,7 +57,7 @@ async function mostrarTablaOrdenes() {
                 <td><div class="progress">
                 <div class="progress-bar" role="progressbar" style="width: ${r.status*100/3}%" aria-valuenow="${r.status*100/3}" aria-valuemin="0" aria-valuemax="100"></div>
               </div></td>
-                <td><button type="button" id="${r.id}" class="btn-asignarOF btn btn-secondary btn-block" ${estadoDisabled}>Asignar OF</button></td>
+                <td><button type="button" id="${r.id}" class="btn-asignarOF btn btn-secondary btn-block btn-sm" ${estadoDisabled}>Asignar OF</button></td>
             </tr>    
         `;
     }

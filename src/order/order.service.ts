@@ -42,15 +42,6 @@ export class OrderService {
         }
     }
 
-    public async getPurchaseOrderById(id: number): Promise<PurchaseOrder> {
-        try{
-            return await this.purchaseOrderRepository.findOne(id);
-        } catch(error){
-            console.log(error);
-            return null;
-        }
-    }
-
     public async getPurchaseOrdersByCompanyId(companyId: number): Promise<PurchaseOrder[]> {
         try {
             return await this.purchaseOrderRepository.createQueryBuilder('order')

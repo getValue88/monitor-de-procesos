@@ -44,28 +44,52 @@ async function mostrarTablaTareas() {
         let response = await fetch(`../process/concreteTask/${concreteProcessId}`);
         tareas = await response.json();
         tareas.sort((a, b) => a.code - b.code);
+        console.log(tareas);
     }
     catch (err) {
         alert(err.message);
     }
+
+    
     // Genero los rows de la tabla
     html = "";
-    let estadoDisabled;
-    const now = new Date();
     for (let r of tareas) {
-        let iDate = new Date(r.initialDate);
+        // Calculo el desempeño del proceso
+        const tiempoTardado = new Date(r.endDate) - new Date(r.initialDate);
+        const tiempoEstimado = new Date(r.deliveryDate) - new Date(r.initialDate);
+        let desempeño = 0;
+        let clase = "";
+        if ((new Date(r.initialDate) <= new Date()) && (r.status >= 0) && (r.status < 100) && r.initialDate)
+            desempeño = (r.status - ((new Date() - new Date(r.initialDate)) * 100) / tiempoEstimado);
+        if (r.status == 100) {
+            if (tiempoTardado > tiempoEstimado) {
+                desempeño = 100 - (tiempoTardado / tiempoEstimado) * 100;
+            }
+            if (tiempoTardado < tiempoEstimado) {
+                desempeño = ((tiempoEstimado / tiempoTardado) * 100) - 100;
+            }
+        }
+        // Seg{un el desempeño obtenido seteo el color de la etiqueta a mostrar}
+        if (desempeño > 0) {
+            clase = 'badge badge-success';
+        }
+        if (desempeño < 0) {
+            clase = 'badge badge-danger';
+        }
         html += `
             <tr>
                 <td>${r.standardTask.name}</td>
                 <td>${r.standardTask.description}</td>
                 <td><div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: ${r.status}%;" aria-valuenow="${r.status}" aria-valuemin="0" aria-valuemax="100">${r.status}%</div>
-                    </div></td>
+                        <div class="progress-bar" role="progressbar" style="width: ${r.status}%;" aria-valuenow="${r.status}" aria-valuemin="0" aria-valuemax="100">${r.status}%</div>
+                    </div>
+                </td>
+                <td class="text-center"><span class="${clase} p-1 m-auto">${(desempeño).toFixed(2)}%</span></td>
             </tr>    
         `;
     }
     // Asigno el contenido generado al body de la tabla correspondiente
-    document.querySelector("#tbltareas").innerHTML = html;  
+    document.querySelector("#tbltareas").innerHTML = html;
 }
 
 // Agrego un listener al botón Volver
