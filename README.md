@@ -22,10 +22,10 @@
     - Session handling.
 
 - ## Install: 
-  1. Clone the proyect.
-  2. npm i
-  3. Create ormconfig.json in the root of the proyect:
-  ```       
+1. Clone the proyect.
+2. npm i
+3. Create ormconfig.json in the root of the proyect:
+  ```json       
     {
         "type": "mysql",
         "host": "localhost",
@@ -39,23 +39,26 @@
         "synchronize": true
     }
   ```
-  4. Create database called "monitor-procesos"
-  5. Import this Dump file into the database. 
+4. Create database called "monitor-procesos"
+5. Import [this Dump file]() into the database. 
 
 - ## Usage:
   - Log-in with test users: 
-    - User: **admin**  Password: **admin**
-    - User: **supervisor** Password: **supervisor**
-    - User: **client** Password: **client**  
+ 
+    Privilege      | Username   | Password
+    ----------     | ---------  | --------
+    **Admin**      | admin      | admin
+    **Supervisor** | supervisor | supervisor
+    **Client**     | client     | client
 
   - To create a new company:
     - Insert a row into 'user' table with **privilege= "admin"**  and **companyId = null**
 
-  - To create a new supervisor/client:
-    - Insert a row into 'user' table with **privilege = "supervisor" or "client"** and **companyId = (id of an existent company)**
+  - To create a new admin/supervisor/client:
+    - Insert a row into 'user' table with **privilege = "admin" or "supervisor" or "client"** and **companyId = (id of an existent company)**
 
 - ## Credits:
 
-  - Sebastian Chavez @chaveta - Frontend
-  - Francisco Corti  @getValue88 - Backend, API
-  - Ezequiel Balquinta @ebalquinta - Database
+  - Sebastian Chavez [@chaveta](https://github.com/chaveta) - Frontend
+  - Francisco Corti  [@getValue88](https://github.com/getValue88) - Backend, API
+  - Ezequiel Balquinta [@ebalquinta](https://github.com/ebalquinta) - Database
