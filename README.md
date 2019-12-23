@@ -17,7 +17,7 @@
   In the next iteration we want to implement:
     - Capability to handle non linear process.
     - Logo/images handling for enterprises and articles.
-    - Custom Alarms for each process and task.
+    - Custom Alarms for each process and task, in case of bottlenecks.
     - User signup module.
     - Session handling.
 
