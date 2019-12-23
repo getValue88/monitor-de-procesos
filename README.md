@@ -57,6 +57,18 @@
   - To create a new admin/supervisor/client:
     - Insert a row into 'user' table with **privilege = "admin" or "supervisor" or "client"** and **companyId = (id of an existent company)**
 
+- ## Technologies:
+  - Frontend:
+    - HTML
+    - CSS / Bootstrap
+    - Javascript
+  - Backend:
+    - NodeJs
+    - NestJs (Typescript)
+    - TypeORM
+  - Database:
+    - MySQL
+
 - ## Credits:
 
   - Sebastian Chavez [@chaveta](https://github.com/chaveta) - Frontend
