@@ -51,10 +51,10 @@
     **Supervisor** | supervisor | supervisor
     **Client**     | client     | client
 
-  - To create a new company:
+  - To create a new company, from DB:
     - Insert a row into 'user' table with **privilege= "admin"**  and **companyId = null**
 
-  - To create a new admin/supervisor/client:
+  - To create a new admin/supervisor/client, from DB:
     - Insert a row into 'user' table with **privilege = "admin" or "supervisor" or "client"** and **companyId = (id of an existent company)**
 
 - ## Technologies:
