@@ -39,8 +39,48 @@
         "synchronize": true
     }
   ```
-4. Create database called "monitor-procesos"
-5. Import [this Dump file]() into the database. 
+4. Create database called "monitor_procesos"
+5. npm run build
+6. npm run start:prod
+7. run the next script into the database:
+
+~~~~sql
+USE `monitor_procesos`;
+
+DROP trigger IF EXISTS crear_compania;
+delimiter ;;
+CREATE trigger `crear_compania` BEFORE INSERT ON `user`
+FOR EACH ROW
+    BEGIN	
+         IF (new.privilege = 'admin' AND new.companyId IS NULL) THEN
+			INSERT INTO company (rs,address,impositiveCategory,cuit,logo)
+				VALUES ("","","","","");
+			SET new.companyId = (SELECT max(id) FROM company); 
+		 END IF;
+	END;;
+
+
+-- # crear nivel de cambio y proceso cuando se inserta articulo con nivelCambio null
+DROP TRIGGER IF EXISTS crear_nivel_cambio_stdProcess
+delimiter $$
+CREATE TRIGGER `crear_nivel_cambio_stdProcess` BEFORE INSERT ON `article`
+FOR EACH ROW
+	BEGIN
+		IF(new.nivelCambioId IS NULL) THEN
+			INSERT INTO standard_process (name,description,requiredTime)
+				VALUES ("","",null);
+			INSERT INTO nivel_cambio (date,plan,image,processId)
+				VALUES(NOW(),"","", (SELECT MAX(id) FROM standard_process));
+                SET new.nivelCambioId = (SELECT MAX(id) FROM nivel_cambio);
+		END IF;
+    END$$
+    
+    
+INSERT INTO `user` (`name`,`password`,privilege,observations,companyId)
+VALUES ("admin","admin","admin","",null),
+("supervisor","supervisor","supervisor","",1),
+("cliente","cliente","cliente","",1);
+~~~~
 
 - ## Usage:
   - Log-in with test users: 
@@ -49,13 +89,23 @@
     ----------     | ---------  | --------
     **Admin**      | admin      | admin
     **Supervisor** | supervisor | supervisor
-    **Client**     | client     | client
+    **Cliente**    | cliente    | cliente
 
   - To create a new company, from DB:
     - Insert a row into 'user' table with **privilege= "admin"**  and **companyId = null**
 
   - To create a new admin/supervisor/client, from DB:
-    - Insert a row into 'user' table with **privilege = "admin" or "supervisor" or "client"** and **companyId = (id of an existent company)**
+    - Insert a row into 'user' table with **privilege = "admin" or "supervisor" or "cliente"** and **companyId = (id of an existent company)**
+
+
+  Flujo de negocio:
+  - Admin crea producto con su respectivo proceso y tareas para se fabricado
+  - El cliente realiza una compra
+  - El admin acepta la compra y determina una fecha de inicio de fabricación y asigna la orden a un supervisor
+  - El supervisor debe actualizar el estado de las tareas una vez llegada la fecha de inicio de las mismas
+  - El admin puede monitorear el detalle de los estados en tiempo real viendo porcentajes y comparacion de performance respecto al tiempo estimado
+  - El cliente puede ver el estado de sus ordenes (En Anális - En proceso - Finalizado)
+
 
 - ## Technologies:
   - Frontend:

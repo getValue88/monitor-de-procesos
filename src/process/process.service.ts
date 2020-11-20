@@ -108,10 +108,10 @@ export class ProcessService {
         try {
             return await this.concreteProcessRepository.createQueryBuilder('cctPrcs')
                 .innerJoinAndSelect('cctPrcs.manufactureOrder', 'mf')
-                .innerJoinAndSelect('mf.purchaseOrder','po')
-                .innerJoinAndSelect('po.article','article')
+                .innerJoinAndSelect('mf.purchaseOrder', 'po')
+                .innerJoinAndSelect('po.article', 'article')
                 .where('mf.company= :cId', { cId: companyId })
-                .select(['cctPrcs.id','cctPrcs.initialDate','cctPrcs.deliveryDate','cctPrcs.endDate','cctPrcs.status','article.name'])
+                .select(['cctPrcs.id', 'cctPrcs.initialDate', 'cctPrcs.deliveryDate', 'cctPrcs.endDate', 'cctPrcs.status', 'article.name'])
                 .getRawMany();
         } catch (error) {
             console.log(error)
@@ -279,7 +279,7 @@ export class ProcessService {
 
             let currentProcessStatus = concreteProcess.getStatus();
             currentProcessStatus -= previousStatus * taskWeight / 100;
-            currentProcessStatus += status * taskWeight / 100;
+            currentProcessStatus += Math.ceil(status * taskWeight / 100);
             concreteProcess.setStatus(currentProcessStatus);
 
             if (currentProcessStatus >= 100) {
